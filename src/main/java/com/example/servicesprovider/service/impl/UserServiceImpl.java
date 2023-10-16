@@ -4,9 +4,11 @@ import com.example.servicesprovider.base.service.impl.BaseServiceImpl;
 import com.example.servicesprovider.model.User;
 import com.example.servicesprovider.repository.UserRepository;
 import com.example.servicesprovider.service.UserService;
+import org.springframework.stereotype.Service;
 
 import javax.validation.Validator;
 
+@Service
 public class UserServiceImpl extends BaseServiceImpl<User, Long, UserRepository> implements UserService {
 
 
