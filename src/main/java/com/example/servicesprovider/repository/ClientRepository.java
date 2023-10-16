@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ClientRepository extends BaseRepository<Client, Long> {
+    Client findByUserName(String userName);
+
+    Client findByUserNameAndPassword(String userName, String password);
 }

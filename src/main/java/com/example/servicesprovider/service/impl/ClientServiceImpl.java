@@ -2,10 +2,7 @@ package com.example.servicesprovider.service.impl;
 
 import com.example.servicesprovider.base.service.impl.BaseServiceImpl;
 import com.example.servicesprovider.exception.PriceIsLowerThanBasePriceException;
-import com.example.servicesprovider.model.Client;
-import com.example.servicesprovider.model.GeneralService;
-import com.example.servicesprovider.model.Order;
-import com.example.servicesprovider.model.SubService;
+import com.example.servicesprovider.model.*;
 import com.example.servicesprovider.repository.ClientRepository;
 import com.example.servicesprovider.service.*;
 import org.springframework.stereotype.Service;
@@ -30,7 +27,13 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
 
     @Override
     public void changePassword(String userName, String password, String newPassword, String duplicateNewPassword) {
-        userService.changePassword(userName, password, newPassword, duplicateNewPassword);
+        Client client = userAuthentication(userName, password);
+        try {
+            client.setPassword(newPassword);
+            update(client);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     @Override
@@ -61,6 +64,26 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
             return subService_service.findAll();
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Client findByUserName(String userName) {
+        try {
+            return repository.findByUserName(userName);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            return null;
+        }
+    }
+
+    @Override
+    public Client userAuthentication(String userName, String password) {
+        try {
+            return repository.findByUserNameAndPassword(userName, password);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            return null;
         }
     }
 }

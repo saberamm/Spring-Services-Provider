@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AdminRepository extends BaseRepository<Admin, Long> {
+    Admin findByUserName(String userName);
+
+    Admin findByUserNameAndPassword(String userName, String password);
 }

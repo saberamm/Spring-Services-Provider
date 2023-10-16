@@ -8,10 +8,11 @@ import com.example.servicesprovider.model.*;
 import com.example.servicesprovider.model.enumeration.TechnicianStatus;
 import com.example.servicesprovider.repository.AdminRepository;
 import com.example.servicesprovider.service.*;
+import org.springframework.stereotype.Service;
 
 import javax.validation.Validator;
 import java.util.List;
-
+@Service
 public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminRepository> implements AdminService {
     UserService userService;
     GeneralService_Service generalService_service;
@@ -68,7 +69,13 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
 
     @Override
     public void changePassword(String userName, String password, String newPassword, String duplicateNewPassword) {
-        userService.changePassword(userName, password, newPassword, duplicateNewPassword);
+        Admin admin = userAuthentication(userName, password);
+        try {
+            admin.setPassword(newPassword);
+            update(admin);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     @Override
@@ -85,6 +92,26 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
             subService_service.update(subService);
         } catch (Exception e) {
             System.out.println(e.getMessage());
+        }
+    }
+
+    @Override
+    public Admin findByUserName(String userName) {
+        try {
+            return repository.findByUserName(userName);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            return null;
+        }
+    }
+
+    @Override
+    public Admin userAuthentication(String userName, String password) {
+        try {
+            return repository.findByUserNameAndPassword(userName, password);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            return null;
         }
     }
 }

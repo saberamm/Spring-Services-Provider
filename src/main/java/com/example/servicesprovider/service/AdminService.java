@@ -1,10 +1,7 @@
 package com.example.servicesprovider.service;
 
 import com.example.servicesprovider.base.service.BaseService;
-import com.example.servicesprovider.model.Admin;
-import com.example.servicesprovider.model.GeneralService;
-import com.example.servicesprovider.model.SubService;
-import com.example.servicesprovider.model.Technician;
+import com.example.servicesprovider.model.*;
 
 import java.util.List;
 
@@ -24,4 +21,8 @@ public interface AdminService extends BaseService<Admin, Long> {
     List<Technician> seeTechnicianNotAcceptedByAdmin();
 
     void addTechnicianToSubService(Technician technician, SubService subService);
+
+    Admin findByUserName(String userName);
+
+    Admin userAuthentication(String userName, String password);
 }
