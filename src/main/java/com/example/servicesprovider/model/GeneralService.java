@@ -18,7 +18,7 @@ import java.util.List;
 public class GeneralService extends BaseModel<Long> {
 
     @Column(unique = true)
-    @NotNull
+    @NotNull(message = "Service name can not be null")
     private String serviceName;
 
     @OneToMany(mappedBy = "generalService")

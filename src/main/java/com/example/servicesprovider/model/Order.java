@@ -19,17 +19,19 @@ import java.util.List;
 @Table(name = "order_table")
 public class Order extends BaseModel<Long> {
 
-    @NotNull
+    @NotNull(message = "Order price can not be null")
     private Double orderPrice;
 
     private String orderDescription;
 
     @FutureOrPresent
+    @NotNull(message = "Work time can not be null")
     private LocalDateTime workTime;
 
-    @NotNull
+    @NotNull(message = "Order address can not be null")
     private String orderAddress;
 
+    @NotNull(message = "Suggestion price can not be null")
     private OrderStatus orderStatus;
 
     @OneToMany(mappedBy = "order")

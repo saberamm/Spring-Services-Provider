@@ -20,8 +20,8 @@ public class ViewPoint extends BaseModel<Long> {
 
     private String comment;
 
-    @Min(value = -10, message = "score must be between 1 to 10")
-    @Max(value = 10, message = "score must be between 1 to 10")
+    @Min(value = -10, message = "Score must be between -10 to 10")
+    @Max(value = 10, message = "Score must be between -10 to 10")
     private Integer score;
 
     @ManyToOne(cascade = CascadeType.ALL)

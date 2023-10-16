@@ -21,12 +21,12 @@ public class Client extends User {
     private Double clientCredit;
 
     @Column(name = "phoneNumber")
-    @NotNull
+    @NotNull(message = "PhoneNumber can not be null")
     private String phoneNumber;
 
     @Column(name = "nationalCode", unique = true)
-    @NotNull(message = "nationalCode cannot be null")
-    @Size(min = 10, max = 10, message = "national code  must have 10 digits")
+    @NotNull(message = "NationalCode can not be null")
+    @Size(min = 10, max = 10, message = "NationalCode  must have 10 digits")
     private String nationalCode;
 
     @OneToMany(mappedBy = "client")

@@ -65,9 +65,9 @@ public abstract class BaseServiceImpl<E extends BaseModel<ID>, ID extends Serial
         try {
             e = repository.findById(id);
             if (e.isEmpty())
-                throw new EntityNotFoundException("model does not exist");
+                throw new EntityNotFoundException("Model does not exist");
         } catch (Exception ex) {
-            System.out.println("Error while finding model by ID: " + ex.getMessage());
+            System.out.println("Error while finding model: " + ex.getMessage());
             return Optional.empty();
         }
         return e;
@@ -88,7 +88,7 @@ public abstract class BaseServiceImpl<E extends BaseModel<ID>, ID extends Serial
         try {
             return repository.existsById(id);
         } catch (Exception ex) {
-            System.out.println("Error while checking if model exists: " + ex.getMessage());
+            System.out.println("Error while checking if model exist: " + ex.getMessage());
             return false;
         }
     }

@@ -17,7 +17,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 public class Admin extends User {
 
-    @NotNull
+    @NotNull(message = "Position can not be null")
     @Enumerated(EnumType.STRING)
     private AdminPosition position;
 }

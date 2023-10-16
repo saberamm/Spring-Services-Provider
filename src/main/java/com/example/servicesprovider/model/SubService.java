@@ -16,14 +16,14 @@ import java.util.List;
 @Entity
 public class SubService extends BaseModel<Long> {
 
-    @NotNull
+    @NotNull(message = "SubService name can not be null")
     @Column(unique = true)
     private String subServiceName;
 
-    @NotNull
+    @NotNull(message = "Base price can not be null")
     private Double basePrice;
 
-    @NotNull
+    @NotNull(message = "Description can not be null")
     private String description;
 
     @ManyToMany(mappedBy = "subServiceList")
@@ -32,7 +32,6 @@ public class SubService extends BaseModel<Long> {
     @OneToMany(mappedBy = "subService")
     private List<Order> orderList;
 
-    @NotNull
     @ManyToOne(cascade = CascadeType.ALL)
     private GeneralService generalService;
 }

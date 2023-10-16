@@ -41,9 +41,9 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
         SubService subService1 = subService_service.findSubServiceByName(subService.getSubServiceName());
         try {
             if (subService1 != null)
-                throw new DuplicateSubServiceNameException("subService name already exist");
+                throw new DuplicateSubServiceNameException("SubService name already exist");
             if (subService.getGeneralService() == null)
-                throw new GeneralServiceNotExistException("General service no exist");
+                throw new GeneralServiceNotExistException("General service not exist");
             return subService_service.save(subService);
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -82,7 +82,7 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
         try {
             technician.getSubServiceList().add(subService);
             if (technician.getTechnicianStatus().equals(TechnicianStatus.NEW))
-                throw new TechnicianNotConfirmedYetException("technician not confirmed yet");
+                throw new TechnicianNotConfirmedYetException("Technician not confirmed yet");
             technicianService.update(technician);
         } catch (Exception e) {
             System.out.println(e.getMessage());

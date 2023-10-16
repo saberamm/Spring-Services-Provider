@@ -38,7 +38,7 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
     public void addOrderByClient(Order order, Client client) {
         try {
             if (order.getOrderPrice() < order.getSubService().getBasePrice()) {
-                throw new PriceIsLowerThanBasePriceException("order price should not be smaller than sub service base price");
+                throw new PriceIsLowerThanBasePriceException("Order price should not be smaller than sub service base price");
             }
             order.setClient(client);
             orderService.save(order);

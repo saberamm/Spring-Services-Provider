@@ -27,15 +27,15 @@ public class Technician extends User {
 
     @Column(name = "phoneNumber")
     @NotNull
-    @Size(min = 11, max = 11, message = "phoneNumber  must have 11 digits")
+    @Size(min = 11, max = 11, message = "PhoneNumber  must have 11 digits")
     private String phoneNumber;
 
     @Column(name = "nationalCode", unique = true)
-    @NotNull(message = "nationalCode cannot be null")
-    @Size(min = 10, max = 10, message = "national code  must have 10 digits")
+    @NotNull(message = "NationalCode cannot be null")
+    @Size(min = 10, max = 10, message = "NationalCode  must have 10 digits")
     private String nationalCode;
 
-    @Size(min = 1, max = 200, message = "about Me must be between 1 to 200")
+    @Size(min = 1, max = 200, message = "About Me must be between 1 to 200")
     private String aboutMe;
 
     @OneToMany(mappedBy = "technician")
