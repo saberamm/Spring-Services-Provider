@@ -12,14 +12,12 @@ import java.util.List;
 
 @Service
 public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepository> implements ClientService {
-    UserService userService;
     OrderService orderService;
     SubService_Service subService_service;
     GeneralService_Service generalService_service;
 
-    public ClientServiceImpl(ClientRepository repository, Validator validator, UserService userService, OrderService orderService, SubService_Service subService_service, GeneralService_Service generalService_service) {
+    public ClientServiceImpl(ClientRepository repository, Validator validator, OrderService orderService, SubService_Service subService_service, GeneralService_Service generalService_service) {
         super(repository, validator);
-        this.userService = userService;
         this.orderService = orderService;
         this.subService_service = subService_service;
         this.generalService_service = generalService_service;
@@ -39,8 +37,8 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
     @Override
     public void addOrderByClient(Order order, Client client) {
         try {
-            if (order.getOrderPrice() <= order.getSubService().getBasePrice()) {
-                throw new PriceIsLowerThanBasePriceException("order price should be greater than base price");
+            if (order.getOrderPrice() < order.getSubService().getBasePrice()) {
+                throw new PriceIsLowerThanBasePriceException("order price should not be smaller than sub service base price");
             }
             order.setClient(client);
             orderService.save(order);
@@ -51,20 +49,12 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
 
     @Override
     public List<GeneralService> seeGeneralServicesByClient() {
-        try {
             return generalService_service.findAll();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Override
     public List<SubService> seeSubServicesByClient() {
-        try {
             return subService_service.findAll();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Override

@@ -38,8 +38,8 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
 
     @Override
     public SubService addSubService(SubService subService) {
+        SubService subService1 = subService_service.findSubServiceByName(subService.getSubServiceName());
         try {
-            SubService subService1 = subService_service.findSubServiceByName(subService.getSubServiceName());
             if (subService1 != null)
                 throw new DuplicateSubServiceNameException("subService name already exist");
             if (subService.getGeneralService() == null)
@@ -53,12 +53,7 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
 
     @Override
     public Technician addTechnician(Technician technician) {
-        try {
-            return technicianService.save(technician);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return null;
-        }
+        return technicianService.save(technician);
     }
 
     @Override
