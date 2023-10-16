@@ -7,4 +7,6 @@ public interface TechnicianService extends BaseService<Technician, Long> {
     void changePassword(String userName, String password,String newPassword,String duplicateNewPassword);
     Technician findByUserName(String userName);
     Technician userAuthentication(String userName, String password);
+
+    void deleteByUserName(String userName);
 }

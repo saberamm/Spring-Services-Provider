@@ -7,6 +7,7 @@ import lombok.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -29,7 +30,7 @@ public class Technician extends User {
     @Size(min = 11, max = 11, message = "phoneNumber  must have 11 digits")
     private String phoneNumber;
 
-    @Column(name = "nationalCode",unique = true)
+    @Column(name = "nationalCode", unique = true)
     @NotNull(message = "nationalCode cannot be null")
     @Size(min = 10, max = 10, message = "national code  must have 10 digits")
     private String nationalCode;
@@ -40,7 +41,11 @@ public class Technician extends User {
     @OneToMany(mappedBy = "technician")
     private List<ViewPoint> viewPointList;
 
-    @ManyToMany(mappedBy = "technicianList")
+    @ManyToMany
+    @JoinTable(
+            name = "technician_subservice",
+            joinColumns = @JoinColumn(name = "technician_id"),
+            inverseJoinColumns = @JoinColumn(name = "subservice_id"))
     private List<SubService> subServiceList;
 
     @OneToMany(mappedBy = "technician")

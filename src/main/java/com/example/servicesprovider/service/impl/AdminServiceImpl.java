@@ -12,36 +12,36 @@ import org.springframework.stereotype.Service;
 
 import javax.validation.Validator;
 import java.util.List;
+
 @Service
 public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminRepository> implements AdminService {
-    UserService userService;
     GeneralService_Service generalService_service;
     SubService_Service subService_service;
     TechnicianService technicianService;
 
-    public AdminServiceImpl(AdminRepository repository, Validator validator, UserService userService, GeneralService_Service generalService_service, SubService_Service subService_service, TechnicianService technicianService) {
+    public AdminServiceImpl(AdminRepository repository, Validator validator, GeneralService_Service generalService_service, SubService_Service subService_service, TechnicianService technicianService) {
         super(repository, validator);
-        this.userService = userService;
         this.generalService_service = generalService_service;
         this.subService_service = subService_service;
         this.technicianService = technicianService;
     }
 
     @Override
-    public GeneralService addGeneralServiceByAdmin(GeneralService generalService) {
+    public GeneralService addGeneralService(GeneralService generalService) {
         return generalService_service.save(generalService);
     }
 
     @Override
-    public List<GeneralService> generalServicesListByAdmin() {
+    public List<GeneralService> generalServicesList() {
         return generalService_service.findAll();
     }
 
     @Override
-    public SubService addSubServiceByAdmin(SubService subService) {
+    public SubService addSubService(SubService subService) {
         try {
             SubService subService1 = subService_service.findSubServiceByName(subService.getSubServiceName());
-            if (subService1 != null) throw new DuplicateSubServiceNameException("subService name already exist");
+            if (subService1 != null)
+                throw new DuplicateSubServiceNameException("subService name already exist");
             if (subService.getGeneralService() == null)
                 throw new GeneralServiceNotExistException("General service no exist");
             return subService_service.save(subService);
@@ -52,7 +52,7 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
     }
 
     @Override
-    public Technician addTechnicianByAdmin(Technician technician) {
+    public Technician addTechnician(Technician technician) {
         try {
             return technicianService.save(technician);
         } catch (Exception e) {
@@ -62,9 +62,8 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
     }
 
     @Override
-    public void deleteTechnicianByAdmin(String userName) {
-        User technician = userService.findByUserName(userName);
-        userService.delete(technician);
+    public void deleteTechnician(String userName) {
+        technicianService.deleteByUserName(userName);
     }
 
     @Override
@@ -79,17 +78,17 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
     }
 
     @Override
-    public List<Technician> seeTechnicianNotAcceptedByAdmin() {
+    public List<Technician> seeTechnicianNotAccepted() {
         return technicianService.findAll();
     }
 
     @Override
     public void addTechnicianToSubService(Technician technician, SubService subService) {
         try {
-            subService.getTechnicianList().add(technician);
+            technician.getSubServiceList().add(subService);
             if (technician.getTechnicianStatus().equals(TechnicianStatus.NEW))
                 throw new TechnicianNotConfirmedYetException("technician not confirmed yet");
-            subService_service.update(subService);
+            technicianService.update(technician);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

@@ -7,6 +7,7 @@ import com.example.servicesprovider.service.TechnicianService;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Validator;
+
 @Service
 public class TechnicianServiceImpl extends BaseServiceImpl<Technician, Long, TechnicianRepository> implements TechnicianService {
 
@@ -42,6 +43,15 @@ public class TechnicianServiceImpl extends BaseServiceImpl<Technician, Long, Tec
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             return null;
+        }
+    }
+
+    @Override
+    public void deleteByUserName(String userName) {
+        try {
+            repository.deleteByUserName(userName);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 }

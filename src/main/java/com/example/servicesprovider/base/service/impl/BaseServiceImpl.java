@@ -64,7 +64,8 @@ public abstract class BaseServiceImpl<E extends BaseModel<ID>, ID extends Serial
         Optional<E> e;
         try {
             e = repository.findById(id);
-            if (e.isEmpty()) throw new EntityNotFoundException("model does not exist");
+            if (e.isEmpty())
+                throw new EntityNotFoundException("model does not exist");
         } catch (Exception ex) {
             System.out.println("Error while finding model by ID: " + ex.getMessage());
             return Optional.empty();

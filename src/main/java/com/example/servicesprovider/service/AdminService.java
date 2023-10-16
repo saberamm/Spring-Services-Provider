@@ -6,19 +6,19 @@ import com.example.servicesprovider.model.*;
 import java.util.List;
 
 public interface AdminService extends BaseService<Admin, Long> {
-    GeneralService addGeneralServiceByAdmin(GeneralService generalService);
+    GeneralService addGeneralService(GeneralService generalService);
 
-    List<GeneralService> generalServicesListByAdmin();
+    List<GeneralService> generalServicesList();
 
-    SubService addSubServiceByAdmin(SubService subService);
+    SubService addSubService(SubService subService);
 
-    Technician addTechnicianByAdmin(Technician technician);
+    Technician addTechnician(Technician technician);
 
-    void deleteTechnicianByAdmin(String userName);
+    void deleteTechnician(String userName);
 
     void changePassword(String userName, String password, String newPassword, String duplicateNewPassword);
 
-    List<Technician> seeTechnicianNotAcceptedByAdmin();
+    List<Technician> seeTechnicianNotAccepted();
 
     void addTechnicianToSubService(Technician technician, SubService subService);
 

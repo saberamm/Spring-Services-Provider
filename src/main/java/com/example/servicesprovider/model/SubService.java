@@ -26,12 +26,7 @@ public class SubService extends BaseModel<Long> {
     @NotNull
     private String description;
 
-    @ManyToMany
-    @JoinTable(
-            name = "technician_subservice",
-            joinColumns = @JoinColumn(name = "subservice_id"),
-            inverseJoinColumns = @JoinColumn(name = "technician_id")
-    )
+    @ManyToMany(mappedBy = "subServiceList")
     private List<Technician> technicianList;
 
     @OneToMany(mappedBy = "subService")
