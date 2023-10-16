@@ -4,6 +4,7 @@ import com.example.servicesprovider.base.model.BaseModel;
 import com.example.servicesprovider.model.enumeration.OrderStatus;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotNull;
@@ -14,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@Builder
+@SuperBuilder
 @Entity
 @Table(name = "order_table")
 public class Order extends BaseModel<Long> {
