@@ -60,7 +60,7 @@ public abstract class BaseServiceImpl<E extends BaseModel<ID>, ID extends Serial
     }
 
     @Override
-    public Optional<E> findById(ID id) {
+    public E findById(ID id) {
         Optional<E> e;
         try {
             e = repository.findById(id);
@@ -68,9 +68,9 @@ public abstract class BaseServiceImpl<E extends BaseModel<ID>, ID extends Serial
                 throw new EntityNotFoundException("Model does not exist");
         } catch (Exception ex) {
             System.out.println("Error while finding model: " + ex.getMessage());
-            return Optional.empty();
+            return null;
         }
-        return e;
+        return e.get();
     }
 
     @Override
