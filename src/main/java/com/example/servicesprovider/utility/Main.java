@@ -51,179 +51,167 @@ public class Main implements CommandLineRunner {
         Admin admin = Admin.builder().firstName("reza").lastName("asghar").userName("ttwr").birthDate(LocalDate.of(2005, 5, 5))
                 .password("1wW#qwer").position(AdminPosition.EMPLOYEE).email("qwe@asd.com").build();
 
-        Client client = Client.builder().firstName("reza").lastName("asghar").userName("ttwr").birthDate(LocalDate.of(2005, 5, 5))
-                .password("1wW#qwer").email("qwe@asd.com").clientCredit(50000D).nationalCode("5555555555").phoneNumber("09999999999").build();
+        Client client = Client.builder().firstName("reza").lastName("asghar").userName("tt4wr").birthDate(LocalDate.of(2005, 5, 5))
+                .password("1wW#qwer").email("qwe@a4sd.com").clientCredit(50000D).nationalCode("5555555555").phoneNumber("09999999999").build();
 
 
         byte[] image = imageConverter.readFileToBytes("C:\\Users\\Administrator\\Desktop\\Temp\\sss.jpg");
 
         Technician technician = Technician.builder().technicianCredit(100000D).birthDate(LocalDate.of(2000, 8, 8)).firstName("mmd")
-                .lastName("trdf").email("asd@asd.com").userName("qweqwe").technicianStatus(TechnicianStatus.NEW).aboutMe("asdda").build();
+                .lastName("trdf").technicianPhoto(image).phoneNumber("99999999999").email("asd@asd.com").nationalCode("5036699885").userName("qweqwe").technicianStatus(TechnicianStatus.NEW).aboutMe("asdda").password("1!dDdddd").build();
 
-//        ApplicationContext.getUserService().save(user);
-//        ApplicationContext.getAdminService().save(admin);
-//        ApplicationContext.getClientService().save(client);
-//        ApplicationContext.getTechnicianService().save(technician);
-
-//        User user1 = ApplicationContext.getUserService().findById(1L);
-//        Admin admin1 = ApplicationContext.getAdminService().findById(2L);
-//        Client client1 = ApplicationContext.getClientService().findById(3L);
-//        Technician technician1 = ApplicationContext.getTechnicianService().findById(4L);
-
+//        userService.save(user);
+//        adminService.save(admin);
+//        clientService.save(client);
+//        technicianService.save(technician);
+//
+        User user1 = userService.findById(1L);
+        Admin admin1 = adminService.findById(2L);
+        Client client1 = clientService.findById(3L);
+        Technician technician1 = technicianService.findById(4L);
+//
 //        user1.setFirstName("bb");
-//        ApplicationContext.getUserService().update(user1);
+//        userService.update(user1);
 //        admin1.setLastName("admin22");
-//        ApplicationContext.getAdminService().update(admin1);
+//        adminService.update(admin1);
 //        client1.setFirstName("reza");
-//        ApplicationContext.getClientService().update(client1);
+//        clientService.update(client1);
 //        technician1.setAboutMe("im bad");
 //        technician1.setPassword("Rr#33333");
-//        ApplicationContext.getTechnicianService().update(technician1);
-
-//        ApplicationContext.getUserService().delete(user1);
-//        ApplicationContext.getAdminService().delete(admin1);
-//        ApplicationContext.getClientService().delete(client1);
-//        ApplicationContext.getTechnicianService().delete(technician1);
-
-//        ImageConverter.saveBytesToFile(technician1.getTechnicianPhoto(),
+//        technicianService.update(technician1);
+//
+//        userService.delete(user1);
+//        adminService.delete(admin1);
+//        clientService.delete(client1);
+//        technicianService.delete(technician1);
+//
+//        imageConverter.saveBytesToFile(technician1.getTechnicianPhoto(),
 //                "C:\\Users\\Administrator\\Desktop\\Temp", "technician.jpg");
 
         //----------------  general service -------------------//
 
-        GeneralService generalService = GeneralService.builder().serviceName("sakhteman").build();
-
-//        ApplicationContext.getGeneralService_Service().save(generalService);
-
-//        GeneralService generalService1 = ApplicationContext.getGeneralService_Service().findById(1L);
-
+//        GeneralService generalService = GeneralService.builder().serviceName("sakhteman").build();
+//
+//        generalService_service.save(generalService);
+//
+//        GeneralService generalService1 = generalService_service.findById(1L);
+//
 //        generalService1.setServiceName("bargh");
-//        ApplicationContext.getGeneralService_Service().update(generalService1);
-//        ApplicationContext.getGeneralService_Service().delete(generalService1);
+//        generalService_service.update(generalService1);
+//        generalService_service.delete(generalService1);
 
         //----------------  sub general service -------------------//
 
-        SubService subService =SubService.builder().subServiceName("barghe sakhteman").basePrice(10000D).description("baray bargh sakhteman")
-                .generalService(generalService_service.findById(1L).get()).build();
-
-//        ApplicationContext.getSubService_Service().save(subService);
+//        SubService subService = SubService.builder().subServiceName("barghe sakhteman").basePrice(10000D).description("baray bargh sakhteman")
+//                .generalService(generalService_service.findById(1L)).build();
 //
-//        SubService subService1 = ApplicationContext.getSubService_Service().findById(1L);
+//        subService_service.save(subService);
+//
+//        SubService subService1 = subService_service.findById(1L);
 //
 //        subService1.setDescription("bargh sakhteaman ha");
 //        subService1.setBasePrice(8000D);
 //        subService1.setDescription("adfgfhnnnbv");
-//        ApplicationContext.getSubService_Service().update(subService1);
+//        subService_service.update(subService1);
 //
-//        ApplicationContext.getSubService_Service().delete(subService1);
+//        subService_service.delete(subService1);
 
         //----------------  order service -------------------//
 
-
-//        Order order = new Order(50000D, "qweqe",
-//                LocalDateTime.of(2030, 5, 5, 15, 5, 5),
-//                "khonamon", OrderStatus.WAITING_FOR_TECHNICIAN_OFFER,
-//                ApplicationContext.getClientService().findById(3L),
-//                ApplicationContext.getSubService_Service().findById(1L));
+//        Order order = Order.builder().orderPrice(2000D).orderAddress("khonamon").
+//                orderDescription("qweqe").orderStatus(OrderStatus.WAITING_FOR_TECHNICIAN_OFFER).
+//                client(clientService.findById(3L)).subService(subService_service.findById(1L)).build();
 //
-//        ApplicationContext.getOrderService().save(order);
-
-//        Order order1 = ApplicationContext.getOrderService().findById(1L);
-
+//        orderService.save(order);
+//
+//        Order order1 = orderService.findById(1L);
+//
 //        order1.setOrderAddress("home");
-//        ApplicationContext.getOrderService().update(order1);
-
-
-//        ApplicationContext.getOrderService().delete(order1);
+//        orderService.update(order1);
+//
+//
+//        orderService.delete(order1);
 
 
         //----------------  offer service -------------------//
+
+//        Offer offer = Offer.builder().timeOfferSent(LocalDateTime.of(2000, 5, 5, 15, 50))
+//                .suggestionPrice(200000D).timeForStartWorking(LocalDateTime.of(2000, 6, 5, 15, 50))
+//                .timeForEndWorking(LocalDateTime.of(2000, 7, 5, 15, 50)).order(orderService.findById(1L)).build();
 //
-//        Offer offer = new Offer(LocalDateTime.of(2000, 5, 5, 15, 5, 5)
-//                , LocalDateTime.of(2000, 6, 5, 15, 5, 5),
-//                80000D, "12 days",
-//                ApplicationContext.getTechnicianService().findById(4L),
-//                ApplicationContext.getOrderService().findById(1L));
+//        offerService.save(offer);
 //
-//        ApplicationContext.getOfferService().save(offer);
-
-//        Offer offer1 = ApplicationContext.getOfferService().findById(1L);
-
-//        offer1.setWorkDuration("14 days");
-//        ApplicationContext.getOfferService().update(offer1);
-
-//        ApplicationContext.getOfferService().delete(offer1);
+//        Offer offer1 = offerService.findById(1L);
+//
+//        offer1.setTimeOfferSent(LocalDateTime.of(2000, 6, 5, 15, 50));
+//        offerService.update(offer1);
+//
+//        offerService.delete(offer1);
 
         //----------------  viewpoint service -------------------//
 
-//        ViewPoint viewPoint = new ViewPoint("awwwwli",4,
-//                ApplicationContext.getTechnicianService().findById(4L));
+//        ViewPoint viewPoint = ViewPoint.builder().score(4).technician(technicianService.findById(4L)).comment("awwwlliii").build();
 //
-//        ApplicationContext.getViewPointService().save(viewPoint);
-
-//        ViewPoint viewPoint1 = ApplicationContext.getViewPointService().findById(1L);
-
+//        viewPointService.save(viewPoint);
+//
+//        ViewPoint viewPoint1 = viewPointService.findById(1L);
+//
 //        viewPoint1.setScore(6);
-//        ApplicationContext.getViewPointService().update(viewPoint1);
-
-//        ApplicationContext.getViewPointService().delete(viewPoint1);
+//        viewPointService.update(viewPoint1);
+//
+//        viewPointService.delete(viewPoint1);
 
         //----------------  change password -------------------//
 
-//        ApplicationContext.getClientService().changePassword("asddsa", "1Q@eeeee", "5@rRaaaa");
+//        clientService.changePassword("asddsa", "1Q@eeeee", "5@rRaaaa", "5@rRaaaa");
 
         //---------------- add general service and sub service by admin -------------------//
 
-//        GeneralService generalService2 = new GeneralService("khodro");
+//        GeneralService generalService2 = GeneralService.builder().serviceName("bargh").build();
 //
-//        ApplicationContext.getAdminService().addGeneralServiceByAdmin(generalService2);
+//        adminService.addGeneralService(generalService2);
 //
-//        SubService subService2 = new SubService("barghe khodro", 200000D,
-//                "baray tamir khodro", ApplicationContext.getGeneralService_Service().findById(2L));
+//        SubService subService2 = SubService.builder().subServiceName("barghe khodro").basePrice(200000D).description("baray tamir khodro").generalService(generalService_service.findById(2L)).build();
 //
-//        ApplicationContext.getAdminService().addSubServiceByAdmin(subService2);
-
-//        SubService subService2 = new SubService("barghe khodro", 200000D,
-//                "baray tamir khodro", ApplicationContext.getGeneralService_Service().findById(500L));
-//
-//        ApplicationContext.getAdminService().addSubServiceByAdmin(subService2);
+//        adminService.addSubService(subService2);
 
         //---------------- delete and add technician by admin -------------------//
 
-//        Technician technician2 = new Technician("ooo", "ooo", "ooo", "wqw#2Aoooo",
-//                LocalDate.of(2009, 4, 4), "asd@aoo.com", TechnicianStatus.NEW,
-//                image, 0D, "09103333333", "5555666666", "im good");
-
-//        ApplicationContext.getAdminService().addTechnicianByAdmin(technician2);
-
-//        ApplicationContext.getAdminService().deleteTechnicianByAdmin("ooo");
+//        Technician technician2 = Technician.builder().technicianCredit(10000D).birthDate(LocalDate.of(2006, 8, 8)).firstName("mmd")
+//                .lastName("trdf").email("asd@asggd.com").userName("qweqhhfwe").technicianStatus(TechnicianStatus.NEW).aboutMe("asdkkda").build();
+//
+//
+//        adminService.addTechnician(technician2);
+//
+//        adminService.deleteTechnician("ooo");
 
         //---------------- see all general services by admin -------------------//
 
-//        System.out.println(ApplicationContext.getAdminService().generalServicesListByAdmin());
+//        System.out.println(adminService.generalServicesList());
 
         //---------------- see all technicians by admin -------------------//
 
-//        System.out.println(ApplicationContext.getAdminService().seeTechnicianNotAcceptedByAdmin());
-//        Technician technician3 = ApplicationContext.getTechnicianService().findById(4L);
+//        System.out.println(adminService.seeTechnicianNotAccepted());
+//        Technician technician3 = technicianService.findById(4L);
 //        technician3.setTechnicianStatus(TechnicianStatus.CONFIRMED);
-//        ApplicationContext.getTechnicianService().update(technician3);
-
-
-//        Technician technician3 = ApplicationContext.getTechnicianService().findById(4L);
-//        SubService subService3=ApplicationContext.getSubService_Service().findById(1L);
-//        ApplicationContext.getAdminService().addTechnicianToSubService(technician3,subService3);
-//        ApplicationContext.getSubService_Service().delete(subService3);
+//        technicianService.update(technician3);
+//
+//
+//        Technician technician3 = technicianService.findById(4L);
+//        SubService subService3 = subService_service.findById(1L);
+//        adminService.addTechnicianToSubService(technician3, subService3);
+//        subService_service.delete(subService3);
 
 
         //---------------- see all technicians by admin -------------------//
 
-//        System.out.println(ApplicationContext.getClientService().seeGeneralServicesByClient());
-//        System.out.println(ApplicationContext.getClientService().seeSubServicesByClient());
-//        Order order4 = new Order(3000000D, "salam",
-//                LocalDateTime.of(2002, 8, 8, 18, 18), "fff",
-//                OrderStatus.WAITING_FOR_TECHNICIAN_OFFER, ApplicationContext.getSubService_Service().findById(1L));
-//        Client client4 = ApplicationContext.getClientService().findById(3L);
-//        ApplicationContext.getClientService().addOrderByClient(order4, client4);
+//        System.out.println(clientService.seeGeneralServicesByClient());
+//        System.out.println(clientService.seeSubServicesByClient());
+//        Order order4 = Order.builder().orderPrice(30000D).orderAddress("fff").orderDescription("sasas").
+//                orderStatus(OrderStatus.WAITING_FOR_TECHNICIAN_OFFER).workTime(LocalDateTime.of(2002, 8, 8, 18, 18))
+//                .subService(subService_service.findById(1L)).build();
+//        Client client4 = clientService.findById(3L);
+//        clientService.addOrderByClient(order4, client4);
 
     }
 }

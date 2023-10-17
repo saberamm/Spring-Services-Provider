@@ -18,7 +18,7 @@ import java.util.List;
 @Entity
 public class Technician extends User {
 
-    @NotNull
+    @NotNull(message ="technicianStatus cannot be null" )
     @Enumerated(EnumType.STRING)
     private TechnicianStatus technicianStatus;
 
@@ -27,7 +27,7 @@ public class Technician extends User {
     private Double technicianCredit;
 
     @Column(name = "phoneNumber")
-    @NotNull
+    @NotNull(message = "phoneNumber cannot be null")
     @Size(min = 11, max = 11, message = "PhoneNumber  must have 11 digits")
     private String phoneNumber;
 
@@ -36,7 +36,7 @@ public class Technician extends User {
     @Size(min = 10, max = 10, message = "NationalCode  must have 10 digits")
     private String nationalCode;
 
-    @Size(min = 1, max = 200, message = "About Me must be between 1 to 200")
+    @Size(min = 1, max = 200, message = "About me must be between 1 to 200")
     private String aboutMe;
 
     @OneToMany(mappedBy = "technician")
