@@ -65,11 +65,11 @@ public class Main implements CommandLineRunner {
 //        clientService.save(client);
 //        technicianService.save(technician);
 //
-        User user1 = userService.findById(1L);
-        Admin admin1 = adminService.findById(2L);
-        Client client1 = clientService.findById(3L);
-        Technician technician1 = technicianService.findById(4L);
-//
+//        User user1 = userService.findById(1L);
+//        Admin admin1 = adminService.findById(2L);
+//        Client client1 = clientService.findById(3L);
+//        Technician technician1 = technicianService.findById(4L);
+
 //        user1.setFirstName("bb");
 //        userService.update(user1);
 //        admin1.setLastName("admin22");
@@ -90,7 +90,7 @@ public class Main implements CommandLineRunner {
 
         //----------------  general service -------------------//
 
-//        GeneralService generalService = GeneralService.builder().serviceName("sakhteman").build();
+        GeneralService generalService = GeneralService.builder().serviceName("sakhteman").build();
 //
 //        generalService_service.save(generalService);
 //
@@ -102,10 +102,10 @@ public class Main implements CommandLineRunner {
 
         //----------------  sub general service -------------------//
 
-//        SubService subService = SubService.builder().subServiceName("barghe sakhteman").basePrice(10000D).description("baray bargh sakhteman")
-//                .generalService(generalService_service.findById(1L)).build();
-//
-//        subService_service.save(subService);
+        SubService subService = SubService.builder().subServiceName("barghe sakhteman").basePrice(10000D).description("baray bargh sakhteman")
+                .generalService(generalService_service.findById(1L)).build();
+
+        subService_service.save(subService);
 //
 //        SubService subService1 = subService_service.findById(1L);
 //

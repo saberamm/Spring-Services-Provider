@@ -31,9 +31,9 @@ public class Offer extends BaseModel<Long> {
     @NotNull(message = "Time for end working can not be null")
     private LocalDateTime timeForEndWorking;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private Technician technician;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private Order order;
 }

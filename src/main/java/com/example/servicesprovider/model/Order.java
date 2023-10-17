@@ -38,9 +38,9 @@ public class Order extends BaseModel<Long> {
     @OneToMany(mappedBy = "order")
     private List<Offer> offerList;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private Client client;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private SubService subService;
 }

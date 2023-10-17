@@ -33,6 +33,6 @@ public class SubService extends BaseModel<Long> {
     @OneToMany(mappedBy = "subService")
     private List<Order> orderList;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private GeneralService generalService;
 }

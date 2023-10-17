@@ -25,6 +25,6 @@ public class ViewPoint extends BaseModel<Long> {
     @Max(value = 10, message = "Score must be between -10 to 10")
     private Integer score;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private Technician technician;
 }
