@@ -63,7 +63,7 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
     public void changePassword(String userName, String password, String newPassword, String duplicateNewPassword) {
         Admin admin = userAuthentication(userName, password);
         try {
-            if(!newPassword.equals(duplicateNewPassword))
+            if (!newPassword.equals(duplicateNewPassword))
                 throw new PasswordsNotEqualException("new password and duplicate password are not equal");
             admin.setPassword(newPassword);
             update(admin);
@@ -81,7 +81,8 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
     public void addTechnicianToSubService(Technician technician, SubService subService) {
         try {
             technician.getSubServiceList().add(subService);
-            if (technician.getTechnicianStatus().equals(TechnicianStatus.NEW))
+            if (technician.getTechnicianStatus().equals(TechnicianStatus.NEW)
+                    || technician.getTechnicianStatus().equals(TechnicianStatus.PENDING_CONFIRMATION))
                 throw new TechnicianNotConfirmedYetException("Technician not confirmed yet");
             technicianService.update(technician);
         } catch (Exception e) {
@@ -104,7 +105,7 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
         Admin admin;
         try {
             admin = repository.findByUserNameAndPassword(userName, password);
-            if (admin==null)
+            if (admin == null)
                 throw new UsernameOrPasswordNotCorrectException("Username or password not correct");
             return admin;
         } catch (Exception ex) {
