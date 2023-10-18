@@ -71,7 +71,7 @@ public class TechnicianServiceImpl extends BaseServiceImpl<Technician, Long, Tec
     public Offer addOffer(Offer offer) {
         try {
             if (offer.getTimeForStartWorking().isBefore(offer.getOrder().getWorkTime()))
-                throw new OfferTimeBeforeOrderTimeException();
+                throw new OfferTimeBeforeOrderTimeException("offer time can not be before order time");
             return offerService.save(offer);
         } catch (Exception e) {
             System.out.println(e.getMessage());
