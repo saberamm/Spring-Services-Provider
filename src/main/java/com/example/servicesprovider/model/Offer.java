@@ -7,6 +7,7 @@ import jakarta.persistence.ManyToOne;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
@@ -23,6 +24,7 @@ public class Offer extends BaseModel<Long> {
     private LocalDateTime timeOfferSent;
 
     @NotNull(message = "Time for start working can not be null")
+    @FutureOrPresent(message = "time for start working cant be in past")
     private LocalDateTime timeForStartWorking;
 
     @NotNull(message = "Suggestion price can not be null")

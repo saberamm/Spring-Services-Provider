@@ -9,11 +9,11 @@ public interface ClientService extends BaseService<Client, Long> {
 
     void changePassword(String userName, String password, String newPassword, String duplicateNewPassword);
 
-    void addOrderByClient(Order order, Client client);
+    void addOrder(Order order, Client client);
 
-    List<GeneralService> seeGeneralServicesByClient();
+    List<GeneralService> seeGeneralServices();
 
-    List<SubService> seeSubServicesByClient();
+    List<SubService> seeSubServices();
 
     Client findByUserName(String userName);
 

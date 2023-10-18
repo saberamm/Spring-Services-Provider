@@ -25,7 +25,7 @@ public class Order extends BaseModel<Long> {
 
     private String orderDescription;
 
-    @FutureOrPresent
+    @FutureOrPresent(message = "Work time cant be in past")
     @NotNull(message = "Work time can not be null")
     private LocalDateTime workTime;
 

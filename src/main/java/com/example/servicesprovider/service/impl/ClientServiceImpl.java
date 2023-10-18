@@ -1,6 +1,7 @@
 package com.example.servicesprovider.service.impl;
 
 import com.example.servicesprovider.base.service.impl.BaseServiceImpl;
+import com.example.servicesprovider.exception.PasswordsNotEqualException;
 import com.example.servicesprovider.exception.PriceIsLowerThanBasePriceException;
 import com.example.servicesprovider.model.*;
 import com.example.servicesprovider.repository.ClientRepository;
@@ -27,6 +28,8 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
     public void changePassword(String userName, String password, String newPassword, String duplicateNewPassword) {
         Client client = userAuthentication(userName, password);
         try {
+            if(!newPassword.equals(duplicateNewPassword))
+                throw new PasswordsNotEqualException("new password and duplicate password are not equal");
             client.setPassword(newPassword);
             update(client);
         } catch (Exception ex) {
@@ -35,7 +38,7 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
     }
 
     @Override
-    public void addOrderByClient(Order order, Client client) {
+    public void addOrder(Order order, Client client) {
         try {
             if (order.getOrderPrice() < order.getSubService().getBasePrice()) {
                 throw new PriceIsLowerThanBasePriceException("Order price should not be smaller than sub service base price");
@@ -48,12 +51,12 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
     }
 
     @Override
-    public List<GeneralService> seeGeneralServicesByClient() {
+    public List<GeneralService> seeGeneralServices() {
             return generalService_service.findAll();
     }
 
     @Override
-    public List<SubService> seeSubServicesByClient() {
+    public List<SubService> seeSubServices() {
             return subService_service.findAll();
     }
 

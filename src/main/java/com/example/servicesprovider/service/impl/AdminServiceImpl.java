@@ -3,6 +3,7 @@ package com.example.servicesprovider.service.impl;
 import com.example.servicesprovider.base.service.impl.BaseServiceImpl;
 import com.example.servicesprovider.exception.DuplicateSubServiceNameException;
 import com.example.servicesprovider.exception.GeneralServiceNotExistException;
+import com.example.servicesprovider.exception.PasswordsNotEqualException;
 import com.example.servicesprovider.exception.TechnicianNotConfirmedYetException;
 import com.example.servicesprovider.model.*;
 import com.example.servicesprovider.model.enumeration.TechnicianStatus;
@@ -65,6 +66,8 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
     public void changePassword(String userName, String password, String newPassword, String duplicateNewPassword) {
         Admin admin = userAuthentication(userName, password);
         try {
+            if(!newPassword.equals(duplicateNewPassword))
+                throw new PasswordsNotEqualException("new password and duplicate password are not equal");
             admin.setPassword(newPassword);
             update(admin);
         } catch (Exception ex) {
