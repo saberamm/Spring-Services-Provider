@@ -113,4 +113,10 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
             return null;
         }
     }
+
+    @Override
+    public Technician confirmTechnician(Technician technician) {
+        technician.setTechnicianStatus(TechnicianStatus.CONFIRMED);
+        return technicianService.update(technician);
+    }
 }

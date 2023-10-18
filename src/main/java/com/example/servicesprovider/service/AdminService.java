@@ -25,4 +25,6 @@ public interface AdminService extends BaseService<Admin, Long> {
     Admin findByUserName(String userName);
 
     Admin userAuthentication(String userName, String password);
+
+    Technician confirmTechnician(Technician technician);
 }
