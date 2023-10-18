@@ -48,17 +48,23 @@ public class Main implements CommandLineRunner {
                 "aa", "yyOs1#222",
                 LocalDate.of(2000, 2, 2), "sss@sss.com");
 
-        Admin admin = Admin.builder().firstName("reza").lastName("asghar").userName("ttwr").birthDate(LocalDate.of(2005, 5, 5))
+        Admin admin = Admin.builder().firstName("reza").lastName("asghar").userName("ttwr").
+                birthDate(LocalDate.of(2005, 5, 5))
                 .password("1wW#qwer").position(AdminPosition.EMPLOYEE).email("qwe@asd.com").build();
 
-        Client client = Client.builder().firstName("reza").lastName("asghar").userName("tt4wr").birthDate(LocalDate.of(2005, 5, 5))
-                .password("1wW#qwer").email("qwe@a4sd.com").clientCredit(50000D).nationalCode("5555555555").phoneNumber("09999999999").build();
+        Client client = Client.builder().firstName("reza").lastName("asghar").userName("tt4wr").
+                birthDate(LocalDate.of(2005, 5, 5))
+                .password("1wW#qwer").email("qwe@a4sd.com").
+                clientCredit(50000D).nationalCode("5555555555").phoneNumber("09999999999").build();
 
 
         byte[] image = imageConverter.readFileToBytes("C:\\Users\\Administrator\\Desktop\\Temp\\sss.jpg");
 
-        Technician technician = Technician.builder().technicianCredit(100000D).birthDate(LocalDate.of(2000, 8, 8)).firstName("mmd")
-                .lastName("trdf").technicianPhoto(image).phoneNumber("99999999999").email("asd@asd.com").nationalCode("5036699885").userName("qweqwe").technicianStatus(TechnicianStatus.NEW).aboutMe("asdda").password("1!dDdddd").build();
+        Technician technician = Technician.builder().technicianCredit(100000D).
+                birthDate(LocalDate.of(2000, 8, 8)).firstName("mmd")
+                .lastName("trdf").technicianPhoto(image).phoneNumber("99999999999").
+                email("asd@asd.com").nationalCode("5036699885").userName("qweqwe").
+                technicianStatus(TechnicianStatus.NEW).aboutMe("asdda").password("1!dDdddd").build();
 
 //        userService.save(user);
 //        adminService.save(admin);
@@ -105,7 +111,7 @@ public class Main implements CommandLineRunner {
         SubService subService = SubService.builder().subServiceName("barghe sakhteman").basePrice(10000D).description("baray bargh sakhteman")
                 .generalService(generalService_service.findById(1L)).build();
 
-        subService_service.save(subService);
+//        subService_service.save(subService);
 //
 //        SubService subService1 = subService_service.findById(1L);
 //
@@ -118,10 +124,11 @@ public class Main implements CommandLineRunner {
 
         //----------------  order service -------------------//
 
-//        Order order = Order.builder().orderPrice(2000D).orderAddress("khonamon").
-//                orderDescription("qweqe").orderStatus(OrderStatus.WAITING_FOR_TECHNICIAN_OFFER).
-//                client(clientService.findById(3L)).subService(subService_service.findById(1L)).build();
-//
+        Order order = Order.builder().orderPrice(2000D).orderAddress("khonamon").
+                orderDescription("qweqe").orderStatus(OrderStatus.WAITING_FOR_TECHNICIAN_OFFER).
+                client(clientService.findById(3L)).subService(subService_service.findById(152L))
+                .workTime(LocalDateTime.of(2024, 5, 5, 15, 5)).build();
+
 //        orderService.save(order);
 //
 //        Order order1 = orderService.findById(1L);
@@ -135,10 +142,10 @@ public class Main implements CommandLineRunner {
 
         //----------------  offer service -------------------//
 
-//        Offer offer = Offer.builder().timeOfferSent(LocalDateTime.of(2000, 5, 5, 15, 50))
-//                .suggestionPrice(200000D).timeForStartWorking(LocalDateTime.of(2000, 6, 5, 15, 50))
-//                .timeForEndWorking(LocalDateTime.of(2000, 7, 5, 15, 50)).order(orderService.findById(1L)).build();
-//
+        Offer offer = Offer.builder().timeOfferSent(LocalDateTime.of(2000, 5, 5, 15, 50))
+                .suggestionPrice(200000D).timeForStartWorking(LocalDateTime.of(2000, 6, 5, 15, 50))
+                .timeForEndWorking(LocalDateTime.of(2000, 7, 5, 15, 50)).order(orderService.findById(1L)).build();
+
 //        offerService.save(offer);
 //
 //        Offer offer1 = offerService.findById(1L);
@@ -163,7 +170,7 @@ public class Main implements CommandLineRunner {
 
         //----------------  change password -------------------//
 
-//        clientService.changePassword("asddsa", "1Q@eeeee", "5@rRaaaa", "5@rRaaaa");
+//        technicianService.changePassword("qweqwe", "1!dDdddd", "5@rRaaaa", "5@rRaaaa");
 
         //---------------- add general service and sub service by admin -------------------//
 
@@ -192,7 +199,9 @@ public class Main implements CommandLineRunner {
         //---------------- see all technicians by admin -------------------//
 
 //        System.out.println(adminService.seeTechnicianNotAccepted());
+//        SubService subService1 = subService_service.findById(152L);
 //        Technician technician3 = technicianService.findById(4L);
+//        technician3.getSubServiceList().add(subService1);
 //        technician3.setTechnicianStatus(TechnicianStatus.CONFIRMED);
 //        technicianService.update(technician3);
 //
@@ -212,6 +221,8 @@ public class Main implements CommandLineRunner {
 //                .subService(subService_service.findById(1L)).build();
 //        Client client4 = clientService.findById(3L);
 //        clientService.addOrderByClient(order4, client4);
+
+//        System.out.println(technicianService.userAuthentication("qweqwe","1!dDdddd").getEmail());
 
     }
 }

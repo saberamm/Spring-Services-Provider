@@ -27,7 +27,7 @@ public class SubService extends BaseModel<Long> {
     @NotNull(message = "Description can not be null")
     private String description;
 
-    @ManyToMany(mappedBy = "subServiceList")
+    @ManyToMany(mappedBy = "subServiceList",fetch = FetchType.EAGER)
     private List<Technician> technicianList;
 
     @OneToMany(mappedBy = "subService")

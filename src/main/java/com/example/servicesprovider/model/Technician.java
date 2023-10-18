@@ -42,7 +42,7 @@ public class Technician extends User {
     @OneToMany(mappedBy = "technician")
     private List<ViewPoint> viewPointList;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "technician_subservice",
             joinColumns = @JoinColumn(name = "technician_id"),
