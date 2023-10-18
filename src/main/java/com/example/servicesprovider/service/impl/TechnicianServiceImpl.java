@@ -3,8 +3,10 @@ package com.example.servicesprovider.service.impl;
 import com.example.servicesprovider.base.service.impl.BaseServiceImpl;
 import com.example.servicesprovider.exception.OfferTimeBeforeOrderTimeException;
 import com.example.servicesprovider.exception.PasswordsNotEqualException;
+import com.example.servicesprovider.exception.TechnicianNotConfirmedYetException;
 import com.example.servicesprovider.exception.UsernameOrPasswordNotCorrectException;
 import com.example.servicesprovider.model.*;
+import com.example.servicesprovider.model.enumeration.TechnicianStatus;
 import com.example.servicesprovider.repository.TechnicianRepository;
 import com.example.servicesprovider.service.OfferService;
 import com.example.servicesprovider.service.TechnicianService;
@@ -72,6 +74,9 @@ public class TechnicianServiceImpl extends BaseServiceImpl<Technician, Long, Tec
         try {
             if (offer.getTimeForStartWorking().isBefore(offer.getOrder().getWorkTime()))
                 throw new OfferTimeBeforeOrderTimeException("offer time can not be before order time");
+            if (offer.getTechnician().getTechnicianStatus().equals(TechnicianStatus.NEW)
+                    || offer.getTechnician().getTechnicianStatus().equals(TechnicianStatus.PENDING_CONFIRMATION))
+                throw new TechnicianNotConfirmedYetException("Technician not confirmed yet");
             return offerService.save(offer);
         } catch (Exception e) {
             System.out.println(e.getMessage());
