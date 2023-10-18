@@ -3,6 +3,7 @@ package com.example.servicesprovider.service.impl;
 import com.example.servicesprovider.base.service.impl.BaseServiceImpl;
 import com.example.servicesprovider.exception.PasswordsNotEqualException;
 import com.example.servicesprovider.exception.PriceIsLowerThanBasePriceException;
+import com.example.servicesprovider.exception.UsernameOrPasswordNotCorrectException;
 import com.example.servicesprovider.model.*;
 import com.example.servicesprovider.repository.ClientRepository;
 import com.example.servicesprovider.service.*;
@@ -72,8 +73,12 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
 
     @Override
     public Client userAuthentication(String userName, String password) {
+        Client client;
         try {
-            return repository.findByUserNameAndPassword(userName, password);
+            client = repository.findByUserNameAndPassword(userName, password);
+            if (client==null)
+                throw new UsernameOrPasswordNotCorrectException("Username or password not correct");
+            return client;
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             return null;

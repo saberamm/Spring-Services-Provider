@@ -1,7 +1,9 @@
 package com.example.servicesprovider.service.impl;
 
 import com.example.servicesprovider.base.service.impl.BaseServiceImpl;
-import com.example.servicesprovider.model.Technician;
+import com.example.servicesprovider.exception.PasswordsNotEqualException;
+import com.example.servicesprovider.exception.UsernameOrPasswordNotCorrectException;
+import com.example.servicesprovider.model.*;
 import com.example.servicesprovider.repository.TechnicianRepository;
 import com.example.servicesprovider.service.TechnicianService;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,8 @@ public class TechnicianServiceImpl extends BaseServiceImpl<Technician, Long, Tec
     public void changePassword(String userName, String password, String newPassword, String duplicateNewPassword) {
         Technician technician = userAuthentication(userName, password);
         try {
+            if(!newPassword.equals(duplicateNewPassword))
+                throw new PasswordsNotEqualException("new password and duplicate password are not equal");
             technician.setPassword(newPassword);
             update(technician);
         } catch (Exception ex) {
@@ -38,8 +42,12 @@ public class TechnicianServiceImpl extends BaseServiceImpl<Technician, Long, Tec
 
     @Override
     public Technician userAuthentication(String userName, String password) {
+        Technician technician;
         try {
-            return repository.findByUserNameAndPassword(userName, password);
+            technician = repository.findByUserNameAndPassword(userName, password);
+            if (technician==null)
+                throw new UsernameOrPasswordNotCorrectException("Username or password not correct");
+            return technician;
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             return null;

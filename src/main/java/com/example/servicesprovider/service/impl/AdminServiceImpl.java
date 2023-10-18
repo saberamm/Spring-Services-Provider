@@ -1,10 +1,7 @@
 package com.example.servicesprovider.service.impl;
 
 import com.example.servicesprovider.base.service.impl.BaseServiceImpl;
-import com.example.servicesprovider.exception.DuplicateSubServiceNameException;
-import com.example.servicesprovider.exception.GeneralServiceNotExistException;
-import com.example.servicesprovider.exception.PasswordsNotEqualException;
-import com.example.servicesprovider.exception.TechnicianNotConfirmedYetException;
+import com.example.servicesprovider.exception.*;
 import com.example.servicesprovider.model.*;
 import com.example.servicesprovider.model.enumeration.TechnicianStatus;
 import com.example.servicesprovider.repository.AdminRepository;
@@ -104,8 +101,12 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
 
     @Override
     public Admin userAuthentication(String userName, String password) {
+        Admin admin;
         try {
-            return repository.findByUserNameAndPassword(userName, password);
+            admin = repository.findByUserNameAndPassword(userName, password);
+            if (admin==null)
+                throw new UsernameOrPasswordNotCorrectException("Username or password not correct");
+            return admin;
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             return null;

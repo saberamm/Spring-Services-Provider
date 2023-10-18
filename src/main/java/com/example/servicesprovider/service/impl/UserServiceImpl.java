@@ -1,6 +1,8 @@
 package com.example.servicesprovider.service.impl;
 
 import com.example.servicesprovider.base.service.impl.BaseServiceImpl;
+import com.example.servicesprovider.exception.PasswordsNotEqualException;
+import com.example.servicesprovider.exception.UsernameOrPasswordNotCorrectException;
 import com.example.servicesprovider.model.User;
 import com.example.servicesprovider.repository.UserRepository;
 import com.example.servicesprovider.service.UserService;
@@ -30,6 +32,8 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long, UserRepository>
     public void changePassword(String userName, String password, String newPassword, String duplicateNewPassword) {
         User user = userAuthentication(userName, password);
         try {
+            if (!newPassword.equals(duplicateNewPassword))
+                throw new PasswordsNotEqualException("new password and duplicate password are not equal");
             user.setPassword(newPassword);
             update(user);
         } catch (Exception ex) {
@@ -40,8 +44,12 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long, UserRepository>
 
     @Override
     public User userAuthentication(String userName, String password) {
+        User user;
         try {
-            return repository.findByUserNameAndPassword(userName, password);
+            user = repository.findByUserNameAndPassword(userName, password);
+            if (user==null)
+                throw new UsernameOrPasswordNotCorrectException("Username or password not correct");
+            return user;
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             return null;
