@@ -20,7 +20,6 @@ import java.time.LocalDateTime;
 @Entity
 public class Offer extends BaseModel<Long> {
 
-    @NotNull(message = "Time offer sent can not be null")
     private LocalDateTime timeOfferSent;
 
     @NotNull(message = "Time for start working can not be null")

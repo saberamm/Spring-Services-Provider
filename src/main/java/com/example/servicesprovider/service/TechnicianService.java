@@ -1,6 +1,7 @@
 package com.example.servicesprovider.service;
 
 import com.example.servicesprovider.base.service.BaseService;
+import com.example.servicesprovider.model.Offer;
 import com.example.servicesprovider.model.Technician;
 
 public interface TechnicianService extends BaseService<Technician, Long> {
@@ -9,4 +10,6 @@ public interface TechnicianService extends BaseService<Technician, Long> {
     Technician userAuthentication(String userName, String password);
 
     void deleteByUserName(String userName);
+
+    Offer addOffer(Offer offer);
 }
