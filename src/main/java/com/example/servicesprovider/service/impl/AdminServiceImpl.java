@@ -74,7 +74,7 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
 
     @Override
     public List<Technician> seeTechnicianNotAccepted() {
-        return technicianService.findAll();
+        return technicianService.notConfirmedYet();
     }
 
     @Override

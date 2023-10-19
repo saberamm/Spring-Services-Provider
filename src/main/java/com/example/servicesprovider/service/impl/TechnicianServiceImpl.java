@@ -13,6 +13,8 @@ import com.example.servicesprovider.service.TechnicianService;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Validator;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class TechnicianServiceImpl extends BaseServiceImpl<Technician, Long, TechnicianRepository> implements TechnicianService {
@@ -82,5 +84,24 @@ public class TechnicianServiceImpl extends BaseServiceImpl<Technician, Long, Tec
             System.out.println(e.getMessage());
         }
         return null;
+    }
+
+    //    public List<Order> OrdersThatTechnicianCanOffer(Technician technician){
+//
+//    }
+
+    @Override
+    public List<Technician> notConfirmedYet() {
+        List<Technician> technicians = new ArrayList<>();
+        try {
+            List<Technician> techniciansNew = repository.findAllByTechnicianStatus(TechnicianStatus.NEW);
+            List<Technician> techniciansPending = repository.findAllByTechnicianStatus(TechnicianStatus.PENDING_CONFIRMATION);
+            technicians.addAll(techniciansNew);
+            technicians.addAll(techniciansPending);
+            return technicians;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 }
