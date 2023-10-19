@@ -32,6 +32,8 @@ public class Order extends BaseModel<Long> {
     @NotNull(message = "Order address can not be null")
     private String orderAddress;
 
+    private Long selectedOffersId;
+
     @NotNull(message = "Suggestion price can not be null")
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;

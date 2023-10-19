@@ -18,4 +18,10 @@ public interface ClientService extends BaseService<Client, Long> {
     Client findByUserName(String userName);
 
     Client userAuthentication(String userName, String password);
+
+    Order chooseOffer(Order order, Offer offer);
+
+    Order startOrder(Order order);
+
+    Order completeOrder(Order order);
 }
