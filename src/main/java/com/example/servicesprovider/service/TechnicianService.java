@@ -14,7 +14,7 @@ public interface TechnicianService extends BaseService<Technician, Long> {
 
     void deleteByUserName(String userName);
 
-    Offer addOffer(Offer offer);
+    Offer addOffer(Offer offer,Technician technician);
 
     List<Order> OrdersThatTechnicianCanOffer(Technician technician);
 
