@@ -48,9 +48,17 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long, UserRepository>
     }
 
     @Override
-    public User register(User user) {
-        user.setPassword(hashGenerator.generateSHA512Hash(user.getPassword()));
-        return save(user);
+    public User save(User user) {
+        try {
+            if (isValid(user)) {
+                user.setPassword(hashGenerator.generateSHA512Hash(user.getPassword()));
+                repository.save(user);
+            }
+        } catch (Exception ex) {
+            System.out.println("Error while saving model: " + ex.getMessage());
+            return null;
+        }
+        return user;
     }
 
     @Override

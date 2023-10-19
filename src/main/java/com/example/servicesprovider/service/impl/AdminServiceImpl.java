@@ -6,7 +6,6 @@ import com.example.servicesprovider.model.*;
 import com.example.servicesprovider.model.enumeration.TechnicianStatus;
 import com.example.servicesprovider.repository.AdminRepository;
 import com.example.servicesprovider.service.*;
-import com.example.servicesprovider.utility.HashGenerator;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Validator;
@@ -17,14 +16,12 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
     GeneralService_Service generalService_service;
     SubService_Service subService_service;
     TechnicianService technicianService;
-    HashGenerator hashGenerator;
 
-    public AdminServiceImpl(AdminRepository repository, Validator validator, GeneralService_Service generalService_service, SubService_Service subService_service, TechnicianService technicianService, HashGenerator hashGenerator) {
+    public AdminServiceImpl(AdminRepository repository, Validator validator, GeneralService_Service generalService_service, SubService_Service subService_service, TechnicianService technicianService) {
         super(repository, validator);
         this.generalService_service = generalService_service;
         this.subService_service = subService_service;
         this.technicianService = technicianService;
-        this.hashGenerator = hashGenerator;
     }
 
     @Override

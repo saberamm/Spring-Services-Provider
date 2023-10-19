@@ -6,7 +6,6 @@ import com.example.servicesprovider.model.*;
 import com.example.servicesprovider.model.enumeration.OrderStatus;
 import com.example.servicesprovider.repository.ClientRepository;
 import com.example.servicesprovider.service.*;
-import com.example.servicesprovider.utility.HashGenerator;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Validator;
@@ -18,15 +17,13 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
     OrderService orderService;
     SubService_Service subService_service;
     GeneralService_Service generalService_service;
-    HashGenerator hashGenerator;
     OfferService offerService;
 
-    public ClientServiceImpl(ClientRepository repository, Validator validator, OrderService orderService, SubService_Service subService_service, GeneralService_Service generalService_service, HashGenerator hashGenerator, OfferService offerService) {
+    public ClientServiceImpl(ClientRepository repository, Validator validator, OrderService orderService, SubService_Service subService_service, GeneralService_Service generalService_service, OfferService offerService) {
         super(repository, validator);
         this.orderService = orderService;
         this.subService_service = subService_service;
         this.generalService_service = generalService_service;
-        this.hashGenerator = hashGenerator;
         this.offerService = offerService;
     }
 
