@@ -5,7 +5,9 @@ import com.example.servicesprovider.exception.OfferTimeBeforeOrderTimeException;
 import com.example.servicesprovider.exception.PasswordsNotEqualException;
 import com.example.servicesprovider.exception.TechnicianNotConfirmedYetException;
 import com.example.servicesprovider.exception.UsernameOrPasswordNotCorrectException;
-import com.example.servicesprovider.model.*;
+import com.example.servicesprovider.model.Offer;
+import com.example.servicesprovider.model.Order;
+import com.example.servicesprovider.model.Technician;
 import com.example.servicesprovider.model.enumeration.TechnicianStatus;
 import com.example.servicesprovider.repository.TechnicianRepository;
 import com.example.servicesprovider.service.OfferService;
@@ -86,9 +88,9 @@ public class TechnicianServiceImpl extends BaseServiceImpl<Technician, Long, Tec
         return null;
     }
 
-    //    public List<Order> OrdersThatTechnicianCanOffer(Technician technician){
-//
-//    }
+    public List<Order> OrdersThatTechnicianCanOffer(Technician technician) {
+
+    }
 
     @Override
     public List<Technician> notConfirmedYet() {
