@@ -7,6 +7,8 @@ import com.example.servicesprovider.service.SubService_Service;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Validator;
+import java.util.List;
+
 @Service
 public class SubService_ServiceImpl extends BaseServiceImpl<SubService, Long, SubServiceRepository> implements SubService_Service {
 
@@ -22,5 +24,15 @@ public class SubService_ServiceImpl extends BaseServiceImpl<SubService, Long, Su
             System.out.println(e.getMessage());
             return null;
         }
+    }
+
+    @Override
+    public List<SubService> findSubServicesByTechnicianId(Long technicianId) {
+        try {
+            return repository.findByTechnicianListId(technicianId);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
 }

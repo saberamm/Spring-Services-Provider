@@ -79,8 +79,10 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
 
     @Override
     public void addTechnicianToSubService(Technician technician, SubService subService) {
+        List<SubService> subServices = subService_service.findSubServicesByTechnicianId(technician.getId());
+        subServices.add(subService);
         try {
-            technician.getSubServiceList().add(subService);
+            technician.setSubServiceList(subServices);
             if (technician.getTechnicianStatus().equals(TechnicianStatus.NEW)
                     || technician.getTechnicianStatus().equals(TechnicianStatus.PENDING_CONFIRMATION))
                 throw new TechnicianNotConfirmedYetException("Technician not confirmed yet");

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Component
 public class Main implements CommandLineRunner {
@@ -207,7 +208,7 @@ public class Main implements CommandLineRunner {
 //
 //
 //        Technician technician3 = technicianService.findById(4L);
-//        SubService subService3 = subService_service.findById(1L);
+//        SubService subService3 = subService_service.findById(152L);
 //        adminService.addTechnicianToSubService(technician3, subService3);
 //        subService_service.delete(subService3);
 
