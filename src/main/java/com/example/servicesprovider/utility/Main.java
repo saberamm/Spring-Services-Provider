@@ -71,7 +71,7 @@ public class Main implements CommandLineRunner {
 //        userService.save(admin);
 //        clientService.save(client);
 //        technicianService.save(technician);
-userService.changePassword("ttwr", "1wW#qwer","1#eEeeee","1#eEeeee");
+//userService.changePassword("ttwr", "1wW#qwer","1#eEeeee","1#eEeeee");
 //
 //        User user1 = userService.findById(1L);
 //        Admin admin1 = adminService.findById(2L);
@@ -110,8 +110,8 @@ userService.changePassword("ttwr", "1wW#qwer","1#eEeeee","1#eEeeee");
 
         //----------------  sub general service -------------------//
 
-        SubService subService = SubService.builder().subServiceName("barghe sakhteman").basePrice(10000D).description("baray bargh sakhteman")
-                .generalService(generalService_service.findById(1L)).build();
+//        SubService subService = SubService.builder().subServiceName("barghe sakhteman").basePrice(10000D).description("baray bargh sakhteman")
+//                .generalService(generalService_service.findById(1L)).build();
 
 //        subService_service.save(subService);
 //
@@ -126,10 +126,10 @@ userService.changePassword("ttwr", "1wW#qwer","1#eEeeee","1#eEeeee");
 
         //----------------  order service -------------------//
 
-        Order order = Order.builder().orderPrice(2000D).orderAddress("khonamon").
-                orderDescription("qweqe").orderStatus(OrderStatus.WAITING_FOR_TECHNICIAN_OFFER).
-                client(clientService.findById(3L)).subService(subService_service.findById(1L))
-                .workTime(LocalDateTime.of(2024, 5, 5, 15, 5)).build();
+//        Order order = Order.builder().orderPrice(2000D).orderAddress("khonamon").
+//                orderDescription("qweqe").orderStatus(OrderStatus.WAITING_FOR_TECHNICIAN_OFFER).
+//                client(clientService.findById(3L)).subService(subService_service.findById(1L))
+//                .workTime(LocalDateTime.of(2024, 5, 5, 15, 5)).build();
 
 //        orderService.save(order);
 //
@@ -144,9 +144,9 @@ userService.changePassword("ttwr", "1wW#qwer","1#eEeeee","1#eEeeee");
 
         //----------------  offer service -------------------//
 
-        Offer offer = Offer.builder().timeOfferSent(LocalDateTime.of(2000, 5, 5, 15, 50))
-                .suggestionPrice(200000D).timeForStartWorking(LocalDateTime.of(2025, 6, 5, 15, 50))
-                .timeForEndWorking(LocalDateTime.of(2000, 7, 5, 15, 50)).order(orderService.findById(1L)).build();
+//        Offer offer = Offer.builder().timeOfferSent(LocalDateTime.of(2000, 5, 5, 15, 50))
+//                .suggestionPrice(200000D).timeForStartWorking(LocalDateTime.of(2025, 6, 5, 15, 50))
+//                .timeForEndWorking(LocalDateTime.of(2000, 7, 5, 15, 50)).order(orderService.findById(1L)).build();
 //        Technician technician3 = technicianService.findById(4L);
 //        System.out.println(technician3.getOverallScore());
 //        technicianService.addOffer(offer, technician3);
@@ -161,7 +161,7 @@ userService.changePassword("ttwr", "1wW#qwer","1#eEeeee","1#eEeeee");
 
         //----------------  viewpoint service -------------------//
 
-        ViewPoint viewPoint = ViewPoint.builder().score(4).technician(technicianService.findById(4L)).comment("awwwlliii").build();
+//        ViewPoint viewPoint = ViewPoint.builder().score(4).technician(technicianService.findById(4L)).comment("awwwlliii").build();
 
 //        viewPointService.save(viewPoint);
 //
