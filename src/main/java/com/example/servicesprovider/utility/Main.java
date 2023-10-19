@@ -68,9 +68,10 @@ public class Main implements CommandLineRunner {
                 technicianStatus(TechnicianStatus.NEW).aboutMe("asdda").password("1!dDdddd").build();
 
 //        userService.save(user);
-//        adminService.save(admin);
+//        userService.save(admin);
 //        clientService.save(client);
 //        technicianService.save(technician);
+userService.changePassword("ttwr", "1wW#qwer","1#eEeeee","1#eEeeee");
 //
 //        User user1 = userService.findById(1L);
 //        Admin admin1 = adminService.findById(2L);

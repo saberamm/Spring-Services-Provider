@@ -34,13 +34,11 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long, UserRepository>
     @Override
     public void changePassword(String userName, String password, String newPassword, String duplicateNewPassword) {
         User user = userAuthentication(userName, password);
-        String hashedNewPassword = hashGenerator.generateSHA512Hash(newPassword);
-        String hashedDuplicateNewPassword = hashGenerator.generateSHA512Hash(newPassword);
         try {
-            if (!hashGenerator.areHashesEqual(hashedNewPassword, hashedDuplicateNewPassword))
+            if (!newPassword.equals(duplicateNewPassword))
                 throw new PasswordsNotEqualException("new password and duplicate password are not equal");
-            user.setPassword(hashedNewPassword);
-            update(user);
+            user.setPassword(newPassword);
+            save(user);
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
