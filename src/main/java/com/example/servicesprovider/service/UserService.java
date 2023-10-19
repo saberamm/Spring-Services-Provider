@@ -9,5 +9,7 @@ public interface UserService extends BaseService<User, Long> {
 
     void changePassword(String userName, String password, String newPassword, String duplicateNewPassword);
 
+    User register(User user);
+
     User userAuthentication(String userName, String password);
 }

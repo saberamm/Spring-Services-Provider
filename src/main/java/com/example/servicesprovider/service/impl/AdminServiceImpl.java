@@ -6,6 +6,7 @@ import com.example.servicesprovider.model.*;
 import com.example.servicesprovider.model.enumeration.TechnicianStatus;
 import com.example.servicesprovider.repository.AdminRepository;
 import com.example.servicesprovider.service.*;
+import com.example.servicesprovider.utility.HashGenerator;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Validator;
@@ -16,12 +17,14 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
     GeneralService_Service generalService_service;
     SubService_Service subService_service;
     TechnicianService technicianService;
+    HashGenerator hashGenerator;
 
-    public AdminServiceImpl(AdminRepository repository, Validator validator, GeneralService_Service generalService_service, SubService_Service subService_service, TechnicianService technicianService) {
+    public AdminServiceImpl(AdminRepository repository, Validator validator, GeneralService_Service generalService_service, SubService_Service subService_service, TechnicianService technicianService, HashGenerator hashGenerator) {
         super(repository, validator);
         this.generalService_service = generalService_service;
         this.subService_service = subService_service;
         this.technicianService = technicianService;
+        this.hashGenerator = hashGenerator;
     }
 
     @Override
@@ -60,19 +63,6 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
     }
 
     @Override
-    public void changePassword(String userName, String password, String newPassword, String duplicateNewPassword) {
-        Admin admin = userAuthentication(userName, password);
-        try {
-            if (!newPassword.equals(duplicateNewPassword))
-                throw new PasswordsNotEqualException("new password and duplicate password are not equal");
-            admin.setPassword(newPassword);
-            update(admin);
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-        }
-    }
-
-    @Override
     public List<Technician> seeTechnicianNotAccepted() {
         return technicianService.notConfirmedYet();
     }
@@ -96,20 +86,6 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
     public Admin findByUserName(String userName) {
         try {
             return repository.findByUserName(userName);
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-            return null;
-        }
-    }
-
-    @Override
-    public Admin userAuthentication(String userName, String password) {
-        Admin admin;
-        try {
-            admin = repository.findByUserNameAndPassword(userName, password);
-            if (admin == null)
-                throw new UsernameOrPasswordNotCorrectException("Username or password not correct");
-            return admin;
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             return null;

@@ -6,6 +6,7 @@ import com.example.servicesprovider.model.*;
 import com.example.servicesprovider.model.enumeration.OrderStatus;
 import com.example.servicesprovider.repository.ClientRepository;
 import com.example.servicesprovider.service.*;
+import com.example.servicesprovider.utility.HashGenerator;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Validator;
@@ -17,28 +18,16 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
     OrderService orderService;
     SubService_Service subService_service;
     GeneralService_Service generalService_service;
-
+    HashGenerator hashGenerator;
     OfferService offerService;
 
-    public ClientServiceImpl(ClientRepository repository, Validator validator, OrderService orderService, SubService_Service subService_service, GeneralService_Service generalService_service, OfferService offerService) {
+    public ClientServiceImpl(ClientRepository repository, Validator validator, OrderService orderService, SubService_Service subService_service, GeneralService_Service generalService_service, HashGenerator hashGenerator, OfferService offerService) {
         super(repository, validator);
         this.orderService = orderService;
         this.subService_service = subService_service;
         this.generalService_service = generalService_service;
+        this.hashGenerator = hashGenerator;
         this.offerService = offerService;
-    }
-
-    @Override
-    public void changePassword(String userName, String password, String newPassword, String duplicateNewPassword) {
-        Client client = userAuthentication(userName, password);
-        try {
-            if (!newPassword.equals(duplicateNewPassword))
-                throw new PasswordsNotEqualException("new password and duplicate password are not equal");
-            client.setPassword(newPassword);
-            update(client);
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-        }
     }
 
     @Override
@@ -68,20 +57,6 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
     public Client findByUserName(String userName) {
         try {
             return repository.findByUserName(userName);
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-            return null;
-        }
-    }
-
-    @Override
-    public Client userAuthentication(String userName, String password) {
-        Client client;
-        try {
-            client = repository.findByUserNameAndPassword(userName, password);
-            if (client == null)
-                throw new UsernameOrPasswordNotCorrectException("Username or password not correct");
-            return client;
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             return null;

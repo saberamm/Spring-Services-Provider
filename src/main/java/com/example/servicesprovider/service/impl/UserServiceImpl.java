@@ -6,6 +6,7 @@ import com.example.servicesprovider.exception.UsernameOrPasswordNotCorrectExcept
 import com.example.servicesprovider.model.User;
 import com.example.servicesprovider.repository.UserRepository;
 import com.example.servicesprovider.service.UserService;
+import com.example.servicesprovider.utility.HashGenerator;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Validator;
@@ -13,9 +14,11 @@ import javax.validation.Validator;
 @Service
 public class UserServiceImpl extends BaseServiceImpl<User, Long, UserRepository> implements UserService {
 
+    HashGenerator hashGenerator;
 
-    public UserServiceImpl(UserRepository repository, Validator validator) {
+    public UserServiceImpl(UserRepository repository, Validator validator, HashGenerator hashGenerator) {
         super(repository, validator);
+        this.hashGenerator = hashGenerator;
     }
 
     @Override
@@ -31,10 +34,12 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long, UserRepository>
     @Override
     public void changePassword(String userName, String password, String newPassword, String duplicateNewPassword) {
         User user = userAuthentication(userName, password);
+        String hashedNewPassword = hashGenerator.generateSHA512Hash(newPassword);
+        String hashedDuplicateNewPassword = hashGenerator.generateSHA512Hash(newPassword);
         try {
-            if (!newPassword.equals(duplicateNewPassword))
+            if (!hashGenerator.areHashesEqual(hashedNewPassword, hashedDuplicateNewPassword))
                 throw new PasswordsNotEqualException("new password and duplicate password are not equal");
-            user.setPassword(newPassword);
+            user.setPassword(hashedNewPassword);
             update(user);
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
@@ -43,11 +48,18 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long, UserRepository>
     }
 
     @Override
+    public User register(User user) {
+        user.setPassword(hashGenerator.generateSHA512Hash(user.getPassword()));
+        return save(user);
+    }
+
+    @Override
     public User userAuthentication(String userName, String password) {
         User user;
+        String hashedPassword = hashGenerator.generateSHA512Hash(password);
         try {
-            user = repository.findByUserNameAndPassword(userName, password);
-            if (user==null)
+            user = repository.findByUserNameAndPassword(userName, hashedPassword);
+            if (user == null)
                 throw new UsernameOrPasswordNotCorrectException("Username or password not correct");
             return user;
         } catch (Exception ex) {

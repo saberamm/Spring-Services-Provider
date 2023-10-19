@@ -7,7 +7,6 @@ import java.util.List;
 
 public interface ClientService extends BaseService<Client, Long> {
 
-    void changePassword(String userName, String password, String newPassword, String duplicateNewPassword);
 
     void addOrder(Order order, Client client);
 
@@ -16,8 +15,6 @@ public interface ClientService extends BaseService<Client, Long> {
     List<SubService> seeSubServices();
 
     Client findByUserName(String userName);
-
-    Client userAuthentication(String userName, String password);
 
     Order chooseOffer(Order order, Offer offer);
 

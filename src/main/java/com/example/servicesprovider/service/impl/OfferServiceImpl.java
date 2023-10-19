@@ -19,6 +19,7 @@ public class OfferServiceImpl extends BaseServiceImpl<Offer, Long, OfferReposito
         super(repository, validator);
     }
 
+    @Override
     public List<Offer> getOffersSortedByTechnicianScore(Order order) {
         List<Offer> offers = order.getOfferList();
 
@@ -27,7 +28,7 @@ public class OfferServiceImpl extends BaseServiceImpl<Offer, Long, OfferReposito
                 .collect(Collectors.toList());
     }
 
-
+    @Override
     public List<Offer> getOffersSortedByPrice(Order order) {
         List<Offer> offers = order.getOfferList();
 

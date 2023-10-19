@@ -34,36 +34,9 @@ public class TechnicianServiceImpl extends BaseServiceImpl<Technician, Long, Tec
     }
 
     @Override
-    public void changePassword(String userName, String password, String newPassword, String duplicateNewPassword) {
-        Technician technician = userAuthentication(userName, password);
-        try {
-            if (!newPassword.equals(duplicateNewPassword))
-                throw new PasswordsNotEqualException("new password and duplicate password are not equal");
-            technician.setPassword(newPassword);
-            update(technician);
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-        }
-    }
-
-    @Override
     public Technician findByUserName(String userName) {
         try {
             return repository.findByUserName(userName);
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-            return null;
-        }
-    }
-
-    @Override
-    public Technician userAuthentication(String userName, String password) {
-        Technician technician;
-        try {
-            technician = repository.findByUserNameAndPassword(userName, password);
-            if (technician == null)
-                throw new UsernameOrPasswordNotCorrectException("Username or password not correct");
-            return technician;
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             return null;
