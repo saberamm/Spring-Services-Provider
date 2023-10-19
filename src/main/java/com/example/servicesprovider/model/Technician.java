@@ -18,13 +18,17 @@ import java.util.List;
 @Entity
 public class Technician extends User {
 
-    @NotNull(message ="technicianStatus cannot be null" )
+    @NotNull(message = "technicianStatus cannot be null")
     @Enumerated(EnumType.STRING)
     private TechnicianStatus technicianStatus;
 
     private byte[] technicianPhoto;
 
     private Double technicianCredit;
+
+    @Transient
+    @Setter(AccessLevel.NONE)
+    private Double overallScore;
 
     @Column(name = "phoneNumber")
     @NotNull(message = "phoneNumber cannot be null")
@@ -39,7 +43,7 @@ public class Technician extends User {
     @Size(min = 1, max = 200, message = "About me must be between 1 to 200")
     private String aboutMe;
 
-    @OneToMany(mappedBy = "technician")
+    @OneToMany(mappedBy = "technician", fetch = FetchType.EAGER)
     private List<ViewPoint> viewPointList;
 
     @ManyToMany
@@ -51,4 +55,17 @@ public class Technician extends User {
 
     @OneToMany(mappedBy = "technician")
     private List<Offer> offerList;
+
+    @PostLoad
+    public void setOverallScore() {
+        if (viewPointList != null && !viewPointList.isEmpty()) {
+            double totalScore = 0.0;
+            for (ViewPoint viewPoint : viewPointList) {
+                totalScore += viewPoint.getScore();
+            }
+            this.overallScore = totalScore / viewPointList.size();
+        } else {
+            this.overallScore = 0.0;
+        }
+    }
 }

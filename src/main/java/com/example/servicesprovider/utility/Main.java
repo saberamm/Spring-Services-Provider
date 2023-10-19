@@ -146,8 +146,9 @@ public class Main implements CommandLineRunner {
         Offer offer = Offer.builder().timeOfferSent(LocalDateTime.of(2000, 5, 5, 15, 50))
                 .suggestionPrice(200000D).timeForStartWorking(LocalDateTime.of(2025, 6, 5, 15, 50))
                 .timeForEndWorking(LocalDateTime.of(2000, 7, 5, 15, 50)).order(orderService.findById(1L)).build();
-        Technician technician3 = technicianService.findById(4L);
-        technicianService.addOffer(offer, technician3);
+//        Technician technician3 = technicianService.findById(4L);
+//        System.out.println(technician3.getOverallScore());
+//        technicianService.addOffer(offer, technician3);
 //        offerService.save(offer);
 //
 //        Offer offer1 = offerService.findById(1L);
@@ -159,8 +160,8 @@ public class Main implements CommandLineRunner {
 
         //----------------  viewpoint service -------------------//
 
-//        ViewPoint viewPoint = ViewPoint.builder().score(4).technician(technicianService.findById(4L)).comment("awwwlliii").build();
-//
+        ViewPoint viewPoint = ViewPoint.builder().score(4).technician(technicianService.findById(4L)).comment("awwwlliii").build();
+
 //        viewPointService.save(viewPoint);
 //
 //        ViewPoint viewPoint1 = viewPointService.findById(1L);

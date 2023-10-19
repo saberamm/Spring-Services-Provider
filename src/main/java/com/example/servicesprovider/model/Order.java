@@ -36,7 +36,7 @@ public class Order extends BaseModel<Long> {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order",fetch = FetchType.EAGER)
     private List<Offer> offerList;
 
     @ManyToOne(cascade = CascadeType.MERGE)
