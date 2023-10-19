@@ -80,15 +80,15 @@ public class TechnicianServiceImpl extends BaseServiceImpl<Technician, Long, Tec
     }
 
     @Override
-    public Offer addOffer(Offer offer,Technician technician) {
+    public Offer addOffer(Offer offer, Technician technician) {
+        Order order = offer.getOrder();
         try {
-            if (offer.getTimeForStartWorking().isBefore(offer.getOrder().getWorkTime()))
+            if (offer.getTimeForStartWorking().isBefore(order.getWorkTime()))
                 throw new OfferTimeBeforeOrderTimeException("offer time can not be before order time");
             if (technician.getTechnicianStatus().equals(TechnicianStatus.NEW)
                     || technician.getTechnicianStatus().equals(TechnicianStatus.PENDING_CONFIRMATION))
                 throw new TechnicianNotConfirmedYetException("Technician not confirmed yet");
             offer.getOrder().setOrderStatus(OrderStatus.WAITING_FOR_CHOOSING_TECHNICIAN);
-            Order order=offer.getOrder();
             order.setOrderStatus(OrderStatus.WAITING_FOR_CHOOSING_TECHNICIAN);
             orderService.update(offer.getOrder());
             return offerService.save(offer);
