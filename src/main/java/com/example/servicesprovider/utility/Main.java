@@ -134,7 +134,7 @@ public class Main implements CommandLineRunner {
 //
 //        Order order1 = orderService.findById(1L);
 //
-//        order1.setOrderAddress("home");
+//        order1.setOrderStatus(OrderStatus.DONE);
 //        orderService.update(order1);
 //
 //
@@ -201,7 +201,7 @@ public class Main implements CommandLineRunner {
 
 //        System.out.println(adminService.seeTechnicianNotAccepted());
 //        SubService subService1 = subService_service.findById(152L);
-//        Technician technician3 = technicianService.findById(4L);
+        Technician technician3 = technicianService.findById(4L);
 //        technician3.getSubServiceList().add(subService1);
 //        technician3.setTechnicianStatus(TechnicianStatus.CONFIRMED);
 //        technicianService.update(technician3);
@@ -225,5 +225,6 @@ public class Main implements CommandLineRunner {
 
 //        System.out.println(technicianService.userAuthentication("qweqwe","1!dDdddd").getEmail());
 
+//        System.out.println(technicianService.OrdersThatTechnicianCanOffer(technician3).get(0).getOrderDescription());
     }
 }

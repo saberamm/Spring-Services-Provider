@@ -33,6 +33,7 @@ public class Order extends BaseModel<Long> {
     private String orderAddress;
 
     @NotNull(message = "Suggestion price can not be null")
+    @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
     @OneToMany(mappedBy = "order")

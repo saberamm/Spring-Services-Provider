@@ -1,30 +1,36 @@
 package com.example.servicesprovider.service.impl;
 
 import com.example.servicesprovider.base.service.impl.BaseServiceImpl;
-import com.example.servicesprovider.exception.OfferTimeBeforeOrderTimeException;
-import com.example.servicesprovider.exception.PasswordsNotEqualException;
-import com.example.servicesprovider.exception.TechnicianNotConfirmedYetException;
-import com.example.servicesprovider.exception.UsernameOrPasswordNotCorrectException;
+import com.example.servicesprovider.exception.*;
 import com.example.servicesprovider.model.Offer;
 import com.example.servicesprovider.model.Order;
+import com.example.servicesprovider.model.SubService;
 import com.example.servicesprovider.model.Technician;
+import com.example.servicesprovider.model.enumeration.OrderStatus;
 import com.example.servicesprovider.model.enumeration.TechnicianStatus;
 import com.example.servicesprovider.repository.TechnicianRepository;
 import com.example.servicesprovider.service.OfferService;
+import com.example.servicesprovider.service.OrderService;
+import com.example.servicesprovider.service.SubService_Service;
 import com.example.servicesprovider.service.TechnicianService;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Validator;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TechnicianServiceImpl extends BaseServiceImpl<Technician, Long, TechnicianRepository> implements TechnicianService {
     OfferService offerService;
+    OrderService orderService;
+    SubService_Service subService_service;
 
-    public TechnicianServiceImpl(TechnicianRepository repository, Validator validator, OfferService offerService) {
+    public TechnicianServiceImpl(TechnicianRepository repository, Validator validator, OfferService offerService, OrderService orderService, SubService_Service subService_service) {
         super(repository, validator);
         this.offerService = offerService;
+        this.orderService = orderService;
+        this.subService_service = subService_service;
     }
 
     @Override
@@ -88,9 +94,25 @@ public class TechnicianServiceImpl extends BaseServiceImpl<Technician, Long, Tec
         return null;
     }
 
+    @Override
     public List<Order> OrdersThatTechnicianCanOffer(Technician technician) {
+        List<SubService> subServices = subService_service.findSubServicesByTechnicianId(technician.getId());
 
+        List<Order> orders2 = subServices.stream()
+                .flatMap(subService -> orderService.findBySubService(subService).stream())
+                .filter(order ->
+                        order.getOrderStatus() == OrderStatus.WAITING_FOR_TECHNICIAN_OFFER
+                                || order.getOrderStatus() == OrderStatus.WAITING_FOR_CHOOSING_TECHNICIAN)
+                .collect(Collectors.toList());
+        try {
+            if (orders2.isEmpty()) throw new NoOrdersFoundException("there is no order to offer");
+        } catch (NoOrdersFoundException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return orders2;
     }
+
 
     @Override
     public List<Technician> notConfirmedYet() {
