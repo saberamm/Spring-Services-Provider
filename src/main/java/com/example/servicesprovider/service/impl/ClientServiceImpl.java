@@ -28,15 +28,16 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
     }
 
     @Override
-    public void addOrder(Order order, Client client) {
+    public Order addOrder(Order order, Client client) {
         try {
             if (order.getOrderPrice() < order.getSubService().getBasePrice()) {
                 throw new PriceIsLowerThanBasePriceException("Order price should not be smaller than sub service base price");
             }
             order.setClient(client);
-            orderService.save(order);
+            return orderService.save(order);
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            return null;
         }
     }
 
@@ -71,18 +72,22 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
     public Order startOrder(Order order) {
         Offer offer = offerService.findById(order.getSelectedOffersId());
         try {
-            if (order.getOrderStatus().equals(OrderStatus.WAITING_FOR_TECHNICIAN_TO_COME_YOUR_PLACE)
-                    && LocalDateTime.now().isAfter(offer.getTimeForStartWorking())) {
+            OrderStatus orderStatus = order.getOrderStatus();
+
+            if (orderStatus != null && orderStatus.equals(OrderStatus.WAITING_FOR_TECHNICIAN_TO_COME_YOUR_PLACE) &&
+                    offer != null && offer.getTimeForStartWorking() != null &&
+                    LocalDateTime.now().isAfter(offer.getTimeForStartWorking())) {
                 order.setOrderStatus(OrderStatus.STARTED);
                 return orderService.update(order);
             } else {
-                throw new OrderHasNoSelectedOfferException("choose an offer first");
+                throw new OrderHasNoSelectedOfferException("Choose an offer first");
             }
         } catch (OrderHasNoSelectedOfferException e) {
             System.out.println(e.getMessage());
             return null;
         }
     }
+
 
     @Override
     public Order completeOrder(Order order) {
