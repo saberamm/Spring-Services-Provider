@@ -29,7 +29,7 @@ public class OfferServiceImplTest {
     }
     @Test
     public void testGetOffersSortedByTechnicianScore() {
-        // Create a sample order with a list of offers
+
         Order order = new Order();
         List<Offer> offers = createSampleOffers();
         order.setOfferList(offers);
@@ -38,7 +38,6 @@ public class OfferServiceImplTest {
 
         List<Offer> sortedOffers = offerService.getOffersSortedByTechnicianScore(order);
 
-        // Verify that the offers are sorted by technician score in descending order
         assertEquals(4.5, sortedOffers.get(0).getTechnician().getOverallScore());
         assertEquals(4.0, sortedOffers.get(1).getTechnician().getOverallScore());
         assertEquals(3.5, sortedOffers.get(2).getTechnician().getOverallScore());
@@ -46,7 +45,7 @@ public class OfferServiceImplTest {
 
     @Test
     public void testGetOffersSortedByPrice() {
-        // Create a sample order with a list of offers
+
         Order order = new Order();
         List<Offer> offers = createSampleOffers();
         order.setOfferList(offers);
@@ -55,7 +54,7 @@ public class OfferServiceImplTest {
 
         List<Offer> sortedOffers = offerService.getOffersSortedByPrice(order);
 
-        // Verify that the offers are sorted by price in ascending order
+
         assertEquals(80.0, sortedOffers.get(0).getSuggestionPrice());
         assertEquals(100.0, sortedOffers.get(1).getSuggestionPrice());
         assertEquals(120.0, sortedOffers.get(2).getSuggestionPrice());

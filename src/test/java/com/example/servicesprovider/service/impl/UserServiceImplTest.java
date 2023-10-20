@@ -1,7 +1,5 @@
 package com.example.servicesprovider.service.impl;
 
-import com.example.servicesprovider.exception.PasswordsNotEqualException;
-import com.example.servicesprovider.exception.UsernameOrPasswordNotCorrectException;
 import com.example.servicesprovider.model.User;
 import com.example.servicesprovider.repository.UserRepository;
 import com.example.servicesprovider.service.UserService;
