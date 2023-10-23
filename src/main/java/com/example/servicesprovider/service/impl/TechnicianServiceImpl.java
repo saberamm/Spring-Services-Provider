@@ -60,6 +60,8 @@ public class TechnicianServiceImpl extends BaseServiceImpl<Technician, Long, Tec
             if (technician.getTechnicianStatus().equals(TechnicianStatus.NEW)
                     || technician.getTechnicianStatus().equals(TechnicianStatus.PENDING_CONFIRMATION))
                 throw new TechnicianNotConfirmedYetException("Technician not confirmed yet");
+            if (offer.getSuggestionPrice() < order.getSubService().getBasePrice())
+                throw new PriceIsLowerThanBasePriceException("Suggestion price can not be lower than sub service base price");
             offer.getOrder().setOrderStatus(OrderStatus.WAITING_FOR_CHOOSING_TECHNICIAN);
             order.setOrderStatus(OrderStatus.WAITING_FOR_CHOOSING_TECHNICIAN);
             orderService.update(offer.getOrder());

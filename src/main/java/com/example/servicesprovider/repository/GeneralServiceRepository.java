@@ -6,5 +6,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface GeneralServiceRepository extends BaseRepository<GeneralService, Long> {
+
     GeneralService findByServiceName(String name);
+
+    boolean existsByServiceName(String ServiceName);
 }

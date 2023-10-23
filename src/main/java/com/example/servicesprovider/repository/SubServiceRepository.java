@@ -8,6 +8,10 @@ import java.util.List;
 
 @Repository
 public interface SubServiceRepository extends BaseRepository<SubService, Long> {
+
     SubService findBySubServiceName(String name);
+
+    boolean existsBySubServiceName (String subServiceName);
+
     List<SubService> findByTechnicianListId(Long technicianList_id);
 }

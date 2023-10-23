@@ -7,10 +7,29 @@ import com.example.servicesprovider.service.GeneralService_Service;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Validator;
+
 @Service
 public class GeneralService_ServiceImpl extends BaseServiceImpl<GeneralService, Long, GeneralServiceRepository> implements GeneralService_Service {
 
     public GeneralService_ServiceImpl(GeneralServiceRepository repository, Validator validator) {
         super(repository, validator);
+    }
+
+    @Override
+    public boolean existByServiceName(String serviceName) {
+        try {
+            return repository.existsByServiceName(serviceName);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    @Override
+    public GeneralService findByServiceName(String serviceName) {
+        try {
+            return repository.findByServiceName(serviceName);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 }

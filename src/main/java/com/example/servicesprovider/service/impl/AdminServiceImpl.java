@@ -26,7 +26,13 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
 
     @Override
     public GeneralService addGeneralService(GeneralService generalService) {
-        return generalService_service.save(generalService);
+        try {
+            if (generalService_service.existByServiceName(generalService.getServiceName()))
+                throw new DuplicateGeneralServiceNameException("General service already exist");
+            return generalService_service.save(generalService);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     @Override
@@ -36,10 +42,9 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
 
     @Override
     public SubService addSubService(SubService subService) {
-        SubService subService1 = subService_service.findSubServiceByName(subService.getSubServiceName());
         try {
-            if (subService.getSubServiceName().equals(subService1.getSubServiceName()))
-                throw new DuplicateSubServiceNameException("SubService name already exist");
+            if (subService_service.existBySubServiceName(subService.getSubServiceName()))
+                throw new DuplicateSubServiceNameException("SubService already exist");
             if (subService.getGeneralService() == null)
                 throw new GeneralServiceNotExistException("General service not exist");
             return subService_service.save(subService);
