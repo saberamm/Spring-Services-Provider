@@ -27,7 +27,6 @@ public class Technician extends User {
     private Double technicianCredit;
 
     @Transient
-    @Setter(AccessLevel.NONE)
     private Double overallScore;
 
     @Column(name = "phoneNumber")
@@ -61,7 +60,9 @@ public class Technician extends User {
         if (viewPointList != null && !viewPointList.isEmpty()) {
             double totalScore = 0.0;
             for (ViewPoint viewPoint : viewPointList) {
-                totalScore += viewPoint.getScore();
+                if (viewPoint.getScore() != null) {
+                    totalScore += viewPoint.getScore();
+                }
             }
             this.overallScore = totalScore / viewPointList.size();
         } else {

@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+//@Component
 public class Main implements CommandLineRunner {
 
     UserService userService;
@@ -68,8 +69,8 @@ public class Main implements CommandLineRunner {
 
 //        userService.save(user);
 //        userService.save(admin);
-//        clientService.save(client);
-//        technicianService.save(technician);
+//        userService.save(client);
+//        userService.save(technician);
 //userService.changePassword("ttwr", "1wW#qwer","1#eEeeee","1#eEeeee");
 //
 //        User user1 = userService.findById(1L);
@@ -80,12 +81,12 @@ public class Main implements CommandLineRunner {
 //        user1.setFirstName("bb");
 //        userService.update(user1);
 //        admin1.setLastName("admin22");
-//        adminService.update(admin1);
+//        userService.update(admin1);
 //        client1.setFirstName("reza");
-//        clientService.update(client1);
+//        userService.update(client1);
 //        technician1.setAboutMe("im bad");
 //        technician1.setPassword("Rr#33333");
-//        technicianService.update(technician1);
+//        userService.update(technician1);
 //
 //        userService.delete(user1);
 //        adminService.delete(admin1);
@@ -173,7 +174,7 @@ public class Main implements CommandLineRunner {
 
         //----------------  change password -------------------//
 
-//        technicianService.changePassword("qweqwe", "1!dDdddd", "5@rRaaaa", "5@rRaaaa");
+//        userService.changePassword("qweqwe", "1!dDdddd", "5@rRaaaa", "5@rRaaaa");
 
         //---------------- add general service and sub service by admin -------------------//
 
@@ -225,7 +226,7 @@ public class Main implements CommandLineRunner {
 //        Client client4 = clientService.findById(3L);
 //        clientService.addOrderByClient(order4, client4);
 
-//        System.out.println(technicianService.userAuthentication("qweqwe","1!dDdddd").getEmail());
+//        System.out.println(userService.userAuthentication("qweqwe","1!dDdddd").getEmail());
 
 //        System.out.println(technicianService.OrdersThatTechnicianCanOffer(technician3).get(0).getOrderDescription());
     }

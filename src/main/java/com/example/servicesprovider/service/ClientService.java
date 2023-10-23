@@ -8,7 +8,7 @@ import java.util.List;
 public interface ClientService extends BaseService<Client, Long> {
 
 
-    void addOrder(Order order, Client client);
+    Order addOrder(Order order, Client client);
 
     List<GeneralService> seeGeneralServices();
 

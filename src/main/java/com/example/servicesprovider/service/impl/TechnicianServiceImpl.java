@@ -35,12 +35,11 @@ public class TechnicianServiceImpl extends BaseServiceImpl<Technician, Long, Tec
 
     @Override
     public Technician findByUserName(String userName) {
-        try {
-            return repository.findByUserName(userName);
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-            return null;
+        Technician technician = repository.findByUserName(userName);
+        if (technician == null) {
+            throw new RuntimeException("Technician not found with username: " + userName);
         }
+        return technician;
     }
 
     @Override
@@ -66,9 +65,8 @@ public class TechnicianServiceImpl extends BaseServiceImpl<Technician, Long, Tec
             orderService.update(offer.getOrder());
             return offerService.save(offer);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
-        return null;
     }
 
     @Override
