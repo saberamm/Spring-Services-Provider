@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-//@Component
+@Component
 public class Main implements CommandLineRunner {
 
     UserService userService;
@@ -67,7 +67,7 @@ public class Main implements CommandLineRunner {
                 email("asd@asd.com").nationalCode("5036699885").userName("qweqwe").
                 technicianStatus(TechnicianStatus.NEW).aboutMe("asdda").password("1!dDdddd").build();
 
-//        userService.save(user);
+        System.out.println(userService.save(user).getId());
 //        userService.save(admin);
 //        userService.save(client);
 //        userService.save(technician);

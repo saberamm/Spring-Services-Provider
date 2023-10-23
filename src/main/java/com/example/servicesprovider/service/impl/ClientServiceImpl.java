@@ -36,8 +36,7 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
             order.setClient(client);
             return orderService.save(order);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return null;
+            throw new RuntimeException(e);
         }
     }
 

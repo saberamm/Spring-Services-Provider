@@ -28,8 +28,7 @@ public class HashGenerator {
 
             return hexString.toString();
         } catch (NoSuchAlgorithmException e) {
-            System.out.println(e.getMessage());
-            return null;
+            throw new RuntimeException("Error while generating SHA-512 hash: " + e.getMessage());
         }
     }
 

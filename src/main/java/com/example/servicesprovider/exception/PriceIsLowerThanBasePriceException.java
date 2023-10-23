@@ -1,6 +1,6 @@
 package com.example.servicesprovider.exception;
 
-public class PriceIsLowerThanBasePriceException extends Exception{
+public class PriceIsLowerThanBasePriceException extends RuntimeException{
     public PriceIsLowerThanBasePriceException() {
     }
 

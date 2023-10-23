@@ -1,6 +1,6 @@
 package com.example.servicesprovider.exception;
 
-public class NoOrdersFoundException extends Exception{
+public class NoOrdersFoundException extends RuntimeException{
     public NoOrdersFoundException() {
     }
 

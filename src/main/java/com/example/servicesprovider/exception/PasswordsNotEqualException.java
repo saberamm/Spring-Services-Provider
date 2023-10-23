@@ -1,6 +1,6 @@
 package com.example.servicesprovider.exception;
 
-public class PasswordsNotEqualException extends Exception {
+public class PasswordsNotEqualException extends RuntimeException {
     public PasswordsNotEqualException() {
     }
 

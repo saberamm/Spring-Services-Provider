@@ -1,6 +1,6 @@
 package com.example.servicesprovider.exception;
 
-public class DuplicateGeneralServiceNameException extends Exception {
+public class DuplicateGeneralServiceNameException extends RuntimeException {
     public DuplicateGeneralServiceNameException() {
     }
 

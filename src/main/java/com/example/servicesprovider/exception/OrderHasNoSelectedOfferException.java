@@ -1,6 +1,6 @@
 package com.example.servicesprovider.exception;
 
-public class OrderHasNoSelectedOfferException extends Exception {
+public class OrderHasNoSelectedOfferException extends RuntimeException {
     public OrderHasNoSelectedOfferException() {
     }
 

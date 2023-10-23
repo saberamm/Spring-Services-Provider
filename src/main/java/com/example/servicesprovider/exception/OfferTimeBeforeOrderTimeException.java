@@ -1,6 +1,6 @@
 package com.example.servicesprovider.exception;
 
-public class OfferTimeBeforeOrderTimeException extends Exception{
+public class OfferTimeBeforeOrderTimeException extends RuntimeException{
     public OfferTimeBeforeOrderTimeException() {
     }
 

@@ -1,11 +1,9 @@
 package com.example.servicesprovider.base.service;
 
 import com.example.servicesprovider.base.model.BaseModel;
-import com.example.servicesprovider.exception.NotValidModelException;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Optional;
 
 public interface BaseService<E extends BaseModel<ID>, ID extends Serializable> {
     E save(E e);
@@ -20,5 +18,5 @@ public interface BaseService<E extends BaseModel<ID>, ID extends Serializable> {
 
     boolean existsById(ID id);
 
-    boolean isValid(E e) throws NotValidModelException;
+    boolean isValid(E e);
 }

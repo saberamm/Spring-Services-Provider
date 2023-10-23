@@ -26,13 +26,9 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
 
     @Override
     public GeneralService addGeneralService(GeneralService generalService) {
-        try {
             if (generalService_service.existByServiceName(generalService.getServiceName()))
                 throw new DuplicateGeneralServiceNameException("General service already exist");
             return generalService_service.save(generalService);
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
     }
 
     @Override

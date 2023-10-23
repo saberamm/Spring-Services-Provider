@@ -19,8 +19,7 @@ public class ImageConverter {
             Path path = Paths.get(filePath);
             return getBytes(path);
         } catch (IOException e) {
-            System.out.println(e.getMessage());
-            return null;
+            throw new RuntimeException("Error reading image file: " + e.getMessage());
         }
     }
 
@@ -29,8 +28,7 @@ public class ImageConverter {
             Path path = file.toPath();
             return getBytes(path);
         } catch (IOException e) {
-            System.out.println(e.getMessage());
-            return null;
+            throw new RuntimeException("Error reading image file: " + e.getMessage());
         }
     }
 
@@ -44,7 +42,7 @@ public class ImageConverter {
 
             System.out.println("File saved to: " + folderPath + File.separator + fileName);
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            throw new RuntimeException("Error saving image file: " + e.getMessage());
         }
     }
 

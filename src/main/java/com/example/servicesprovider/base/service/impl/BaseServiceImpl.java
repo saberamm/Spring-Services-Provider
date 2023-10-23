@@ -26,13 +26,8 @@ public abstract class BaseServiceImpl<E extends BaseModel<ID>, ID extends Serial
 
     @Override
     public E save(E e) {
-        try {
-            if (isValid(e)) {
-                repository.save(e);
-            }
-        } catch (Exception ex) {
-            System.out.println("Error while saving model: " + ex.getMessage());
-            return null;
+        if (isValid(e)) {
+            repository.save(e);
         }
         return e;
     }
@@ -40,66 +35,42 @@ public abstract class BaseServiceImpl<E extends BaseModel<ID>, ID extends Serial
 
     @Override
     public E update(E e) {
-        try {
-            if (isValid(e)) {
-                repository.save(e);
-            }
-        } catch (Exception ex) {
-            System.out.println("Error while updating model: " + ex.getMessage());
+        if (isValid(e)) {
+            repository.save(e);
         }
         return e;
     }
 
     @Override
     public void delete(E e) {
-        try {
-            repository.delete(e);
-        } catch (Exception ex) {
-            System.out.println("Error while deleting model: " + ex.getMessage());
-        }
+        repository.delete(e);
     }
 
     @Override
     public E findById(ID id) {
         Optional<E> e;
-        try {
-            e = repository.findById(id);
-            if (e.isEmpty())
-                throw new EntityNotFoundException("Model does not exist");
-        } catch (Exception ex) {
-            System.out.println("Error while finding model: " + ex.getMessage());
-            return null;
-        }
+        e = repository.findById(id);
+        if (e.isEmpty())
+            throw new EntityNotFoundException("Model does not exist");
         return e.get();
     }
 
     @Override
     public List<E> findAll() {
-        try {
             return repository.findAll();
-        } catch (Exception ex) {
-            System.out.println("Error while fetching models: " + ex.getMessage());
-            return null;
-        }
     }
 
     @Override
     public boolean existsById(ID id) {
-        try {
             return repository.existsById(id);
-        } catch (Exception ex) {
-            System.out.println("Error while checking if model exist: " + ex.getMessage());
-            return false;
-        }
     }
 
     @Override
-    public boolean isValid(E e) throws NotValidModelException {
+    public boolean isValid(E e) {
         Set<ConstraintViolation<E>> violations = validator.validate(e);
         if (!violations.isEmpty()) {
             for (ConstraintViolation<E> p : violations)
                 throw new NotValidModelException(p.getMessage());
-            return false;
         }
         return true;
     }

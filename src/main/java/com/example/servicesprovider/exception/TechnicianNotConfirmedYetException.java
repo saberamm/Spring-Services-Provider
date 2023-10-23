@@ -1,6 +1,6 @@
 package com.example.servicesprovider.exception;
 
-public class TechnicianNotConfirmedYetException extends Exception{
+public class TechnicianNotConfirmedYetException extends RuntimeException{
     public TechnicianNotConfirmedYetException() {
     }
 
