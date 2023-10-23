@@ -38,14 +38,13 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
     public SubService addSubService(SubService subService) {
         SubService subService1 = subService_service.findSubServiceByName(subService.getSubServiceName());
         try {
-            if (subService1 != null)
+            if (subService.getSubServiceName().equals(subService1.getSubServiceName()))
                 throw new DuplicateSubServiceNameException("SubService name already exist");
             if (subService.getGeneralService() == null)
                 throw new GeneralServiceNotExistException("General service not exist");
             return subService_service.save(subService);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return null;
+            throw new RuntimeException(e.getMessage());
         }
     }
 
