@@ -45,12 +45,8 @@ public class Technician extends User {
     @OneToMany(mappedBy = "technician", fetch = FetchType.EAGER)
     private List<ViewPoint> viewPointList;
 
-    @ManyToMany
-    @JoinTable(
-            name = "technician_subservice",
-            joinColumns = @JoinColumn(name = "technician_id"),
-            inverseJoinColumns = @JoinColumn(name = "subservice_id"))
-    private List<SubService> subServiceList;
+    @OneToMany(mappedBy = "technician")
+    private List<SubServiceTechnician> subServiceTechnicianList;
 
     @OneToMany(mappedBy = "technician")
     private List<Offer> offerList;
