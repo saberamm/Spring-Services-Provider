@@ -19,7 +19,9 @@ public interface AdminService extends BaseService<Admin, Long> {
 
     List<Technician> seeTechnicianNotAccepted();
 
-    void addTechnicianToSubService(Technician technician, SubService subService);
+    SubServiceTechnician addTechnicianToSubService(Technician technician, SubService subService);
+
+    void deleteTechnicianFromSubService(Technician technician, SubService subService);
 
     Admin findByUserName(String userName);
 

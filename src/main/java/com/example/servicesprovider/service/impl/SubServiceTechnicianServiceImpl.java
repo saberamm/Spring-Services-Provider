@@ -1,6 +1,8 @@
 package com.example.servicesprovider.service.impl;
 
+import com.example.servicesprovider.model.SubService;
 import com.example.servicesprovider.model.SubServiceTechnician;
+import com.example.servicesprovider.model.Technician;
 import com.example.servicesprovider.repository.SubServiceTechnicianRepository;
 import com.example.servicesprovider.service.SubServiceTechnicianService;
 
@@ -25,5 +27,10 @@ public class SubServiceTechnicianServiceImpl implements SubServiceTechnicianServ
     @Override
     public void delete(SubServiceTechnician subServiceTechnician) {
         repository.delete(subServiceTechnician);
+    }
+
+    @Override
+    public void deleteByTechnicianAndSubService(Technician technician, SubService subService) {
+        repository.deleteByTechnicianAndSubService(technician, subService);
     }
 }

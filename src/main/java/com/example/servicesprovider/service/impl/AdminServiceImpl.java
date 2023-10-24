@@ -14,12 +14,14 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
     GeneralService_Service generalService_service;
     SubService_Service subService_service;
     TechnicianService technicianService;
+    SubServiceTechnicianService subServiceTechnicianService;
 
-    public AdminServiceImpl(AdminRepository repository, Validator validator, GeneralService_Service generalService_service, SubService_Service subService_service, TechnicianService technicianService) {
+    public AdminServiceImpl(AdminRepository repository, Validator validator, GeneralService_Service generalService_service, SubService_Service subService_service, TechnicianService technicianService, SubServiceTechnicianService subServiceTechnicianService) {
         super(repository, validator);
         this.generalService_service = generalService_service;
         this.subService_service = subService_service;
         this.technicianService = technicianService;
+        this.subServiceTechnicianService = subServiceTechnicianService;
     }
 
     @Override
@@ -59,14 +61,17 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
     }
 
     @Override
-    public void addTechnicianToSubService(Technician technician, SubService subService) {
-        List<SubService> subServices = subService_service.findSubServicesByTechnicianId(technician.getId());
-        subServices.add(subService);
-        technician.setSubServiceList(subServices);
+    public SubServiceTechnician addTechnicianToSubService(Technician technician, SubService subService) {
         if (technician.getTechnicianStatus().equals(TechnicianStatus.NEW)
                 || technician.getTechnicianStatus().equals(TechnicianStatus.PENDING_CONFIRMATION))
             throw new TechnicianNotConfirmedYetException("Technician not confirmed yet");
-        technicianService.update(technician);
+        SubServiceTechnician subServiceTechnician = SubServiceTechnician.builder().subService(subService).technician(technician).build();
+        return subServiceTechnicianService.save(subServiceTechnician);
+    }
+
+    @Override
+    public void deleteTechnicianFromSubService(Technician technician, SubService subService) {
+        subServiceTechnicianService.deleteByTechnicianAndSubService(technician, subService);
     }
 
     @Override
