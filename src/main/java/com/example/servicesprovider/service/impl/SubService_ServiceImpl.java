@@ -26,6 +26,6 @@ public class SubService_ServiceImpl extends BaseServiceImpl<SubService, Long, Su
 
     @Override
     public List<SubService> findSubServicesByTechnicianId(Long technicianId) {
-        return repository.findByTechnicianListId(technicianId);
+        return repository.findSubServicesByTechnicianId(technicianId);
     }
 }
