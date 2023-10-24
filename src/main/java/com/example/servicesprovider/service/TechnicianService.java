@@ -18,4 +18,6 @@ public interface TechnicianService extends BaseService<Technician, Long> {
     List<Order> OrdersThatTechnicianCanOffer(Technician technician);
 
     List<Technician> notConfirmedYet();
+
+    Technician technicianAuthentication(String userName, String password);
 }

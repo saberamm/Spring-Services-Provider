@@ -22,4 +22,6 @@ public interface ClientService extends BaseService<Client, Long> {
     Order startOrder(Order order);
 
     Order completeOrder(Order order);
+
+    Client clientAuthentication(String userName, String password);
 }

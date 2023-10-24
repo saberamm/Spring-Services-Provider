@@ -4,7 +4,6 @@ import com.example.servicesprovider.base.repository.BaseRepository;
 import com.example.servicesprovider.model.Technician;
 import com.example.servicesprovider.model.enumeration.TechnicianStatus;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 public interface TechnicianRepository extends BaseRepository<Technician, Long> {
@@ -15,5 +14,5 @@ public interface TechnicianRepository extends BaseRepository<Technician, Long> {
 
     void deleteByUserName(String userName);
 
-    List<Technician> findAllByTechnicianStatus(@NotNull(message = "technicianStatus cannot be null") TechnicianStatus technicianStatus);
+    List<Technician> findAllByTechnicianStatus(TechnicianStatus technicianStatus);
 }

@@ -6,6 +6,7 @@ import com.example.servicesprovider.model.*;
 import com.example.servicesprovider.model.enumeration.TechnicianStatus;
 import com.example.servicesprovider.repository.AdminRepository;
 import com.example.servicesprovider.service.*;
+import com.example.servicesprovider.utility.HashGenerator;
 
 import javax.validation.Validator;
 import java.util.List;
@@ -15,13 +16,15 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
     SubService_Service subService_service;
     TechnicianService technicianService;
     SubServiceTechnicianService subServiceTechnicianService;
+    HashGenerator hashGenerator;
 
-    public AdminServiceImpl(AdminRepository repository, Validator validator, GeneralService_Service generalService_service, SubService_Service subService_service, TechnicianService technicianService, SubServiceTechnicianService subServiceTechnicianService) {
+    public AdminServiceImpl(AdminRepository repository, Validator validator, GeneralService_Service generalService_service, SubService_Service subService_service, TechnicianService technicianService, SubServiceTechnicianService subServiceTechnicianService, HashGenerator hashGenerator) {
         super(repository, validator);
         this.generalService_service = generalService_service;
         this.subService_service = subService_service;
         this.technicianService = technicianService;
         this.subServiceTechnicianService = subServiceTechnicianService;
+        this.hashGenerator = hashGenerator;
     }
 
     @Override
@@ -83,5 +86,15 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
     public Technician confirmTechnician(Technician technician) {
         technician.setTechnicianStatus(TechnicianStatus.CONFIRMED);
         return technicianService.update(technician);
+    }
+
+    @Override
+    public Admin adminAuthentication(String userName, String password) {
+        Admin admin;
+        String hashedPassword = hashGenerator.generateSHA512Hash(password);
+        admin = repository.findByUserNameAndPassword(userName, hashedPassword);
+        if (admin == null)
+            throw new UsernameOrPasswordNotCorrectException("Username or password not correct");
+        return admin;
     }
 }

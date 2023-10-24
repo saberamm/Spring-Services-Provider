@@ -2,10 +2,7 @@ package com.example.servicesprovider.service.impl;
 
 import com.example.servicesprovider.base.service.impl.BaseServiceImpl;
 import com.example.servicesprovider.exception.*;
-import com.example.servicesprovider.model.Offer;
-import com.example.servicesprovider.model.Order;
-import com.example.servicesprovider.model.SubService;
-import com.example.servicesprovider.model.Technician;
+import com.example.servicesprovider.model.*;
 import com.example.servicesprovider.model.enumeration.OrderStatus;
 import com.example.servicesprovider.model.enumeration.TechnicianStatus;
 import com.example.servicesprovider.repository.TechnicianRepository;
@@ -13,6 +10,7 @@ import com.example.servicesprovider.service.OfferService;
 import com.example.servicesprovider.service.OrderService;
 import com.example.servicesprovider.service.SubService_Service;
 import com.example.servicesprovider.service.TechnicianService;
+import com.example.servicesprovider.utility.HashGenerator;
 
 import javax.validation.Validator;
 import java.util.List;
@@ -22,12 +20,14 @@ public class TechnicianServiceImpl extends BaseServiceImpl<Technician, Long, Tec
     OfferService offerService;
     OrderService orderService;
     SubService_Service subService_service;
+    HashGenerator hashGenerator;
 
-    public TechnicianServiceImpl(TechnicianRepository repository, Validator validator, OfferService offerService, OrderService orderService, SubService_Service subService_service) {
+    public TechnicianServiceImpl(TechnicianRepository repository, Validator validator, OfferService offerService, OrderService orderService, SubService_Service subService_service, HashGenerator hashGenerator) {
         super(repository, validator);
         this.offerService = offerService;
         this.orderService = orderService;
         this.subService_service = subService_service;
+        this.hashGenerator = hashGenerator;
     }
 
     @Override
@@ -73,5 +73,15 @@ public class TechnicianServiceImpl extends BaseServiceImpl<Technician, Long, Tec
     @Override
     public List<Technician> notConfirmedYet() {
         return repository.findAllByTechnicianStatus(TechnicianStatus.PENDING_CONFIRMATION);
+    }
+
+    @Override
+    public Technician technicianAuthentication(String userName, String password) {
+        Technician technician;
+        String hashedPassword = hashGenerator.generateSHA512Hash(password);
+        technician = repository.findByUserNameAndPassword(userName, hashedPassword);
+        if (technician == null)
+            throw new UsernameOrPasswordNotCorrectException("Username or password not correct");
+        return technician;
     }
 }
