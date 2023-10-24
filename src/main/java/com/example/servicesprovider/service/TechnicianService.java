@@ -4,9 +4,10 @@ import com.example.servicesprovider.base.service.BaseService;
 import com.example.servicesprovider.model.Offer;
 import com.example.servicesprovider.model.Order;
 import com.example.servicesprovider.model.Technician;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public interface TechnicianService extends BaseService<Technician, Long> {
     Technician findByUserName(String userName);
 

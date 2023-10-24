@@ -2,7 +2,9 @@ package com.example.servicesprovider.service;
 
 import com.example.servicesprovider.base.service.BaseService;
 import com.example.servicesprovider.model.User;
+import org.springframework.stereotype.Service;
 
+@Service
 public interface UserService extends BaseService<User, Long> {
 
     User findByUserName(String userName);

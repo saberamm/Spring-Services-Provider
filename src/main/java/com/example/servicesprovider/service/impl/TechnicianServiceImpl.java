@@ -13,14 +13,11 @@ import com.example.servicesprovider.service.OfferService;
 import com.example.servicesprovider.service.OrderService;
 import com.example.servicesprovider.service.SubService_Service;
 import com.example.servicesprovider.service.TechnicianService;
-import org.springframework.stereotype.Service;
 
 import javax.validation.Validator;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
 public class TechnicianServiceImpl extends BaseServiceImpl<Technician, Long, TechnicianRepository> implements TechnicianService {
     OfferService offerService;
     OrderService orderService;

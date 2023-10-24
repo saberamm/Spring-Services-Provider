@@ -4,12 +4,10 @@ import com.example.servicesprovider.base.service.impl.BaseServiceImpl;
 import com.example.servicesprovider.model.SubService;
 import com.example.servicesprovider.repository.SubServiceRepository;
 import com.example.servicesprovider.service.SubService_Service;
-import org.springframework.stereotype.Service;
 
 import javax.validation.Validator;
 import java.util.List;
 
-@Service
 public class SubService_ServiceImpl extends BaseServiceImpl<SubService, Long, SubServiceRepository> implements SubService_Service {
 
     public SubService_ServiceImpl(SubServiceRepository repository, Validator validator) {

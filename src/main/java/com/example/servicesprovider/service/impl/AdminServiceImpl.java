@@ -6,12 +6,10 @@ import com.example.servicesprovider.model.*;
 import com.example.servicesprovider.model.enumeration.TechnicianStatus;
 import com.example.servicesprovider.repository.AdminRepository;
 import com.example.servicesprovider.service.*;
-import org.springframework.stereotype.Service;
 
 import javax.validation.Validator;
 import java.util.List;
 
-@Service
 public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminRepository> implements AdminService {
     GeneralService_Service generalService_service;
     SubService_Service subService_service;

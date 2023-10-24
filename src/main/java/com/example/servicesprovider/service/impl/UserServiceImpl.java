@@ -7,11 +7,9 @@ import com.example.servicesprovider.model.User;
 import com.example.servicesprovider.repository.UserRepository;
 import com.example.servicesprovider.service.UserService;
 import com.example.servicesprovider.utility.HashGenerator;
-import org.springframework.stereotype.Service;
 
 import javax.validation.Validator;
 
-@Service
 public class UserServiceImpl extends BaseServiceImpl<User, Long, UserRepository> implements UserService {
 
     HashGenerator hashGenerator;

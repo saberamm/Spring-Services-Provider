@@ -6,13 +6,11 @@ import com.example.servicesprovider.model.*;
 import com.example.servicesprovider.model.enumeration.OrderStatus;
 import com.example.servicesprovider.repository.ClientRepository;
 import com.example.servicesprovider.service.*;
-import org.springframework.stereotype.Service;
 
 import javax.validation.Validator;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Service
 public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepository> implements ClientService {
     OrderService orderService;
     SubService_Service subService_service;
