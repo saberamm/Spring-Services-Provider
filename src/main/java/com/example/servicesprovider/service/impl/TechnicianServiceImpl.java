@@ -35,74 +35,46 @@ public class TechnicianServiceImpl extends BaseServiceImpl<Technician, Long, Tec
 
     @Override
     public Technician findByUserName(String userName) {
-        Technician technician = repository.findByUserName(userName);
-        if (technician == null) {
-            throw new RuntimeException("Technician not found with username: " + userName);
-        }
-        return technician;
+        return repository.findByUserName(userName);
     }
 
     @Override
     public void deleteByUserName(String userName) {
-        try {
-            repository.deleteByUserName(userName);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+        repository.deleteByUserName(userName);
     }
 
     @Override
     public Offer addOffer(Offer offer, Technician technician) {
         Order order = offer.getOrder();
-        try {
-            if (offer.getTimeForStartWorking().isBefore(order.getWorkTime()))
-                throw new OfferTimeBeforeOrderTimeException("offer time can not be before order time");
-            if (technician.getTechnicianStatus().equals(TechnicianStatus.NEW)
-                    || technician.getTechnicianStatus().equals(TechnicianStatus.PENDING_CONFIRMATION))
-                throw new TechnicianNotConfirmedYetException("Technician not confirmed yet");
-            if (offer.getSuggestionPrice() < order.getSubService().getBasePrice())
-                throw new PriceIsLowerThanBasePriceException("Suggestion price can not be lower than sub service base price");
-            offer.getOrder().setOrderStatus(OrderStatus.WAITING_FOR_CHOOSING_TECHNICIAN);
-            order.setOrderStatus(OrderStatus.WAITING_FOR_CHOOSING_TECHNICIAN);
-            orderService.update(offer.getOrder());
-            return offerService.save(offer);
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
+        if (offer.getTimeForStartWorking().isBefore(order.getWorkTime()))
+            throw new OfferTimeBeforeOrderTimeException("offer time can not be before order time");
+        if (technician.getTechnicianStatus().equals(TechnicianStatus.NEW)
+                || technician.getTechnicianStatus().equals(TechnicianStatus.PENDING_CONFIRMATION))
+            throw new TechnicianNotConfirmedYetException("Technician not confirmed yet");
+        if (offer.getSuggestionPrice() < order.getSubService().getBasePrice())
+            throw new PriceIsLowerThanBasePriceException("Suggestion price can not be lower than sub service base price");
+        order.setOrderStatus(OrderStatus.WAITING_FOR_CHOOSING_TECHNICIAN);
+        orderService.update(order);
+        return offerService.save(offer);
     }
 
     @Override
     public List<Order> OrdersThatTechnicianCanOffer(Technician technician) {
         List<SubService> subServices = subService_service.findSubServicesByTechnicianId(technician.getId());
 
-        List<Order> orders2 = subServices.stream()
+        List<Order> orders = subServices.stream()
                 .flatMap(subService -> orderService.findBySubService(subService).stream())
                 .filter(order ->
                         order.getOrderStatus() == OrderStatus.WAITING_FOR_TECHNICIAN_OFFER
                                 || order.getOrderStatus() == OrderStatus.WAITING_FOR_CHOOSING_TECHNICIAN)
                 .collect(Collectors.toList());
-        try {
-            if (orders2.isEmpty()) throw new NoOrdersFoundException("there is no order to offer");
-        } catch (NoOrdersFoundException e) {
-            System.out.println(e.getMessage());
-        }
-
-        return orders2;
+        if (orders.isEmpty()) throw new NoOrdersFoundException("there is no order to offer");
+        return orders;
     }
 
 
     @Override
     public List<Technician> notConfirmedYet() {
-        List<Technician> technicians = new ArrayList<>();
-        try {
-            List<Technician> techniciansNew = repository.findAllByTechnicianStatus(TechnicianStatus.NEW);
-            List<Technician> techniciansPending = repository.findAllByTechnicianStatus(TechnicianStatus.PENDING_CONFIRMATION);
-            technicians.addAll(techniciansNew);
-            technicians.addAll(techniciansPending);
-            return technicians;
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return null;
-        }
+        return repository.findAllByTechnicianStatus(TechnicianStatus.PENDING_CONFIRMATION);
     }
 }

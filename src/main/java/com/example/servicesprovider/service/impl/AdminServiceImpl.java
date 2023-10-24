@@ -26,9 +26,9 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
 
     @Override
     public GeneralService addGeneralService(GeneralService generalService) {
-            if (generalService_service.existByServiceName(generalService.getServiceName()))
-                throw new DuplicateGeneralServiceNameException("General service already exist");
-            return generalService_service.save(generalService);
+        if (generalService_service.existByServiceName(generalService.getServiceName()))
+            throw new DuplicateGeneralServiceNameException("General service already exist");
+        return generalService_service.save(generalService);
     }
 
     @Override
@@ -38,15 +38,11 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
 
     @Override
     public SubService addSubService(SubService subService) {
-        try {
-            if (subService_service.existBySubServiceName(subService.getSubServiceName()))
-                throw new DuplicateSubServiceNameException("SubService already exist");
-            if (subService.getGeneralService() == null)
-                throw new GeneralServiceNotExistException("General service not exist");
-            return subService_service.save(subService);
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
+        if (subService_service.existBySubServiceName(subService.getSubServiceName()))
+            throw new DuplicateSubServiceNameException("SubService already exist");
+        if (subService.getGeneralService() == null)
+            throw new GeneralServiceNotExistException("General service not exist");
+        return subService_service.save(subService);
     }
 
     @Override
@@ -68,25 +64,16 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
     public void addTechnicianToSubService(Technician technician, SubService subService) {
         List<SubService> subServices = subService_service.findSubServicesByTechnicianId(technician.getId());
         subServices.add(subService);
-        try {
-            technician.setSubServiceList(subServices);
-            if (technician.getTechnicianStatus().equals(TechnicianStatus.NEW)
-                    || technician.getTechnicianStatus().equals(TechnicianStatus.PENDING_CONFIRMATION))
-                throw new TechnicianNotConfirmedYetException("Technician not confirmed yet");
-            technicianService.update(technician);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+        technician.setSubServiceList(subServices);
+        if (technician.getTechnicianStatus().equals(TechnicianStatus.NEW)
+                || technician.getTechnicianStatus().equals(TechnicianStatus.PENDING_CONFIRMATION))
+            throw new TechnicianNotConfirmedYetException("Technician not confirmed yet");
+        technicianService.update(technician);
     }
 
     @Override
     public Admin findByUserName(String userName) {
-        try {
-            return repository.findByUserName(userName);
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-            return null;
-        }
+        return repository.findByUserName(userName);
     }
 
     @Override

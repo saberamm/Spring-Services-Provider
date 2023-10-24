@@ -17,19 +17,11 @@ public class GeneralService_ServiceImpl extends BaseServiceImpl<GeneralService, 
 
     @Override
     public boolean existByServiceName(String serviceName) {
-        try {
-            return repository.existsByServiceName(serviceName);
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
+        return repository.existsByServiceName(serviceName);
     }
 
     @Override
     public GeneralService findByServiceName(String serviceName) {
-        try {
-            return repository.findByServiceName(serviceName);
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
+        return repository.findByServiceName(serviceName);
     }
 }

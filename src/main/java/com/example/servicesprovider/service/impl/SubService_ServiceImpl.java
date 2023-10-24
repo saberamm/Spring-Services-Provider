@@ -18,30 +18,16 @@ public class SubService_ServiceImpl extends BaseServiceImpl<SubService, Long, Su
 
     @Override
     public SubService findBySubServiceName(String name) {
-        try {
-            return repository.findBySubServiceName(name);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return null;
-        }
+        return repository.findBySubServiceName(name);
     }
 
     @Override
     public boolean existBySubServiceName(String subServiceName) {
-        try {
-            return repository.existsBySubServiceName(subServiceName);
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
+        return repository.existsBySubServiceName(subServiceName);
     }
 
     @Override
     public List<SubService> findSubServicesByTechnicianId(Long technicianId) {
-        try {
-            return repository.findByTechnicianListId(technicianId);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return null;
+        return repository.findByTechnicianListId(technicianId);
     }
 }

@@ -23,38 +23,23 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long, UserRepository>
 
     @Override
     public User findByUserName(String userName) {
-        try {
-            return repository.findByUserName(userName);
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-            return null;
-        }
+        return repository.findByUserName(userName);
     }
 
     @Override
     public void changePassword(String userName, String password, String newPassword, String duplicateNewPassword) {
         User user = userAuthentication(userName, password);
-        try {
-            if (!newPassword.equals(duplicateNewPassword))
-                throw new PasswordsNotEqualException("new password and duplicate password are not equal");
-            user.setPassword(newPassword);
-            save(user);
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-        }
-
+        if (!newPassword.equals(duplicateNewPassword))
+            throw new PasswordsNotEqualException("new password and duplicate password are not equal");
+        user.setPassword(newPassword);
+        save(user);
     }
 
     @Override
     public User save(User user) {
-        try {
-            if (isValid(user)) {
-                user.setPassword(hashGenerator.generateSHA512Hash(user.getPassword()));
-                repository.save(user);
-            }
-        } catch (Exception ex) {
-            System.out.println("Error while saving model: " + ex.getMessage());
-            return null;
+        if (isValid(user)) {
+            user.setPassword(hashGenerator.generateSHA512Hash(user.getPassword()));
+            repository.save(user);
         }
         return user;
     }
@@ -63,14 +48,9 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long, UserRepository>
     public User userAuthentication(String userName, String password) {
         User user;
         String hashedPassword = hashGenerator.generateSHA512Hash(password);
-        try {
-            user = repository.findByUserNameAndPassword(userName, hashedPassword);
-            if (user == null)
-                throw new UsernameOrPasswordNotCorrectException("Username or password not correct");
-            return user;
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-            return null;
-        }
+        user = repository.findByUserNameAndPassword(userName, hashedPassword);
+        if (user == null)
+            throw new UsernameOrPasswordNotCorrectException("Username or password not correct");
+        return user;
     }
 }

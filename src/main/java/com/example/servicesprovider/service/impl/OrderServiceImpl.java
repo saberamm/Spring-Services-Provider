@@ -19,10 +19,6 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Long, OrderReposito
 
     @Override
     public List<Order> findBySubService(SubService subService) {
-        try {
-            return repository.findAllBySubServiceId(subService.getId());
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
+        return repository.findAllBySubServiceId(subService.getId());
     }
 }

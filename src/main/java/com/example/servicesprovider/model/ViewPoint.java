@@ -9,6 +9,7 @@ import lombok.experimental.SuperBuilder;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
@@ -23,6 +24,7 @@ public class ViewPoint extends BaseModel<Long> {
 
     @Min(value = -10, message = "Score must be between -10 to 10")
     @Max(value = 10, message = "Score must be between -10 to 10")
+    @NotNull
     private Integer score;
 
     @ManyToOne(cascade = CascadeType.MERGE)
