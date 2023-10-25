@@ -26,7 +26,6 @@ public class Technician extends User {
 
     private Double technicianCredit;
 
-    @Transient
     private Double overallScore;
 
     @Column(name = "phoneNumber")
@@ -51,18 +50,4 @@ public class Technician extends User {
     @OneToMany(mappedBy = "technician")
     private List<Offer> offerList;
 
-    @PostLoad
-    public void setOverallScore() {
-        if (viewPointList != null && !viewPointList.isEmpty()) {
-            double totalScore = 0.0;
-            for (ViewPoint viewPoint : viewPointList) {
-                if (viewPoint.getScore() != null) {
-                    totalScore += viewPoint.getScore();
-                }
-            }
-            this.overallScore = totalScore / viewPointList.size();
-        } else {
-            this.overallScore = 0.0;
-        }
-    }
 }
