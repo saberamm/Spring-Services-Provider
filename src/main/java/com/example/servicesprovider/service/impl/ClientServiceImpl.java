@@ -83,6 +83,15 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
     }
 
     @Override
+    public Client save(Client client) {
+        if (isValid(client)) {
+            client.setPassword(hashGenerator.generateSHA512Hash(client.getPassword()));
+            repository.save(client);
+        }
+        return client;
+    }
+
+    @Override
     public Client clientAuthentication(String userName, String password) {
         Client client;
         String hashedPassword = hashGenerator.generateSHA512Hash(password);

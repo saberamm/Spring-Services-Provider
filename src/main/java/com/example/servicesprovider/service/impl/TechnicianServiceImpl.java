@@ -76,6 +76,15 @@ public class TechnicianServiceImpl extends BaseServiceImpl<Technician, Long, Tec
     }
 
     @Override
+    public Technician save(Technician technician) {
+        if (isValid(technician)) {
+            technician.setPassword(hashGenerator.generateSHA512Hash(technician.getPassword()));
+            repository.save(technician);
+        }
+        return technician;
+    }
+
+    @Override
     public Technician technicianAuthentication(String userName, String password) {
         Technician technician;
         String hashedPassword = hashGenerator.generateSHA512Hash(password);

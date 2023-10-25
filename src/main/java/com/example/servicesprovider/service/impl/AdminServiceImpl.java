@@ -73,6 +73,15 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
     }
 
     @Override
+    public Admin save(Admin admin) {
+        if (isValid(admin)) {
+            admin.setPassword(hashGenerator.generateSHA512Hash(admin.getPassword()));
+            repository.save(admin);
+        }
+        return admin;
+    }
+
+    @Override
     public void deleteTechnicianFromSubService(Technician technician, SubService subService) {
         subServiceTechnicianService.deleteByTechnicianAndSubService(technician, subService);
     }
