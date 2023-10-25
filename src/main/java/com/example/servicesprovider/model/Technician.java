@@ -26,6 +26,8 @@ public class Technician extends User {
 
     private Double technicianCredit;
 
+    private Double negativeScore;
+
     private Double overallScore;
 
     @Column(name = "phoneNumber")
