@@ -5,12 +5,13 @@ import com.example.servicesprovider.model.GeneralService;
 import com.example.servicesprovider.repository.GeneralServiceRepository;
 import com.example.servicesprovider.service.GeneralService_Service;
 
-import javax.validation.Validator;
+import org.springframework.stereotype.Service;
 
+@Service
 public class GeneralService_ServiceImpl extends BaseServiceImpl<GeneralService, Long, GeneralServiceRepository> implements GeneralService_Service {
 
-    public GeneralService_ServiceImpl(GeneralServiceRepository repository, Validator validator) {
-        super(repository, validator);
+    public GeneralService_ServiceImpl(GeneralServiceRepository repository) {
+        super(repository);
     }
 
     @Override

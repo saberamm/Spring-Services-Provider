@@ -8,14 +8,16 @@ import com.example.servicesprovider.repository.UserRepository;
 import com.example.servicesprovider.service.UserService;
 import com.example.servicesprovider.utility.HashGenerator;
 
-import javax.validation.Validator;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class UserServiceImpl extends BaseServiceImpl<User, Long, UserRepository> implements UserService {
 
     HashGenerator hashGenerator;
 
-    public UserServiceImpl(UserRepository repository, Validator validator, HashGenerator hashGenerator) {
-        super(repository, validator);
+    public UserServiceImpl(UserRepository repository, HashGenerator hashGenerator) {
+        super(repository);
         this.hashGenerator = hashGenerator;
     }
 
@@ -35,10 +37,8 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long, UserRepository>
 
     @Override
     public User save(User user) {
-        if (isValid(user)) {
-            user.setPassword(hashGenerator.generateSHA512Hash(user.getPassword()));
-            repository.save(user);
-        }
+        user.setPassword(hashGenerator.generateSHA512Hash(user.getPassword()));
+        repository.save(user);
         return user;
     }
 

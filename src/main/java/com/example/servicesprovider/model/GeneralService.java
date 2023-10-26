@@ -7,8 +7,10 @@ import jakarta.persistence.OneToMany;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
+
 import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor

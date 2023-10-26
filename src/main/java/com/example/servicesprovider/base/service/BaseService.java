@@ -18,5 +18,4 @@ public interface BaseService<E extends BaseModel<ID>, ID extends Serializable> {
 
     boolean existsById(ID id);
 
-    boolean isValid(E e);
 }

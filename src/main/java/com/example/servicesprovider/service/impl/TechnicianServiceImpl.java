@@ -12,18 +12,20 @@ import com.example.servicesprovider.service.SubService_Service;
 import com.example.servicesprovider.service.TechnicianService;
 import com.example.servicesprovider.utility.HashGenerator;
 
-import javax.validation.Validator;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class TechnicianServiceImpl extends BaseServiceImpl<Technician, Long, TechnicianRepository> implements TechnicianService {
     OfferService offerService;
     OrderService orderService;
     SubService_Service subService_service;
     HashGenerator hashGenerator;
 
-    public TechnicianServiceImpl(TechnicianRepository repository, Validator validator, OfferService offerService, OrderService orderService, SubService_Service subService_service, HashGenerator hashGenerator) {
-        super(repository, validator);
+    public TechnicianServiceImpl(TechnicianRepository repository, OfferService offerService, OrderService orderService, SubService_Service subService_service, HashGenerator hashGenerator) {
+        super(repository);
         this.offerService = offerService;
         this.orderService = orderService;
         this.subService_service = subService_service;
@@ -77,10 +79,8 @@ public class TechnicianServiceImpl extends BaseServiceImpl<Technician, Long, Tec
 
     @Override
     public Technician save(Technician technician) {
-        if (isValid(technician)) {
-            technician.setPassword(hashGenerator.generateSHA512Hash(technician.getPassword()));
-            repository.save(technician);
-        }
+        technician.setPassword(hashGenerator.generateSHA512Hash(technician.getPassword()));
+        repository.save(technician);
         return technician;
     }
 

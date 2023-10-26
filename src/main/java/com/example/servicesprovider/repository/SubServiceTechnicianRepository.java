@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SubServiceTechnicianRepository extends JpaRepository<SubServiceTechnician, Long> {
 
-    public void deleteByTechnicianAndSubService(Technician technician, SubService subService);
+    void deleteByTechnicianAndSubService(Technician technician, SubService subService);
 }

@@ -4,11 +4,11 @@ import com.example.servicesprovider.base.service.impl.BaseServiceImpl;
 import com.example.servicesprovider.model.CreditCard;
 import com.example.servicesprovider.repository.CreditCardRepository;
 import com.example.servicesprovider.service.CreditCardService;
+import org.springframework.stereotype.Service;
 
-import javax.validation.Validator;
-
+@Service
 public class CreditCardServiceImpl extends BaseServiceImpl<CreditCard, Long, CreditCardRepository> implements CreditCardService {
-    public CreditCardServiceImpl(CreditCardRepository repository, Validator validator) {
-        super(repository, validator);
+    public CreditCardServiceImpl(CreditCardRepository repository) {
+        super(repository);
     }
 }

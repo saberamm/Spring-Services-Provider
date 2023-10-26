@@ -8,10 +8,12 @@ import com.example.servicesprovider.repository.ClientRepository;
 import com.example.servicesprovider.service.*;
 import com.example.servicesprovider.utility.HashGenerator;
 
-import javax.validation.Validator;
+import org.springframework.stereotype.Service;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Service
 public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepository> implements ClientService {
     OrderService orderService;
     SubService_Service subService_service;
@@ -19,8 +21,8 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
     OfferService offerService;
     HashGenerator hashGenerator;
 
-    public ClientServiceImpl(ClientRepository repository, Validator validator, OrderService orderService, SubService_Service subService_service, GeneralService_Service generalService_service, OfferService offerService, HashGenerator hashGenerator) {
-        super(repository, validator);
+    public ClientServiceImpl(ClientRepository repository, OrderService orderService, SubService_Service subService_service, GeneralService_Service generalService_service, OfferService offerService, HashGenerator hashGenerator) {
+        super(repository);
         this.orderService = orderService;
         this.subService_service = subService_service;
         this.generalService_service = generalService_service;
@@ -84,10 +86,8 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
 
     @Override
     public Client save(Client client) {
-        if (isValid(client)) {
-            client.setPassword(hashGenerator.generateSHA512Hash(client.getPassword()));
-            repository.save(client);
-        }
+        client.setPassword(hashGenerator.generateSHA512Hash(client.getPassword()));
+        repository.save(client);
         return client;
     }
 

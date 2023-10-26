@@ -4,16 +4,15 @@ import com.example.servicesprovider.base.service.BaseService;
 import com.example.servicesprovider.model.Offer;
 import com.example.servicesprovider.model.Order;
 import com.example.servicesprovider.model.Technician;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
-@Service
+
 public interface TechnicianService extends BaseService<Technician, Long> {
     Technician findByUserName(String userName);
 
     void deleteByUserName(String userName);
 
-    Offer addOffer(Offer offer,Technician technician);
+    Offer addOffer(Offer offer, Technician technician);
 
     List<Order> OrdersThatTechnicianCanOffer(Technician technician);
 

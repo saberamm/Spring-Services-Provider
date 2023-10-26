@@ -3,42 +3,30 @@ package com.example.servicesprovider.base.service.impl;
 import com.example.servicesprovider.base.model.BaseModel;
 import com.example.servicesprovider.base.repository.BaseRepository;
 import com.example.servicesprovider.base.service.BaseService;
-import com.example.servicesprovider.exception.NotValidModelException;
 import jakarta.persistence.EntityNotFoundException;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 public abstract class BaseServiceImpl<E extends BaseModel<ID>, ID extends Serializable, R extends BaseRepository<E, ID>>
         implements BaseService<E, ID> {
 
     protected final R repository;
-    protected final Validator validator;
 
-    public BaseServiceImpl(R repository, Validator validator) {
+    public BaseServiceImpl(R repository) {
         this.repository = repository;
-        this.validator = validator;
     }
 
     @Override
     public E save(E e) {
-        if (isValid(e)) {
-            repository.save(e);
-        }
-        return e;
+        return repository.save(e);
     }
 
 
     @Override
     public E update(E e) {
-        if (isValid(e)) {
-            repository.save(e);
-        }
-        return e;
+        return repository.save(e);
     }
 
     @Override
@@ -57,21 +45,11 @@ public abstract class BaseServiceImpl<E extends BaseModel<ID>, ID extends Serial
 
     @Override
     public List<E> findAll() {
-            return repository.findAll();
+        return repository.findAll();
     }
 
     @Override
     public boolean existsById(ID id) {
-            return repository.existsById(id);
-    }
-
-    @Override
-    public boolean isValid(E e) {
-        Set<ConstraintViolation<E>> violations = validator.validate(e);
-        if (!violations.isEmpty()) {
-            for (ConstraintViolation<E> p : violations)
-                throw new NotValidModelException(p.getMessage());
-        }
-        return true;
+        return repository.existsById(id);
     }
 }

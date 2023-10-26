@@ -1,9 +1,6 @@
 package com.example.servicesprovider.model;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -15,6 +12,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Data
 @SuperBuilder
+@IdClass(SubServiceTechnician.SubServiceTechnicianId.class)
 @Entity
 public class SubServiceTechnician {
 

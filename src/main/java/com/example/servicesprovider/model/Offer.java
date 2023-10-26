@@ -7,8 +7,8 @@ import jakarta.persistence.ManyToOne;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import javax.validation.constraints.FutureOrPresent;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
+
 import java.time.LocalDateTime;
 
 @Getter

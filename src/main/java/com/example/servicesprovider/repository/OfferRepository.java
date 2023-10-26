@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface OfferRepository extends BaseRepository<Offer, Long> {
 
-    public List<Offer> findAllByOrderId(Long order_id);
+    List<Offer> findAllByOrderId(Long order_id);
 }

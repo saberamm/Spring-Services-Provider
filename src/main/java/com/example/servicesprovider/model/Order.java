@@ -6,10 +6,11 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import javax.validation.constraints.FutureOrPresent;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
+
 import java.time.LocalDateTime;
 import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -38,7 +39,7 @@ public class Order extends BaseModel<Long> {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
-    @OneToMany(mappedBy = "order",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
     private List<Offer> offerList;
 
     @ManyToOne(cascade = CascadeType.MERGE)

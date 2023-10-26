@@ -46,26 +46,26 @@ public class Main implements CommandLineRunner {
         //----------------  users -------------------//
 
         User user = new User("aa", "aa",
-                "aa", "yyOs1#222",
-                LocalDate.of(2000, 2, 2), "sss@sss.com");
+                "aa", "y2",
+                LocalDate.of(2000, 2, 2), "ssssss.com");
 
-        Admin admin = Admin.builder().firstName("reza").lastName("asghar").userName("ttwr").
-                birthDate(LocalDate.of(2005, 5, 5))
-                .password("1wW#qwer").position(AdminPosition.EMPLOYEE).email("qwe@asd.com").build();
-
-        Client client = Client.builder().firstName("reza").lastName("asghar").userName("tt4wr").
-                birthDate(LocalDate.of(2005, 5, 5))
-                .password("1wW#qwer").email("qwe@a4sd.com").
-                clientCredit(50000D).nationalCode("5555555555").phoneNumber("09999999999").build();
-
-
-        byte[] image = imageConverter.readFileToBytes("C:\\Users\\Administrator\\Desktop\\Temp\\sss.jpg");
-
-        Technician technician = Technician.builder().technicianCredit(100000D).
-                birthDate(LocalDate.of(2000, 8, 8)).firstName("mmd")
-                .lastName("trdf").technicianPhoto(image).phoneNumber("99999999999").
-                email("asd@asd.com").nationalCode("5036699885").userName("qweqwe").
-                technicianStatus(TechnicianStatus.NEW).aboutMe("asdda").password("1!dDdddd").build();
+//        Admin admin = Admin.builder().firstName("reza").lastName("asghar").userName("ttwr").
+//                birthDate(LocalDate.of(2005, 5, 5))
+//                .password("1wW#qwer").position(AdminPosition.EMPLOYEE).email("qwe@asd.com").build();
+//
+//        Client client = Client.builder().firstName("reza").lastName("asghar").userName("tt4wr").
+//                birthDate(LocalDate.of(2005, 5, 5))
+//                .password("1wW#qwer").email("qwe@a4sd.com").
+//                clientCredit(50000D).nationalCode("5555555555").phoneNumber("09999999999").build();
+//
+//
+//        byte[] image = imageConverter.readFileToBytes("C:\\Users\\Administrator\\Desktop\\Temp\\sss.jpg");
+//
+//        Technician technician = Technician.builder().technicianCredit(100000D).
+//                birthDate(LocalDate.of(2000, 8, 8)).firstName("mmd")
+//                .lastName("trdf").technicianPhoto(image).phoneNumber("99999999999").
+//                email("asd@asd.com").nationalCode("5036699885").userName("qweqwe").
+//                technicianStatus(TechnicianStatus.NEW).aboutMe("asdda").password("1!dDdddd").build();
 
         System.out.println(userService.save(user).getId());
 //        userService.save(admin);

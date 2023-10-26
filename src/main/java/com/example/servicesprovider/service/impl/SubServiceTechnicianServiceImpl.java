@@ -5,7 +5,9 @@ import com.example.servicesprovider.model.SubServiceTechnician;
 import com.example.servicesprovider.model.Technician;
 import com.example.servicesprovider.repository.SubServiceTechnicianRepository;
 import com.example.servicesprovider.service.SubServiceTechnicianService;
+import org.springframework.stereotype.Service;
 
+@Service
 public class SubServiceTechnicianServiceImpl implements SubServiceTechnicianService {
 
     SubServiceTechnicianRepository repository;

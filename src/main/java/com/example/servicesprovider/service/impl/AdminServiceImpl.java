@@ -7,10 +7,11 @@ import com.example.servicesprovider.model.enumeration.TechnicianStatus;
 import com.example.servicesprovider.repository.AdminRepository;
 import com.example.servicesprovider.service.*;
 import com.example.servicesprovider.utility.HashGenerator;
+import org.springframework.stereotype.Service;
 
-import javax.validation.Validator;
 import java.util.List;
 
+@Service
 public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminRepository> implements AdminService {
     GeneralService_Service generalService_service;
     SubService_Service subService_service;
@@ -18,8 +19,8 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
     SubServiceTechnicianService subServiceTechnicianService;
     HashGenerator hashGenerator;
 
-    public AdminServiceImpl(AdminRepository repository, Validator validator, GeneralService_Service generalService_service, SubService_Service subService_service, TechnicianService technicianService, SubServiceTechnicianService subServiceTechnicianService, HashGenerator hashGenerator) {
-        super(repository, validator);
+    public AdminServiceImpl(AdminRepository repository, GeneralService_Service generalService_service, SubService_Service subService_service, TechnicianService technicianService, SubServiceTechnicianService subServiceTechnicianService, HashGenerator hashGenerator) {
+        super(repository);
         this.generalService_service = generalService_service;
         this.subService_service = subService_service;
         this.technicianService = technicianService;
@@ -74,10 +75,8 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
 
     @Override
     public Admin save(Admin admin) {
-        if (isValid(admin)) {
-            admin.setPassword(hashGenerator.generateSHA512Hash(admin.getPassword()));
-            repository.save(admin);
-        }
+        admin.setPassword(hashGenerator.generateSHA512Hash(admin.getPassword()));
+        repository.save(admin);
         return admin;
     }
 
