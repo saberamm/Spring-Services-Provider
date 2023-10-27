@@ -22,5 +22,17 @@ public interface ClientService extends BaseService<Client, Long> {
 
     Order completeOrder(Order order);
 
+    void addOverallScore(Technician technician);
+
+    void addNegativeScore(Offer offer, Technician technician);
+
+    boolean isDoneAfterEndTime(Order order, Offer offer);
+
     Client clientAuthentication(String userName, String password);
+
+    void payWithClientCredit(Offer offer, Client client);
+
+    void payWithCreditCard(CreditCard creditCard, Offer offer);
+
+    boolean checkCreditCards(CreditCard savedCreditCard, CreditCard creditCard);
 }

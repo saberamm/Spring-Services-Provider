@@ -47,7 +47,7 @@ public class Main implements CommandLineRunner {
 
         User user = new User("aa", "aa",
                 "aa", "y2",
-                LocalDate.of(2000, 2, 2), "ssssss.com");
+                LocalDate.of(2000, 2, 2), "sss@sss.com");
 
 //        Admin admin = Admin.builder().firstName("reza").lastName("asghar").userName("ttwr").
 //                birthDate(LocalDate.of(2005, 5, 5))

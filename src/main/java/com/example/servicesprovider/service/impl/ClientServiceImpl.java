@@ -4,12 +4,14 @@ import com.example.servicesprovider.base.service.impl.BaseServiceImpl;
 import com.example.servicesprovider.exception.*;
 import com.example.servicesprovider.model.*;
 import com.example.servicesprovider.model.enumeration.OrderStatus;
+import com.example.servicesprovider.model.enumeration.TechnicianStatus;
 import com.example.servicesprovider.repository.ClientRepository;
 import com.example.servicesprovider.service.*;
 import com.example.servicesprovider.utility.HashGenerator;
 
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -19,14 +21,18 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
     SubService_Service subService_service;
     GeneralService_Service generalService_service;
     OfferService offerService;
+    TechnicianService technicianService;
+    CreditCardService creditCardService;
     HashGenerator hashGenerator;
 
-    public ClientServiceImpl(ClientRepository repository, OrderService orderService, SubService_Service subService_service, GeneralService_Service generalService_service, OfferService offerService, HashGenerator hashGenerator) {
+    public ClientServiceImpl(ClientRepository repository, OrderService orderService, SubService_Service subService_service, GeneralService_Service generalService_service, OfferService offerService, TechnicianService technicianService, CreditCardService creditCardService, HashGenerator hashGenerator) {
         super(repository);
         this.orderService = orderService;
         this.subService_service = subService_service;
         this.generalService_service = generalService_service;
         this.offerService = offerService;
+        this.technicianService = technicianService;
+        this.creditCardService = creditCardService;
         this.hashGenerator = hashGenerator;
     }
 
@@ -76,12 +82,48 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
 
     @Override
     public Order completeOrder(Order order) {
+        Offer offer = offerService.findById(order.getSelectedOffersId());
+        Technician technician = offer.getTechnician();
         if (order.getOrderStatus().equals(OrderStatus.STARTED)) {
             order.setOrderStatus(OrderStatus.DONE);
-            return orderService.update(order);
         } else {
             throw new OrderNotStartedYetException("Order not started");
         }
+        if (isDoneAfterEndTime(order, offer)) {
+            addNegativeScore(offer, technician);
+        }
+        addOverallScore(technician);
+        if (technician.getOverallScore() < 0) technician.setTechnicianStatus(TechnicianStatus.INACTIVE);
+        technicianService.update(technician);
+        return orderService.update(order);
+    }
+
+    @Override
+    public void addOverallScore(Technician technician) {
+        List<ViewPoint> viewPointList = technician.getViewPointList();
+        if (viewPointList != null && !viewPointList.isEmpty()) {
+            double totalScore = 0.0;
+            for (ViewPoint viewPoint : viewPointList) {
+                if (viewPoint.getScore() != null) {
+                    totalScore += viewPoint.getScore();
+                }
+            }
+            if (technician.getNegativeScore() == null) technician.setNegativeScore(0D);
+            technician.setOverallScore(totalScore / viewPointList.size() - technician.getNegativeScore());
+        } else {
+            technician.setOverallScore(0D);
+        }
+    }
+
+    @Override
+    public void addNegativeScore(Offer offer, Technician technician) {
+        long hours = Duration.between(LocalDateTime.now(), offer.getTimeForEndWorking()).toHours();
+        technician.setNegativeScore(technician.getNegativeScore() + hours);
+    }
+
+    @Override
+    public boolean isDoneAfterEndTime(Order order, Offer offer) {
+        return LocalDateTime.now().isAfter(offer.getTimeForEndWorking());
     }
 
     @Override
@@ -99,5 +141,38 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
         if (client == null)
             throw new UsernameOrPasswordNotCorrectException("Username or password not correct");
         return client;
+    }
+
+    @Override
+    public void payWithClientCredit(Offer offer, Client client) {
+        if (client.getClientCredit() < offer.getSuggestionPrice())
+            throw new NotEnoughCreditException("Your credit is not enough");
+        Order order = offer.getOrder();
+        Technician technician = offer.getTechnician();
+        client.setClientCredit(client.getClientCredit() - offer.getSuggestionPrice());
+        technician.setTechnicianCredit(technician.getTechnicianCredit() + offer.getSuggestionPrice()/100*70);
+        order.setOrderStatus(OrderStatus.PAYED);
+        orderService.update(order);
+        technicianService.update(technician);
+        update(client);
+    }
+
+    @Override
+    public void payWithCreditCard(CreditCard creditCard, Offer offer) {
+        Technician technician = offer.getTechnician();
+        Order order = offer.getOrder();
+        CreditCard savedCreditCard = creditCardService.findByCreditCardNumber(creditCard.getCreditCardNumber());
+        if (checkCreditCards(savedCreditCard, creditCard)) {
+            technician.setTechnicianCredit(technician.getTechnicianCredit() + offer.getSuggestionPrice()/100*70);
+            order.setOrderStatus(OrderStatus.PAYED);
+            orderService.update(order);
+            technicianService.update(technician);
+        } else throw new CreditCardNotValidException("Credit Card Not valid");
+    }
+
+    @Override
+    public boolean checkCreditCards(CreditCard savedCreditCard, CreditCard creditCard) {
+        return creditCard.getCvv2().equals(savedCreditCard.getCvv2())
+                && creditCard.getSecondPassword().equals(savedCreditCard.getSecondPassword());
     }
 }

@@ -48,7 +48,8 @@ public class TechnicianServiceImpl extends BaseServiceImpl<Technician, Long, Tec
         if (offer.getTimeForStartWorking().isBefore(order.getWorkTime()))
             throw new OfferTimeBeforeOrderTimeException("offer time can not be before order time");
         if (technician.getTechnicianStatus().equals(TechnicianStatus.NEW)
-                || technician.getTechnicianStatus().equals(TechnicianStatus.PENDING_CONFIRMATION))
+                || technician.getTechnicianStatus().equals(TechnicianStatus.PENDING_CONFIRMATION)
+                || technician.getTechnicianStatus().equals(TechnicianStatus.INACTIVE))
             throw new TechnicianNotConfirmedYetException("Technician not confirmed yet");
         if (offer.getSuggestionPrice() < order.getSubService().getBasePrice())
             throw new PriceIsLowerThanBasePriceException("Suggestion price can not be lower than sub service base price");

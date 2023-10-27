@@ -11,4 +11,9 @@ public class CreditCardServiceImpl extends BaseServiceImpl<CreditCard, Long, Cre
     public CreditCardServiceImpl(CreditCardRepository repository) {
         super(repository);
     }
+
+    @Override
+    public CreditCard findByCreditCardNumber(String creditCardNumber) {
+        return repository.findByCreditCardNumber(creditCardNumber);
+    }
 }
