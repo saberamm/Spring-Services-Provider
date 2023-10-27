@@ -67,7 +67,7 @@ public class Main implements CommandLineRunner {
 //                email("asd@asd.com").nationalCode("5036699885").userName("qweqwe").
 //                technicianStatus(TechnicianStatus.NEW).aboutMe("asdda").password("1!dDdddd").build();
 
-        System.out.println(userService.save(user).getId());
+//        System.out.println(userService.save(user).getId());
 //        userService.save(admin);
 //        userService.save(client);
 //        userService.save(technician);
@@ -76,7 +76,7 @@ public class Main implements CommandLineRunner {
 //        User user1 = userService.findById(1L);
 //        Admin admin1 = adminService.findById(2L);
 //        Client client1 = clientService.findById(3L);
-//        Technician technician1 = technicianService.findById(4L);
+//        Technician technician1 = technicianService.findByUserName("ghgh");
 
 //        user1.setFirstName("bb");
 //        userService.update(user1);

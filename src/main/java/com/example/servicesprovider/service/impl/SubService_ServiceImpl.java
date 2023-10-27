@@ -5,9 +5,11 @@ import com.example.servicesprovider.model.SubService;
 import com.example.servicesprovider.repository.SubServiceRepository;
 import com.example.servicesprovider.service.SubService_Service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 public class SubService_ServiceImpl extends BaseServiceImpl<SubService, Long, SubServiceRepository> implements SubService_Service {
 
@@ -17,7 +19,9 @@ public class SubService_ServiceImpl extends BaseServiceImpl<SubService, Long, Su
 
     @Override
     public SubService findBySubServiceName(String name) {
-        return repository.findBySubServiceName(name);
+        SubService subService = repository.findBySubServiceName(name);
+        if (subService == null) throw new EntityNotFoundException("Model not exist");
+        return subService;
     }
 
     @Override
@@ -27,6 +31,8 @@ public class SubService_ServiceImpl extends BaseServiceImpl<SubService, Long, Su
 
     @Override
     public List<SubService> findSubServicesByTechnicianId(Long technicianId) {
-        return repository.findSubServicesByTechnicianId(technicianId);
+        List<SubService> subServices = repository.findSubServicesByTechnicianId(technicianId);
+        if (subServices == null) throw new EntityNotFoundException("Model not exist");
+        return subServices;
     }
 }

@@ -12,6 +12,7 @@ import com.example.servicesprovider.service.SubService_Service;
 import com.example.servicesprovider.service.TechnicianService;
 import com.example.servicesprovider.utility.HashGenerator;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,7 +35,9 @@ public class TechnicianServiceImpl extends BaseServiceImpl<Technician, Long, Tec
 
     @Override
     public Technician findByUserName(String userName) {
-        return repository.findByUserName(userName);
+        Technician technician=repository.findByUserName(userName);
+        if (technician==null) throw new EntityNotFoundException("Model not exist");
+        return technician;
     }
 
     @Override

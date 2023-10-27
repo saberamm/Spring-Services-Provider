@@ -9,6 +9,7 @@ import com.example.servicesprovider.service.UserService;
 import com.example.servicesprovider.utility.HashGenerator;
 
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,7 +24,9 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long, UserRepository>
 
     @Override
     public User findByUserName(String userName) {
-        return repository.findByUserName(userName);
+        User user=repository.findByUserName(userName);
+        if (user==null) throw new EntityNotFoundException("Model not exist");
+        return user;
     }
 
     @Override

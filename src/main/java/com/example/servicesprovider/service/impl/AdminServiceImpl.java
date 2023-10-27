@@ -7,6 +7,7 @@ import com.example.servicesprovider.model.enumeration.TechnicianStatus;
 import com.example.servicesprovider.repository.AdminRepository;
 import com.example.servicesprovider.service.*;
 import com.example.servicesprovider.utility.HashGenerator;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -87,7 +88,9 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
 
     @Override
     public Admin findByUserName(String userName) {
-        return repository.findByUserName(userName);
+        Admin admin = repository.findByUserName(userName);
+        if (admin == null) throw new EntityNotFoundException("Model not exist");
+        return admin;
     }
 
     @Override

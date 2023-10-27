@@ -9,6 +9,7 @@ import com.example.servicesprovider.repository.ClientRepository;
 import com.example.servicesprovider.service.*;
 import com.example.servicesprovider.utility.HashGenerator;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -57,7 +58,9 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
 
     @Override
     public Client findByUserName(String userName) {
-        return repository.findByUserName(userName);
+        Client client = repository.findByUserName(userName);
+        if (client == null) throw new EntityNotFoundException("Model not exist");
+        return client;
     }
 
     @Override
@@ -150,7 +153,7 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
         Order order = offer.getOrder();
         Technician technician = offer.getTechnician();
         client.setClientCredit(client.getClientCredit() - offer.getSuggestionPrice());
-        technician.setTechnicianCredit(technician.getTechnicianCredit() + offer.getSuggestionPrice()/100*70);
+        technician.setTechnicianCredit(technician.getTechnicianCredit() + offer.getSuggestionPrice() / 100 * 70);
         order.setOrderStatus(OrderStatus.PAYED);
         orderService.update(order);
         technicianService.update(technician);
@@ -163,7 +166,7 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
         Order order = offer.getOrder();
         CreditCard savedCreditCard = creditCardService.findByCreditCardNumber(creditCard.getCreditCardNumber());
         if (checkCreditCards(savedCreditCard, creditCard)) {
-            technician.setTechnicianCredit(technician.getTechnicianCredit() + offer.getSuggestionPrice()/100*70);
+            technician.setTechnicianCredit(technician.getTechnicianCredit() + offer.getSuggestionPrice() / 100 * 70);
             order.setOrderStatus(OrderStatus.PAYED);
             orderService.update(order);
             technicianService.update(technician);

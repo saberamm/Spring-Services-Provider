@@ -5,6 +5,7 @@ import com.example.servicesprovider.model.Order;
 import com.example.servicesprovider.model.SubService;
 import com.example.servicesprovider.repository.OrderRepository;
 import com.example.servicesprovider.service.OrderService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +18,8 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Long, OrderReposito
 
     @Override
     public List<Order> findBySubService(SubService subService) {
-        return repository.findAllBySubServiceId(subService.getId());
+        List<Order> orders = repository.findAllBySubServiceId(subService.getId());
+        if (orders == null) throw new EntityNotFoundException("Model not exist");
+        return orders;
     }
 }

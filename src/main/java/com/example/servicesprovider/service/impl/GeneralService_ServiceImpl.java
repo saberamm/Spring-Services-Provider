@@ -5,6 +5,7 @@ import com.example.servicesprovider.model.GeneralService;
 import com.example.servicesprovider.repository.GeneralServiceRepository;
 import com.example.servicesprovider.service.GeneralService_Service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,6 +22,8 @@ public class GeneralService_ServiceImpl extends BaseServiceImpl<GeneralService, 
 
     @Override
     public GeneralService findByServiceName(String serviceName) {
-        return repository.findByServiceName(serviceName);
+        GeneralService generalService = repository.findByServiceName(serviceName);
+        if (generalService == null) throw new EntityNotFoundException("Model not exist");
+        return generalService;
     }
 }
