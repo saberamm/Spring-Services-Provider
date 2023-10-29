@@ -37,6 +37,11 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
     }
 
     @Override
+    public void deleteByUserName(String userName) {
+        repository.deleteByUserName(userName);
+    }
+
+    @Override
     public List<GeneralService> generalServicesList() {
         return generalService_service.findAll();
     }

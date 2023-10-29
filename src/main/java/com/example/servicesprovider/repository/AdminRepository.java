@@ -8,4 +8,6 @@ public interface AdminRepository extends BaseRepository<Admin, Long> {
     Admin findByUserName(String userName);
 
     Admin findByUserNameAndPassword(String userName, String password);
+
+    void deleteByUserName(String userName);
 }

@@ -42,7 +42,7 @@ public class ClientController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<ClientResponseDto> updateClient(@RequestBody ClientRequestDto clientRequestDto) {
+    public ResponseEntity<ClientResponseDto> updateClient(@RequestBody @Valid ClientRequestDto clientRequestDto) {
         if (clientRequestDto.getPassword() != null) {
             throw new IllegalCallerException("password cant change here please use change password end point");
         }
@@ -54,7 +54,7 @@ public class ClientController {
     }
 
     @PutMapping("/change-password")
-    public void changePassword(@RequestBody PasswordUpdateRequest passwordUpdateRequest) {
+    public void changePassword(@RequestBody @Valid PasswordUpdateRequest passwordUpdateRequest) {
         userService.changePassword(passwordUpdateRequest.getUserName(),
                 passwordUpdateRequest.getOldPassword(),
                 passwordUpdateRequest.getNewPassword(),

@@ -8,6 +8,8 @@ import java.util.List;
 public interface AdminService extends BaseService<Admin, Long> {
     GeneralService addGeneralService(GeneralService generalService);
 
+    void deleteByUserName(String userName);
+
     List<GeneralService> generalServicesList();
 
     SubService addSubService(SubService subService);
