@@ -10,6 +10,7 @@ import com.example.servicesprovider.service.*;
 import com.example.servicesprovider.utility.HashGenerator;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -49,6 +50,12 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
     @Override
     public List<GeneralService> seeGeneralServices() {
         return generalService_service.findAll();
+    }
+
+    @Override
+    @Transactional
+    public void deleteByUserName(String userName) {
+        repository.deleteByUserName(userName);
     }
 
     @Override

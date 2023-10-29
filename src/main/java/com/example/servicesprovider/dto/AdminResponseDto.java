@@ -1,5 +1,6 @@
 package com.example.servicesprovider.dto;
 
+import com.example.servicesprovider.model.enumeration.AdminPosition;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -9,7 +10,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ClientResponseDto {
+public class AdminResponseDto {
 
     private Long id;
 
@@ -23,9 +24,5 @@ public class ClientResponseDto {
 
     private String email;
 
-    private Double clientCredit;
-
-    private String phoneNumber;
-
-    private String nationalCode;
+    private AdminPosition position;
 }

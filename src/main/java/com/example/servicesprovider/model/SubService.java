@@ -5,8 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import jakarta.validation.constraints.*;
-
 import java.util.List;
 
 @Getter
@@ -18,14 +16,11 @@ import java.util.List;
 @Entity
 public class SubService extends BaseModel<Long> {
 
-    @NotNull(message = "SubService name can not be null")
     @Column(unique = true)
     private String subServiceName;
 
-    @NotNull(message = "Base price can not be null")
     private Double basePrice;
 
-    @NotNull(message = "Description can not be null")
     private String description;
 
     @OneToMany(mappedBy = "subService")

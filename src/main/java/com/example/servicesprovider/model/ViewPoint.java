@@ -6,7 +6,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import jakarta.validation.constraints.*;
 
 @Getter
 @Setter
@@ -19,9 +18,6 @@ public class ViewPoint extends BaseModel<Long> {
 
     private String comment;
 
-    @Min(value = -10, message = "Score must be between -10 to 10")
-    @Max(value = 10, message = "Score must be between -10 to 10")
-    @NotNull
     private Integer score;
 
     @ManyToOne(cascade = CascadeType.MERGE)

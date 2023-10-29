@@ -12,6 +12,8 @@ public interface ClientService extends BaseService<Client, Long> {
 
     List<GeneralService> seeGeneralServices();
 
+    void deleteByUserName(String userName);
+
     List<SubService> seeSubServices();
 
     Client findByUserName(String userName);

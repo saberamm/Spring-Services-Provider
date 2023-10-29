@@ -7,8 +7,6 @@ import jakarta.persistence.ManyToOne;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import jakarta.validation.constraints.*;
-
 import java.time.LocalDateTime;
 
 @Getter
@@ -22,14 +20,10 @@ public class Offer extends BaseModel<Long> {
 
     private LocalDateTime timeOfferSent;
 
-    @NotNull(message = "Time for start working can not be null")
-    @FutureOrPresent(message = "time for start working cant be in past")
     private LocalDateTime timeForStartWorking;
 
-    @NotNull(message = "Suggestion price can not be null")
     private Double suggestionPrice;
 
-    @NotNull(message = "Time for end working can not be null")
     private LocalDateTime timeForEndWorking;
 
     @ManyToOne(cascade = CascadeType.MERGE)

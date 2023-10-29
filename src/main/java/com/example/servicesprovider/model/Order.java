@@ -6,8 +6,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import jakarta.validation.constraints.*;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -21,21 +19,16 @@ import java.util.List;
 @Table(name = "order_table")
 public class Order extends BaseModel<Long> {
 
-    @NotNull(message = "Order price can not be null")
     private Double orderPrice;
 
     private String orderDescription;
 
-    @FutureOrPresent(message = "Work time cant be in past")
-    @NotNull(message = "Work time can not be null")
     private LocalDateTime workTime;
 
-    @NotNull(message = "Order address can not be null")
     private String orderAddress;
 
     private Long selectedOffersId;
 
-    @NotNull(message = "Suggestion price can not be null")
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 

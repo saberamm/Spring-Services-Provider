@@ -1,6 +1,9 @@
 package com.example.servicesprovider.dto;
 
-import jakarta.validation.constraints.*;
+import com.example.servicesprovider.model.enumeration.AdminPosition;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -10,7 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ClientRequestDto {
+public class AdminRequestDto {
 
     private Long id;
 
@@ -31,10 +34,7 @@ public class ClientRequestDto {
     @Email
     private String email;
 
-    private Double clientCredit;
 
-    private String phoneNumber;
-
-    @Size(min = 10, max = 10, message = "NationalCode  must have 10 digits")
-    private String nationalCode;
+    @NotNull(message = "position can not be null")
+    private AdminPosition position;
 }

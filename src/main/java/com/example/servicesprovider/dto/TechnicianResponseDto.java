@@ -1,5 +1,6 @@
 package com.example.servicesprovider.dto;
 
+import com.example.servicesprovider.model.enumeration.TechnicianStatus;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -9,7 +10,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ClientResponseDto {
+public class TechnicianResponseDto {
 
     private Long id;
 
@@ -23,9 +24,19 @@ public class ClientResponseDto {
 
     private String email;
 
-    private Double clientCredit;
+    private TechnicianStatus technicianStatus;
+
+    private byte[] technicianPhoto;
+
+    private Double technicianCredit;
+
+    private Double negativeScore;
+
+    private Double overallScore;
 
     private String phoneNumber;
 
     private String nationalCode;
+
+    private String aboutMe;
 }
