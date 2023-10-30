@@ -8,4 +8,6 @@ public interface GeneralServiceRepository extends BaseRepository<GeneralService,
     GeneralService findByServiceName(String name);
 
     boolean existsByServiceName(String ServiceName);
+
+    void deleteByServiceName(String serviceName);
 }
