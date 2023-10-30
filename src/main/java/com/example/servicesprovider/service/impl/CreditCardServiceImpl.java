@@ -19,4 +19,9 @@ public class CreditCardServiceImpl extends BaseServiceImpl<CreditCard, Long, Cre
         if (creditCard == null) throw new EntityNotFoundException("Model not exist");
         return creditCard;
     }
+
+    @Override
+    public void deleteByCreditCardNumber(String creditCardNumber) {
+        repository.deleteByCreditCardNumber(creditCardNumber);
+    }
 }
