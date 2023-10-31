@@ -5,7 +5,9 @@ import com.example.servicesprovider.dto.ViewPointResponseDto;
 import com.example.servicesprovider.model.ViewPoint;
 
 public interface ViewPointMapper {
-    ViewPoint requestToViewPoint(ViewPointRequestDto viewPointRequestDto);
+    ViewPoint map(ViewPointRequestDto viewPointRequestDto);
 
-    ViewPointResponseDto viewPointToResponse(ViewPoint viewPoint);
+    ViewPointResponseDto map(ViewPoint viewPoint);
+
+    void map(ViewPointRequestDto viewPointRequestDto, ViewPoint viewPoint);
 }

@@ -1,9 +1,6 @@
 package com.example.servicesprovider.mapper.impl;
 
-import com.example.servicesprovider.dto.ClientResponseDto;
-import com.example.servicesprovider.dto.OrderRequestDto;
-import com.example.servicesprovider.dto.OrderResponseDto;
-import com.example.servicesprovider.dto.SubServiceResponseDto;
+import com.example.servicesprovider.dto.*;
 import com.example.servicesprovider.mapper.OrderMapper;
 import com.example.servicesprovider.model.Order;
 import com.example.servicesprovider.service.ClientService;
@@ -20,7 +17,7 @@ public class OrderMapperImpl implements OrderMapper {
     private final ModelMapper modelMapper;
 
     @Override
-    public Order requestToOrder(OrderRequestDto orderRequestDto) {
+    public Order map(OrderRequestDto orderRequestDto) {
         if (orderRequestDto == null) return null;
         Order order = modelMapper.map(orderRequestDto, Order.class);
         order.setClient(clientService.findById(orderRequestDto.getClientId()));
@@ -29,11 +26,24 @@ public class OrderMapperImpl implements OrderMapper {
     }
 
     @Override
-    public OrderResponseDto orderToResponse(Order order) {
+    public OrderResponseDto map(Order order) {
         if (order == null) return null;
         OrderResponseDto orderResponseDto = modelMapper.map(order, OrderResponseDto.class);
         orderResponseDto.setClientResponseDto(modelMapper.map(order.getClient(), ClientResponseDto.class));
         orderResponseDto.setSubServiceResponseDto(modelMapper.map(order.getSubService(), SubServiceResponseDto.class));
         return orderResponseDto;
+    }
+
+    @Override
+    public void map(OrderRequestDto orderRequestDto, Order order) {
+        modelMapper.map(orderRequestDto, order);
+
+        if (orderRequestDto.getClientId() != null) {
+            order.setClient(clientService.findById(orderRequestDto.getClientId()));
+        }
+
+        if (orderRequestDto.getSubServiceId() != null) {
+            order.setSubService(subService_service.findById(orderRequestDto.getSubServiceId()));
+        }
     }
 }

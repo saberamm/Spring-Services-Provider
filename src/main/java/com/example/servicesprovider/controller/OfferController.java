@@ -1,11 +1,8 @@
 package com.example.servicesprovider.controller;
 
-import com.example.servicesprovider.dto.GeneralServiceRequestDto;
-import com.example.servicesprovider.dto.GeneralServiceResponseDto;
 import com.example.servicesprovider.dto.OfferRequestDto;
 import com.example.servicesprovider.dto.OfferResponseDto;
 import com.example.servicesprovider.mapper.OfferMapper;
-import com.example.servicesprovider.model.GeneralService;
 import com.example.servicesprovider.model.Offer;
 import com.example.servicesprovider.service.OfferService;
 import jakarta.validation.Valid;
@@ -24,15 +21,15 @@ public class OfferController {
     @GetMapping("/find/{offerId}")
     public ResponseEntity<OfferResponseDto> getOffer(@PathVariable Long offerId) {
         Offer offer = offerService.findById(offerId);
-        OfferResponseDto offerResponseDto = offerMapper.offerToResponse(offer);
+        OfferResponseDto offerResponseDto = offerMapper.map(offer);
         return new ResponseEntity<>(offerResponseDto, HttpStatus.CREATED);
     }
 
     @PostMapping("/register")
     public ResponseEntity<OfferResponseDto> addOffer(@RequestBody @Valid OfferRequestDto offerRequestDto) {
-        Offer offer = offerMapper.requestToOffer(offerRequestDto);
+        Offer offer = offerMapper.map(offerRequestDto);
         Offer savedOffer = offerService.save(offer);
-        OfferResponseDto offerResponseDto = offerMapper.offerToResponse(savedOffer);
+        OfferResponseDto offerResponseDto = offerMapper.map(savedOffer);
         return new ResponseEntity<>(offerResponseDto, HttpStatus.CREATED);
     }
 
@@ -44,9 +41,9 @@ public class OfferController {
     @PutMapping("/update")
     public ResponseEntity<OfferResponseDto> updateOffer(@RequestBody @Valid OfferRequestDto offerRequestDto) {
         Offer offer = offerService.findById(offerRequestDto.getId());
-        modelMapper.map(generalServiceRequestDto, generalService);
-        GeneralService updatedGeneralService = generalService_service.update(generalService);
-        GeneralServiceResponseDto generalServiceResponseDto = modelMapper.map(updatedGeneralService, GeneralServiceResponseDto.class);
-        return new ResponseEntity<>(generalServiceResponseDto, HttpStatus.CREATED);
+        offerMapper.map(offerRequestDto, offer);
+        Offer updatedOffer = offerService.update(offer);
+        OfferResponseDto offerResponseDto = offerMapper.map(updatedOffer);
+        return new ResponseEntity<>(offerResponseDto, HttpStatus.CREATED);
     }
 }

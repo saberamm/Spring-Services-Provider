@@ -5,7 +5,9 @@ import com.example.servicesprovider.dto.OfferResponseDto;
 import com.example.servicesprovider.model.Offer;
 
 public interface OfferMapper {
-    Offer requestToOffer(OfferRequestDto offerRequestDto);
+    Offer map(OfferRequestDto offerRequestDto);
 
-    OfferResponseDto offerToResponse(Offer offer);
+    OfferResponseDto map(Offer offer);
+
+    void map(OfferRequestDto offerRequestDto, Offer offer);
 }

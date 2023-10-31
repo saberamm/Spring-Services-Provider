@@ -5,7 +5,9 @@ import com.example.servicesprovider.dto.OrderResponseDto;
 import com.example.servicesprovider.model.Order;
 
 public interface OrderMapper {
-    Order requestToOrder(OrderRequestDto orderRequestDto);
+    Order map(OrderRequestDto orderRequestDto);
 
-    OrderResponseDto orderToResponse(Order order);
+    OrderResponseDto map(Order order);
+
+    void map(OrderRequestDto orderRequestDto, Order order);
 }

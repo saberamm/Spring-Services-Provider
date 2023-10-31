@@ -5,7 +5,9 @@ import com.example.servicesprovider.dto.SubServiceResponseDto;
 import com.example.servicesprovider.model.SubService;
 
 public interface SubServiceMapper {
-    SubService requestToSubService(SubServiceRequestDto subServiceRequestDto);
+    SubService map(SubServiceRequestDto subServiceRequestDto);
 
-    SubServiceResponseDto subServiceToResponse(SubService subService);
+    SubServiceResponseDto map(SubService subService);
+
+    void map(SubServiceRequestDto subServiceRequestDto, SubService subService);
 }

@@ -18,7 +18,7 @@ public class SubServiceMapperImpl implements SubServiceMapper {
     GeneralService_Service generalService_service;
 
     @Override
-    public SubService requestToSubService(SubServiceRequestDto subServiceRequestDto) {
+    public SubService map(SubServiceRequestDto subServiceRequestDto) {
         if (subServiceRequestDto == null) return null;
         SubService subService = modelMapper.map(subServiceRequestDto, SubService.class);
         subService.setGeneralService(generalService_service.findById(subServiceRequestDto.getGeneralServiceId()));
@@ -26,10 +26,19 @@ public class SubServiceMapperImpl implements SubServiceMapper {
     }
 
     @Override
-    public SubServiceResponseDto subServiceToResponse(SubService subService) {
+    public SubServiceResponseDto map(SubService subService) {
         if (subService == null) return null;
         SubServiceResponseDto subServiceResponseDto = modelMapper.map(subService, SubServiceResponseDto.class);
         subServiceResponseDto.setGeneralServiceResponseDto(modelMapper.map(subService.getGeneralService(), GeneralServiceResponseDto.class));
         return subServiceResponseDto;
+    }
+
+    @Override
+    public void map(SubServiceRequestDto subServiceRequestDto, SubService subService) {
+        modelMapper.map(subServiceRequestDto, SubService.class);
+
+        if (subServiceRequestDto.getGeneralServiceId() != null) {
+            subService.setGeneralService(generalService_service.findById(subServiceRequestDto.getGeneralServiceId()));
+        }
     }
 }
