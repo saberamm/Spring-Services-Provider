@@ -52,4 +52,9 @@ public abstract class BaseServiceImpl<E extends BaseModel<ID>, ID extends Serial
     public boolean existsById(ID id) {
         return repository.existsById(id);
     }
+
+    @Override
+    public void deleteById(ID id) {
+        repository.deleteById(id);
+    }
 }

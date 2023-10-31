@@ -20,4 +20,6 @@ public class SubServiceRequestDto {
 
     @NotNull(message = "Description can not be null")
     private String description;
+
+    private Long generalServiceId;
 }

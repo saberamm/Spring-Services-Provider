@@ -32,4 +32,8 @@ public class OrderRequestDto {
 
     @NotNull(message = "Suggestion price can not be null")
     private OrderStatus orderStatus;
+
+    private Long clientId;
+
+    private Long subServiceId;
 }

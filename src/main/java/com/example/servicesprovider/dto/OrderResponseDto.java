@@ -25,4 +25,8 @@ public class OrderResponseDto {
     private Long selectedOffersId;
 
     private OrderStatus orderStatus;
+
+    private ClientResponseDto clientResponseDto;
+
+    private SubServiceResponseDto subServiceResponseDto;
 }

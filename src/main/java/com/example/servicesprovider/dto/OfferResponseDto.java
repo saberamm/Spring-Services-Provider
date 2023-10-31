@@ -18,4 +18,8 @@ public class OfferResponseDto {
     private Double suggestionPrice;
 
     private LocalDateTime timeForEndWorking;
+
+    private TechnicianResponseDto technicianResponseDto;
+
+    private OrderResponseDto orderResponseDto;
 }

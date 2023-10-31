@@ -18,4 +18,5 @@ public interface BaseService<E extends BaseModel<ID>, ID extends Serializable> {
 
     boolean existsById(ID id);
 
+    void deleteById(ID id);
 }

@@ -16,4 +16,6 @@ public class SubServiceResponseDto {
     private Double basePrice;
 
     private String description;
+
+    private GeneralServiceResponseDto generalServiceResponseDto;
 }

@@ -20,4 +20,6 @@ public class ViewPointRequestDto {
     @Max(value = 10, message = "Score must be between -10 to 10")
     @NotNull
     private Integer score;
+
+    private Long technicianId;
 }

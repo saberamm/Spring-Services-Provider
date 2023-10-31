@@ -14,4 +14,6 @@ public class ViewPointResponseDto {
     private String comment;
 
     private Integer score;
+
+    private TechnicianResponseDto technicianResponseDto;
 }
