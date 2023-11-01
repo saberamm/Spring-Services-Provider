@@ -63,7 +63,7 @@ public class AdminController {
         return new ResponseEntity<>(adminResponseDto, HttpStatus.CREATED);
     }
 
-    @PutMapping("/change-password")
+    @PutMapping("/changePassword")
     public void changePassword(@RequestBody @Valid PasswordUpdateRequest passwordUpdateRequest) {
         userService.changePassword(passwordUpdateRequest.getUserName(),
                 passwordUpdateRequest.getOldPassword(),
@@ -71,7 +71,7 @@ public class AdminController {
                 passwordUpdateRequest.getDuplicateNewPassword());
     }
 
-    @PostMapping("/add-general-service")
+    @PostMapping("/addGeneralService")
     public ResponseEntity<GeneralServiceResponseDto> addGeneralService(@RequestBody @Valid GeneralServiceRequestDto generalServiceRequestDto) {
         GeneralService generalService = modelMapper.map(generalServiceRequestDto, GeneralService.class);
         GeneralService savedGeneralService = adminService.addGeneralService(generalService);
@@ -79,7 +79,7 @@ public class AdminController {
         return new ResponseEntity<>(generalServiceResponseDto, HttpStatus.CREATED);
     }
 
-    @PostMapping("/add-sub-service")
+    @PostMapping("/addSubService")
     public ResponseEntity<SubServiceResponseDto> addSubService(@RequestBody @Valid SubServiceRequestDto subServiceRequestDto) {
         SubService subService = subServiceMapper.map(subServiceRequestDto);
         SubService savedSubService = adminService.addSubService(subService);
@@ -87,7 +87,7 @@ public class AdminController {
         return new ResponseEntity<>(subServiceResponseDto, HttpStatus.CREATED);
     }
 
-    @PostMapping("/add-technician")
+    @PostMapping("/addTechnician")
     public ResponseEntity<TechnicianResponseDto> addTechnician(@ModelAttribute @Valid TechnicianRequestDto technicianRequestDto) {
         Technician technician = technicianMapper.map(technicianRequestDto);
         Technician savedTechnician = adminService.addTechnician(technician);
@@ -95,21 +95,21 @@ public class AdminController {
         return new ResponseEntity<>(technicianResponseDto, HttpStatus.CREATED);
     }
 
-    @PutMapping("/add-technician-to-sub-service/{technicianId}/{subServiceId}")
+    @PutMapping("/addTechnicianToSubService/{technicianId}/{subServiceId}")
     public void addTechnicianToSubService(@PathVariable Long technicianId, @PathVariable Long subServiceId) {
         Technician technician = technicianService.findById(technicianId);
         SubService subService = subService_service.findById(subServiceId);
         adminService.addTechnicianToSubService(technician, subService);
     }
 
-    @DeleteMapping("/delete-technician-to-sub-service/{technicianId}/{subServiceId}")
+    @DeleteMapping("/deleteTechnicianToSubService/{technicianId}/{subServiceId}")
     public void deleteTechnicianToSubService(@PathVariable Long technicianId, @PathVariable Long subServiceId) {
         Technician technician = technicianService.findById(technicianId);
         SubService subService = subService_service.findById(subServiceId);
         adminService.deleteTechnicianFromSubService(technician, subService);
     }
 
-    @PutMapping("/confirm-technician/{technicianId}")
+    @PutMapping("/confirmTechnician/{technicianId}")
     public ResponseEntity<TechnicianResponseDto> confirmTechnician(@PathVariable Long technicianId) {
         Technician technician = technicianService.findById(technicianId);
         Technician confirmTechnician = adminService.confirmTechnician(technician);

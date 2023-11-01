@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/view-point")
+@RequestMapping("/viewPoint")
 @AllArgsConstructor
 public class ViewPointController {
     ViewPointMapper viewPointMapper;

@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/general-service")
+@RequestMapping("/generalService")
 @AllArgsConstructor
 public class GeneralServiceController {
     ModelMapper modelMapper;

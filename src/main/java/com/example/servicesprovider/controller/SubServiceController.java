@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/sub-service")
+@RequestMapping("/subService")
 @AllArgsConstructor
 public class SubServiceController {
     SubService_Service subService_service;

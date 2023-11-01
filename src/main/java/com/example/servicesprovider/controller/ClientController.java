@@ -53,7 +53,7 @@ public class ClientController {
         return new ResponseEntity<>(clientResponseDto, HttpStatus.CREATED);
     }
 
-    @PutMapping("/change-password")
+    @PutMapping("/changePassword")
     public void changePassword(@RequestBody @Valid PasswordUpdateRequest passwordUpdateRequest) {
         userService.changePassword(passwordUpdateRequest.getUserName(),
                 passwordUpdateRequest.getOldPassword(),
