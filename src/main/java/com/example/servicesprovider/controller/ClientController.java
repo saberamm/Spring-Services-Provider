@@ -2,8 +2,10 @@ package com.example.servicesprovider.controller;
 
 import com.example.servicesprovider.dto.ClientRequestDto;
 import com.example.servicesprovider.dto.ClientResponseDto;
+import com.example.servicesprovider.dto.GeneralServiceResponseDto;
 import com.example.servicesprovider.dto.PasswordUpdateRequest;
 import com.example.servicesprovider.model.Client;
+import com.example.servicesprovider.model.GeneralService;
 import com.example.servicesprovider.service.ClientService;
 import com.example.servicesprovider.service.UserService;
 import jakarta.validation.Valid;
@@ -12,6 +14,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/client")
@@ -61,7 +66,21 @@ public class ClientController {
                 passwordUpdateRequest.getDuplicateNewPassword());
     }
 
-    @GetMapping("/findGeneralServices/")
-    public ResponseEntity<ClientResponseDto> seeGeneralServices() {
+    @GetMapping("/findGeneralServices")
+    public ResponseEntity<List<GeneralServiceResponseDto>> seeGeneralServices() {
+        try {
+            List<GeneralService> generalServiceList = clientService.seeGeneralServices();
+            System.out.println(generalServiceList.get(0).getServiceName());
+            List<GeneralServiceResponseDto> generalServiceResponseDtoList = generalServiceList
+                    .stream()
+                    .map(generalService -> modelMapper.map(generalService, GeneralServiceResponseDto.class))
+                    .collect(Collectors.toList());
+
+            return new ResponseEntity<>(generalServiceResponseDtoList, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
+
+
 }
