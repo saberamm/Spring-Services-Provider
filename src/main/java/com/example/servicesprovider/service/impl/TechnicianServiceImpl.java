@@ -13,6 +13,7 @@ import com.example.servicesprovider.service.TechnicianService;
 import com.example.servicesprovider.utility.HashGenerator;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,6 +35,7 @@ public class TechnicianServiceImpl extends BaseServiceImpl<Technician, Long, Tec
     }
 
     @Override
+    @Transactional
     public Technician findByUserName(String userName) {
         Technician technician=repository.findByUserName(userName);
         if (technician==null) throw new EntityNotFoundException("Model not exist");
@@ -41,11 +43,13 @@ public class TechnicianServiceImpl extends BaseServiceImpl<Technician, Long, Tec
     }
 
     @Override
+    @Transactional
     public void deleteByUserName(String userName) {
         repository.deleteByUserName(userName);
     }
 
     @Override
+    @Transactional
     public Offer addOffer(Offer offer, Technician technician) {
         Order order = offer.getOrder();
         if (offer.getTimeForStartWorking().isBefore(order.getWorkTime()))
@@ -62,6 +66,7 @@ public class TechnicianServiceImpl extends BaseServiceImpl<Technician, Long, Tec
     }
 
     @Override
+    @Transactional
     public List<Order> OrdersThatTechnicianCanOffer(Technician technician) {
         List<SubService> subServices = subService_service.findSubServicesByTechnicianId(technician.getId());
 
@@ -77,11 +82,13 @@ public class TechnicianServiceImpl extends BaseServiceImpl<Technician, Long, Tec
 
 
     @Override
+    @Transactional
     public List<Technician> notConfirmedYet() {
         return repository.findAllByTechnicianStatus(TechnicianStatus.PENDING_CONFIRMATION);
     }
 
     @Override
+    @Transactional
     public Technician save(Technician technician) {
         technician.setPassword(hashGenerator.generateSHA512Hash(technician.getPassword()));
         repository.save(technician);
@@ -89,6 +96,7 @@ public class TechnicianServiceImpl extends BaseServiceImpl<Technician, Long, Tec
     }
 
     @Override
+    @Transactional
     public Technician technicianAuthentication(String userName, String password) {
         Technician technician;
         String hashedPassword = hashGenerator.generateSHA512Hash(password);

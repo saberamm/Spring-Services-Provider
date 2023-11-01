@@ -76,7 +76,7 @@ public class Main implements CommandLineRunner {
 //        User user1 = userService.findById(1L);
 //        Admin admin1 = adminService.findById(2L);
 //        Client client1 = clientService.findById(3L);
-//        Technician technician1 = technicianService.findByUserName("ghgh");
+//        Technician technician1 = technicianService.findByUserName("emma_j");
 
 //        user1.setFirstName("bb");
 //        userService.update(user1);

@@ -26,7 +26,6 @@ public class TechnicianResponseDto {
 
     private TechnicianStatus technicianStatus;
 
-    private byte[] technicianPhoto;
 
     private Double technicianCredit;
 

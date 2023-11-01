@@ -8,6 +8,7 @@ import com.example.servicesprovider.repository.AdminRepository;
 import com.example.servicesprovider.service.*;
 import com.example.servicesprovider.utility.HashGenerator;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,6 +31,7 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
     }
 
     @Override
+    @Transactional
     public GeneralService addGeneralService(GeneralService generalService) {
         if (generalService_service.existByServiceName(generalService.getServiceName()))
             throw new DuplicateGeneralServiceNameException("General service already exist");
@@ -37,16 +39,19 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
     }
 
     @Override
+    @Transactional
     public void deleteByUserName(String userName) {
         repository.deleteByUserName(userName);
     }
 
     @Override
+    @Transactional
     public List<GeneralService> generalServicesList() {
         return generalService_service.findAll();
     }
 
     @Override
+    @Transactional
     public SubService addSubService(SubService subService) {
         if (subService_service.existBySubServiceName(subService.getSubServiceName()))
             throw new DuplicateSubServiceNameException("SubService already exist");
@@ -56,21 +61,25 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
     }
 
     @Override
+    @Transactional
     public Technician addTechnician(Technician technician) {
         return technicianService.save(technician);
     }
 
     @Override
+    @Transactional
     public void deleteTechnician(String userName) {
         technicianService.deleteByUserName(userName);
     }
 
     @Override
+    @Transactional
     public List<Technician> seeTechnicianNotAccepted() {
         return technicianService.notConfirmedYet();
     }
 
     @Override
+    @Transactional
     public SubServiceTechnician addTechnicianToSubService(Technician technician, SubService subService) {
         if (technician.getTechnicianStatus().equals(TechnicianStatus.NEW)
                 || technician.getTechnicianStatus().equals(TechnicianStatus.PENDING_CONFIRMATION))
@@ -80,6 +89,7 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
     }
 
     @Override
+    @Transactional
     public Admin save(Admin admin) {
         admin.setPassword(hashGenerator.generateSHA512Hash(admin.getPassword()));
         repository.save(admin);
@@ -87,11 +97,13 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
     }
 
     @Override
+    @Transactional
     public void deleteTechnicianFromSubService(Technician technician, SubService subService) {
         subServiceTechnicianService.deleteByTechnicianAndSubService(technician, subService);
     }
 
     @Override
+    @Transactional
     public Admin findByUserName(String userName) {
         Admin admin = repository.findByUserName(userName);
         if (admin == null) throw new EntityNotFoundException("Model not exist");
@@ -99,12 +111,14 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
     }
 
     @Override
+    @Transactional
     public Technician confirmTechnician(Technician technician) {
         technician.setTechnicianStatus(TechnicianStatus.CONFIRMED);
         return technicianService.update(technician);
     }
 
     @Override
+    @Transactional
     public Admin adminAuthentication(String userName, String password) {
         Admin admin;
         String hashedPassword = hashGenerator.generateSHA512Hash(password);

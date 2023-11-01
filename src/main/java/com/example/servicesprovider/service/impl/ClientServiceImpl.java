@@ -39,6 +39,7 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
     }
 
     @Override
+    @Transactional
     public Order addOrder(Order order, Client client) {
         if (order.getOrderPrice() < order.getSubService().getBasePrice()) {
             throw new PriceIsLowerThanBasePriceException("Order price should not be smaller than sub service base price");
@@ -48,6 +49,7 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
     }
 
     @Override
+    @Transactional
     public List<GeneralService> seeGeneralServices() {
         return generalService_service.findAll();
     }
@@ -59,11 +61,13 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
     }
 
     @Override
+    @Transactional
     public List<SubService> seeSubServices() {
         return subService_service.findAll();
     }
 
     @Override
+    @Transactional
     public Client findByUserName(String userName) {
         Client client = repository.findByUserName(userName);
         if (client == null) throw new EntityNotFoundException("Model not exist");
@@ -71,6 +75,7 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
     }
 
     @Override
+    @Transactional
     public Order chooseOffer(Order order, Offer offer) {
         order.setSelectedOffersId(offer.getId());
         order.setOrderStatus(OrderStatus.WAITING_FOR_TECHNICIAN_TO_COME_YOUR_PLACE);
@@ -78,6 +83,7 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
     }
 
     @Override
+    @Transactional
     public Order startOrder(Order order) {
         Offer offer = offerService.findById(order.getSelectedOffersId());
         if (order.getOrderStatus().equals(OrderStatus.WAITING_FOR_TECHNICIAN_TO_COME_YOUR_PLACE)
@@ -91,6 +97,7 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
 
 
     @Override
+    @Transactional
     public Order completeOrder(Order order) {
         Offer offer = offerService.findById(order.getSelectedOffersId());
         Technician technician = offer.getTechnician();
@@ -126,6 +133,7 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
     }
 
     @Override
+    @Transactional
     public void addNegativeScore(Offer offer, Technician technician) {
         long hours = Duration.between(LocalDateTime.now(), offer.getTimeForEndWorking()).toHours();
         technician.setNegativeScore(technician.getNegativeScore() + hours);
@@ -137,6 +145,7 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
     }
 
     @Override
+    @Transactional
     public Client save(Client client) {
         client.setPassword(hashGenerator.generateSHA512Hash(client.getPassword()));
         repository.save(client);
@@ -154,6 +163,7 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
     }
 
     @Override
+    @Transactional
     public void payWithClientCredit(Offer offer, Client client) {
         if (client.getClientCredit() < offer.getSuggestionPrice())
             throw new NotEnoughCreditException("Your credit is not enough");
@@ -168,6 +178,7 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
     }
 
     @Override
+    @Transactional
     public void payWithCreditCard(CreditCard creditCard, Offer offer) {
         Technician technician = offer.getTechnician();
         Order order = offer.getOrder();

@@ -5,6 +5,7 @@ import com.example.servicesprovider.model.SubServiceTechnician;
 import com.example.servicesprovider.model.Technician;
 import com.example.servicesprovider.repository.SubServiceTechnicianRepository;
 import com.example.servicesprovider.service.SubServiceTechnicianService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,21 +18,25 @@ public class SubServiceTechnicianServiceImpl implements SubServiceTechnicianServ
     }
 
     @Override
+    @Transactional
     public SubServiceTechnician save(SubServiceTechnician subServiceTechnician) {
         return repository.save(subServiceTechnician);
     }
 
     @Override
+    @Transactional
     public SubServiceTechnician update(SubServiceTechnician subServiceTechnician) {
         return repository.save(subServiceTechnician);
     }
 
     @Override
+    @Transactional
     public void delete(SubServiceTechnician subServiceTechnician) {
         repository.delete(subServiceTechnician);
     }
 
     @Override
+    @Transactional
     public void deleteByTechnicianAndSubService(Technician technician, SubService subService) {
         repository.deleteByTechnicianAndSubService(technician, subService);
     }

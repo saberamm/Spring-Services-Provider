@@ -6,6 +6,7 @@ import com.example.servicesprovider.repository.SubServiceRepository;
 import com.example.servicesprovider.service.SubService_Service;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class SubService_ServiceImpl extends BaseServiceImpl<SubService, Long, Su
     }
 
     @Override
+    @Transactional
     public SubService findBySubServiceName(String name) {
         SubService subService = repository.findBySubServiceName(name);
         if (subService == null) throw new EntityNotFoundException("Model not exist");
@@ -25,11 +27,13 @@ public class SubService_ServiceImpl extends BaseServiceImpl<SubService, Long, Su
     }
 
     @Override
+    @Transactional
     public boolean existBySubServiceName(String subServiceName) {
         return repository.existsBySubServiceName(subServiceName);
     }
 
     @Override
+    @Transactional
     public List<SubService> findSubServicesByTechnicianId(Long technicianId) {
         List<SubService> subServices = repository.findSubServicesByTechnicianId(technicianId);
         if (subServices == null) throw new EntityNotFoundException("Model not exist");

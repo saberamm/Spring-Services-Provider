@@ -10,6 +10,7 @@ import com.example.servicesprovider.utility.HashGenerator;
 
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,6 +24,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long, UserRepository>
     }
 
     @Override
+    @Transactional
     public User findByUserName(String userName) {
         User user=repository.findByUserName(userName);
         if (user==null) throw new EntityNotFoundException("Model not exist");
@@ -30,6 +32,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long, UserRepository>
     }
 
     @Override
+    @Transactional
     public void changePassword(String userName, String password, String newPassword, String duplicateNewPassword) {
         User user = userAuthentication(userName, password);
         if (!newPassword.equals(duplicateNewPassword))
@@ -39,6 +42,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long, UserRepository>
     }
 
     @Override
+    @Transactional
     public User save(User user) {
         user.setPassword(hashGenerator.generateSHA512Hash(user.getPassword()));
         repository.save(user);
@@ -46,6 +50,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long, UserRepository>
     }
 
     @Override
+    @Transactional
     public User userAuthentication(String userName, String password) {
         User user;
         String hashedPassword = hashGenerator.generateSHA512Hash(password);

@@ -6,6 +6,7 @@ import com.example.servicesprovider.model.Order;
 import com.example.servicesprovider.repository.OfferRepository;
 import com.example.servicesprovider.service.OfferService;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -20,6 +21,7 @@ public class OfferServiceImpl extends BaseServiceImpl<Offer, Long, OfferReposito
     }
 
     @Override
+    @Transactional
     public List<Offer> getOffersSortedByTechnicianScore(Order order) {
         List<Offer> offers = order.getOfferList();
 
@@ -29,6 +31,7 @@ public class OfferServiceImpl extends BaseServiceImpl<Offer, Long, OfferReposito
     }
 
     @Override
+    @Transactional
     public List<Offer> getOffersSortedByPrice(Order order) {
         List<Offer> offers = order.getOfferList();
 
