@@ -14,6 +14,4 @@ public class GeneralServiceRequestDto {
 
     @NotNull(message = "Service name can not be null")
     private String serviceName;
-
-    private Long generalServiceId;
 }

@@ -40,7 +40,7 @@ public class GeneralServiceController {
 
     @PutMapping("/update")
     public ResponseEntity<GeneralServiceResponseDto> updateGeneralService(@RequestBody @Valid GeneralServiceRequestDto generalServiceRequestDto) {
-        GeneralService generalService = generalService_service.findByServiceName(generalServiceRequestDto.getServiceName());
+        GeneralService generalService = generalService_service.findById(generalServiceRequestDto.getId());
         modelMapper.map(generalServiceRequestDto, generalService);
         GeneralService updatedGeneralService = generalService_service.update(generalService);
         GeneralServiceResponseDto generalServiceResponseDto = modelMapper.map(updatedGeneralService, GeneralServiceResponseDto.class);

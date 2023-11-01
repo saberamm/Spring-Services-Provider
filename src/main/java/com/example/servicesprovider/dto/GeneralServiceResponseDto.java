@@ -12,6 +12,4 @@ public class GeneralServiceResponseDto {
     private Long id;
 
     private String serviceName;
-
-    private Long generalServiceId;
 }
