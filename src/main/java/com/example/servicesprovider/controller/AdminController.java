@@ -1,8 +1,15 @@
 package com.example.servicesprovider.controller;
 
 import com.example.servicesprovider.dto.*;
+import com.example.servicesprovider.mapper.SubServiceMapper;
+import com.example.servicesprovider.mapper.TechnicianMapper;
 import com.example.servicesprovider.model.Admin;
+import com.example.servicesprovider.model.GeneralService;
+import com.example.servicesprovider.model.SubService;
+import com.example.servicesprovider.model.Technician;
 import com.example.servicesprovider.service.AdminService;
+import com.example.servicesprovider.service.SubService_Service;
+import com.example.servicesprovider.service.TechnicianService;
 import com.example.servicesprovider.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -18,6 +25,10 @@ public class AdminController {
     AdminService adminService;
     UserService userService;
     ModelMapper modelMapper;
+    SubServiceMapper subServiceMapper;
+    TechnicianMapper technicianMapper;
+    TechnicianService technicianService;
+    SubService_Service subService_service;
 
 
     @GetMapping("/find/{username}")
@@ -58,5 +69,51 @@ public class AdminController {
                 passwordUpdateRequest.getOldPassword(),
                 passwordUpdateRequest.getNewPassword(),
                 passwordUpdateRequest.getDuplicateNewPassword());
+    }
+
+    @PostMapping("/add-general-service")
+    public ResponseEntity<GeneralServiceResponseDto> addGeneralService(@RequestBody @Valid GeneralServiceRequestDto generalServiceRequestDto) {
+        GeneralService generalService = modelMapper.map(generalServiceRequestDto, GeneralService.class);
+        GeneralService savedGeneralService = adminService.addGeneralService(generalService);
+        GeneralServiceResponseDto generalServiceResponseDto = modelMapper.map(savedGeneralService, GeneralServiceResponseDto.class);
+        return new ResponseEntity<>(generalServiceResponseDto, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/add-sub-service")
+    public ResponseEntity<SubServiceResponseDto> addSubService(@RequestBody @Valid SubServiceRequestDto subServiceRequestDto) {
+        SubService subService = subServiceMapper.map(subServiceRequestDto);
+        SubService savedSubService = adminService.addSubService(subService);
+        SubServiceResponseDto subServiceResponseDto = subServiceMapper.map(savedSubService);
+        return new ResponseEntity<>(subServiceResponseDto, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/add-technician")
+    public ResponseEntity<TechnicianResponseDto> addTechnician(@ModelAttribute @Valid TechnicianRequestDto technicianRequestDto) {
+        Technician technician = technicianMapper.map(technicianRequestDto);
+        Technician savedTechnician = adminService.addTechnician(technician);
+        TechnicianResponseDto technicianResponseDto = modelMapper.map(savedTechnician, TechnicianResponseDto.class);
+        return new ResponseEntity<>(technicianResponseDto, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/add-technician-to-sub-service/{technicianId}/{subServiceId}")
+    public void addTechnicianToSubService(@PathVariable Long technicianId, @PathVariable Long subServiceId) {
+        Technician technician = technicianService.findById(technicianId);
+        SubService subService = subService_service.findById(subServiceId);
+        adminService.addTechnicianToSubService(technician, subService);
+    }
+
+    @DeleteMapping("/delete-technician-to-sub-service/{technicianId}/{subServiceId}")
+    public void deleteTechnicianToSubService(@PathVariable Long technicianId, @PathVariable Long subServiceId) {
+        Technician technician = technicianService.findById(technicianId);
+        SubService subService = subService_service.findById(subServiceId);
+        adminService.deleteTechnicianFromSubService(technician, subService);
+    }
+
+    @PutMapping("/confirm-technician/{technicianId}")
+    public ResponseEntity<TechnicianResponseDto> confirmTechnician(@PathVariable Long technicianId) {
+        Technician technician = technicianService.findById(technicianId);
+        Technician confirmTechnician = adminService.confirmTechnician(technician);
+        TechnicianResponseDto technicianResponseDto = modelMapper.map(confirmTechnician, TechnicianResponseDto.class);
+        return new ResponseEntity<>(technicianResponseDto, HttpStatus.CREATED);
     }
 }

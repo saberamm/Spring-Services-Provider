@@ -35,7 +35,7 @@ public class ViewPointMapperImpl implements ViewPointMapper {
 
     @Override
     public void map(ViewPointRequestDto viewPointRequestDto, ViewPoint viewPoint) {
-        modelMapper.map(viewPointRequestDto, ViewPoint.class);
+        modelMapper.map(viewPointRequestDto, viewPoint);
 
         if (viewPointRequestDto.getTechnicianId() != null) {
             viewPoint.setTechnician(technicianService.findById(viewPointRequestDto.getTechnicianId()));

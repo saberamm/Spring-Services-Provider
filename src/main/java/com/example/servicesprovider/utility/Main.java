@@ -165,9 +165,8 @@ public class Main implements CommandLineRunner {
 
 //        viewPointService.save(viewPoint);
 //
-//        ViewPoint viewPoint1 = viewPointService.findById(1L);
-//
-//        viewPoint1.setScore(6);
+//        ViewPoint viewPoint1 = viewPointService.findById(2L);
+//        viewPoint1.setScore(5);
 //        viewPointService.update(viewPoint1);
 //
 //        viewPointService.delete(viewPoint1);

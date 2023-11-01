@@ -60,4 +60,8 @@ public class ClientController {
                 passwordUpdateRequest.getNewPassword(),
                 passwordUpdateRequest.getDuplicateNewPassword());
     }
+
+    @GetMapping("/findGeneralServices/")
+    public ResponseEntity<ClientResponseDto> seeGeneralServices() {
+    }
 }

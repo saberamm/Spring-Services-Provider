@@ -35,7 +35,7 @@ public class SubServiceMapperImpl implements SubServiceMapper {
 
     @Override
     public void map(SubServiceRequestDto subServiceRequestDto, SubService subService) {
-        modelMapper.map(subServiceRequestDto, SubService.class);
+        modelMapper.map(subServiceRequestDto, subService);
 
         if (subServiceRequestDto.getGeneralServiceId() != null) {
             subService.setGeneralService(generalService_service.findById(subServiceRequestDto.getGeneralServiceId()));
