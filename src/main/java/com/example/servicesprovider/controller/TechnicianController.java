@@ -1,6 +1,7 @@
 package com.example.servicesprovider.controller;
 
 import com.example.servicesprovider.dto.*;
+import com.example.servicesprovider.mapper.TechnicianMapper;
 import com.example.servicesprovider.model.Technician;
 import com.example.servicesprovider.service.TechnicianService;
 import com.example.servicesprovider.service.UserService;
@@ -18,6 +19,7 @@ public class TechnicianController {
     TechnicianService technicianService;
     UserService userService;
     ModelMapper modelMapper;
+    TechnicianMapper technicianMapper;
 
     @GetMapping("/find/{username}")
     public ResponseEntity<TechnicianResponseDto> getTechnician(@PathVariable String username) {
@@ -27,8 +29,8 @@ public class TechnicianController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<TechnicianResponseDto> addTechnician(@RequestBody @Valid TechnicianRequestDto technicianRequestDto) {
-        Technician technician = modelMapper.map(technicianRequestDto, Technician.class);
+    public ResponseEntity<TechnicianResponseDto> addTechnician(@ModelAttribute @Valid TechnicianRequestDto technicianRequestDto) {
+        Technician technician = technicianMapper.map(technicianRequestDto);
         Technician savedTechnician = technicianService.save(technician);
         TechnicianResponseDto technicianResponseDto = modelMapper.map(savedTechnician, TechnicianResponseDto.class);
         return new ResponseEntity<>(technicianResponseDto, HttpStatus.CREATED);
@@ -40,12 +42,12 @@ public class TechnicianController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<TechnicianResponseDto> updateTechnician(@RequestBody @Valid TechnicianRequestDto technicianRequestDto) {
+    public ResponseEntity<TechnicianResponseDto> updateTechnician(@ModelAttribute @Valid TechnicianRequestDto technicianRequestDto) {
         if (technicianRequestDto.getPassword() != null) {
             throw new IllegalCallerException("password cant change here please use change password end point");
         }
         Technician technician = technicianService.findByUserName(technicianRequestDto.getUserName());
-        modelMapper.map(technicianRequestDto, technician);
+        technicianMapper.map(technicianRequestDto, technician);
         Technician updatedTechnician = technicianService.update(technician);
         TechnicianResponseDto technicianResponseDto = modelMapper.map(updatedTechnician, TechnicianResponseDto.class);
         return new ResponseEntity<>(technicianResponseDto, HttpStatus.CREATED);

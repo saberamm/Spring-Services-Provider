@@ -3,6 +3,7 @@ package com.example.servicesprovider.utility;
 import com.example.servicesprovider.exception.ImageSizeNotValidException;
 import com.example.servicesprovider.exception.InvalidImageTypeException;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -10,6 +11,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Objects;
 
 @Component
 public class ImageConverter {
@@ -59,5 +61,17 @@ public class ImageConverter {
         }
 
         return Files.readAllBytes(path);
+    }
+
+    public byte[] convertMultipartFileToFile(MultipartFile multipartFile) {
+        File file = new File(Objects.requireNonNull(multipartFile.getOriginalFilename()));
+
+        try (FileOutputStream fos = new FileOutputStream(file)) {
+            fos.write(multipartFile.getBytes());
+        } catch (IOException e) {
+            throw new RuntimeException("Error casting image file: " + e.getMessage());
+        }
+
+        return readFileToBytes(file);
     }
 }

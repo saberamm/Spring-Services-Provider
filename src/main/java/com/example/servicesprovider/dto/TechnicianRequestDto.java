@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 
@@ -38,7 +39,7 @@ public class TechnicianRequestDto {
     @NotNull(message = "technicianStatus cannot be null")
     private TechnicianStatus technicianStatus;
 
-    private byte[] technicianPhoto;
+    private MultipartFile technicianPhoto;
 
     private Double technicianCredit;
 
