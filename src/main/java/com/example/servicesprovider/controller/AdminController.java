@@ -102,8 +102,8 @@ public class AdminController {
         adminService.addTechnicianToSubService(technician, subService);
     }
 
-    @DeleteMapping("/deleteTechnicianToSubService/{technicianId}/{subServiceId}")
-    public void deleteTechnicianToSubService(@PathVariable Long technicianId, @PathVariable Long subServiceId) {
+    @DeleteMapping("/deleteTechnicianFromSubService/{technicianId}/{subServiceId}")
+    public void deleteTechnicianFromSubService(@PathVariable Long technicianId, @PathVariable Long subServiceId) {
         Technician technician = technicianService.findById(technicianId);
         SubService subService = subService_service.findById(subServiceId);
         adminService.deleteTechnicianFromSubService(technician, subService);
