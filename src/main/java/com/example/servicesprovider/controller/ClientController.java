@@ -1,9 +1,11 @@
 package com.example.servicesprovider.controller;
 
 import com.example.servicesprovider.dto.*;
+import com.example.servicesprovider.mapper.OrderMapper;
 import com.example.servicesprovider.mapper.SubServiceMapper;
 import com.example.servicesprovider.model.Client;
 import com.example.servicesprovider.model.GeneralService;
+import com.example.servicesprovider.model.Order;
 import com.example.servicesprovider.model.SubService;
 import com.example.servicesprovider.service.ClientService;
 import com.example.servicesprovider.service.UserService;
@@ -25,6 +27,7 @@ public class ClientController {
     UserService userService;
     ModelMapper modelMapper;
     SubServiceMapper subServiceMapper;
+    OrderMapper orderMapper;
 
     @GetMapping("/find/{username}")
     public ResponseEntity<ClientResponseDto> getClient(@PathVariable String username) {
@@ -86,6 +89,14 @@ public class ClientController {
                 .collect(Collectors.toList());
 
         return new ResponseEntity<>(subServiceResponseDtoList, HttpStatus.OK);
+    }
+
+    @PostMapping("/addOrder")
+    public ResponseEntity<OrderResponseDto> addOrder(@RequestBody @Valid OrderRequestDto orderRequestDto) {
+        Order order = orderMapper.map(orderRequestDto);
+        Order savedOrder = clientService.addOrder(order);
+        OrderResponseDto orderResponseDto = orderMapper.map(savedOrder);
+        return new ResponseEntity<>(orderResponseDto, HttpStatus.CREATED);
     }
 
 }
