@@ -25,7 +25,7 @@ public class TechnicianController {
     public ResponseEntity<TechnicianResponseDto> getTechnician(@PathVariable String username) {
         Technician technician = technicianService.findByUserName(username);
         TechnicianResponseDto technicianResponseDto = modelMapper.map(technician, TechnicianResponseDto.class);
-        return new ResponseEntity<>(technicianResponseDto, HttpStatus.CREATED);
+        return new ResponseEntity<>(technicianResponseDto, HttpStatus.OK);
     }
 
     @PostMapping("/register")

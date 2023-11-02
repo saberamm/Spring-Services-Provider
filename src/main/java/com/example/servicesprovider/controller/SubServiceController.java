@@ -22,7 +22,7 @@ public class SubServiceController {
     public ResponseEntity<SubServiceResponseDto> getSubService(@PathVariable Long subServiceId) {
         SubService subService = subService_service.findById(subServiceId);
         SubServiceResponseDto subServiceResponseDto = subServiceMapper.map(subService);
-        return new ResponseEntity<>(subServiceResponseDto, HttpStatus.CREATED);
+        return new ResponseEntity<>(subServiceResponseDto, HttpStatus.OK);
     }
 
     @PostMapping("/register")

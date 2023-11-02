@@ -35,7 +35,7 @@ public class AdminController {
     public ResponseEntity<AdminResponseDto> getAdmin(@PathVariable String username) {
         Admin admin = adminService.findByUserName(username);
         AdminResponseDto adminResponseDto = modelMapper.map(admin, AdminResponseDto.class);
-        return new ResponseEntity<>(adminResponseDto, HttpStatus.CREATED);
+        return new ResponseEntity<>(adminResponseDto, HttpStatus.OK);
     }
 
     @PostMapping("/register")

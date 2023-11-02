@@ -30,7 +30,7 @@ public class ClientController {
     public ResponseEntity<ClientResponseDto> getClient(@PathVariable String username) {
         Client client = clientService.findByUserName(username);
         ClientResponseDto clientResponseDto = modelMapper.map(client, ClientResponseDto.class);
-        return new ResponseEntity<>(clientResponseDto, HttpStatus.CREATED);
+        return new ResponseEntity<>(clientResponseDto, HttpStatus.OK);
     }
 
     @PostMapping("/register")
@@ -68,18 +68,14 @@ public class ClientController {
 
     @GetMapping("/findGeneralServices")
     public ResponseEntity<List<GeneralServiceResponseDto>> seeGeneralServices() {
-        try {
-            List<GeneralService> generalServiceList = clientService.seeGeneralServices();
-            System.out.println(generalServiceList.get(0).getServiceName());
-            List<GeneralServiceResponseDto> generalServiceResponseDtoList = generalServiceList
-                    .stream()
-                    .map(generalService -> modelMapper.map(generalService, GeneralServiceResponseDto.class))
-                    .collect(Collectors.toList());
+        List<GeneralService> generalServiceList = clientService.seeGeneralServices();
+        System.out.println(generalServiceList.get(0).getServiceName());
+        List<GeneralServiceResponseDto> generalServiceResponseDtoList = generalServiceList
+                .stream()
+                .map(generalService -> modelMapper.map(generalService, GeneralServiceResponseDto.class))
+                .collect(Collectors.toList());
 
-            return new ResponseEntity<>(generalServiceResponseDtoList, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return new ResponseEntity<>(generalServiceResponseDtoList, HttpStatus.OK);
     }
 
 

@@ -22,7 +22,7 @@ public class GeneralServiceController {
     public ResponseEntity<GeneralServiceResponseDto> getGeneralService(@PathVariable String serviceName) {
         GeneralService generalService = generalService_service.findByServiceName(serviceName);
         GeneralServiceResponseDto generalServiceResponseDto = modelMapper.map(generalService, GeneralServiceResponseDto.class);
-        return new ResponseEntity<>(generalServiceResponseDto, HttpStatus.CREATED);
+        return new ResponseEntity<>(generalServiceResponseDto, HttpStatus.OK);
     }
 
     @PostMapping("/register")

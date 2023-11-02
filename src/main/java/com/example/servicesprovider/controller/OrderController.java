@@ -22,7 +22,7 @@ public class OrderController {
     public ResponseEntity<OrderResponseDto> getOrder(@PathVariable Long orderId) {
         Order order = orderService.findById(orderId);
         OrderResponseDto orderResponseDto = orderMapper.map(order);
-        return new ResponseEntity<>(orderResponseDto, HttpStatus.CREATED);
+        return new ResponseEntity<>(orderResponseDto, HttpStatus.OK);
     }
 
     @PostMapping("/register")

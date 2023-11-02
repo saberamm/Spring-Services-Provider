@@ -22,7 +22,7 @@ public class OfferController {
     public ResponseEntity<OfferResponseDto> getOffer(@PathVariable Long offerId) {
         Offer offer = offerService.findById(offerId);
         OfferResponseDto offerResponseDto = offerMapper.map(offer);
-        return new ResponseEntity<>(offerResponseDto, HttpStatus.CREATED);
+        return new ResponseEntity<>(offerResponseDto, HttpStatus.OK);
     }
 
     @PostMapping("/register")

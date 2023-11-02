@@ -22,7 +22,7 @@ public class ViewPointController {
     public ResponseEntity<ViewPointResponseDto> getViewPoint(@PathVariable Long viewPointId) {
         ViewPoint viewPoint = viewPointService.findById(viewPointId);
         ViewPointResponseDto viewPointResponseDto = viewPointMapper.map(viewPoint);
-        return new ResponseEntity<>(viewPointResponseDto, HttpStatus.CREATED);
+        return new ResponseEntity<>(viewPointResponseDto, HttpStatus.OK);
     }
 
     @PostMapping("/register")

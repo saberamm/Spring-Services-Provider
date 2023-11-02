@@ -22,7 +22,7 @@ public class CreditCardController {
     public ResponseEntity<CreditCardResponseDto> getCreditCard(@PathVariable String creditCardNumber) {
         CreditCard creditCard = creditCardService.findByCreditCardNumber(creditCardNumber);
         CreditCardResponseDto creditCardResponseDto = modelMapper.map(creditCard, CreditCardResponseDto.class);
-        return new ResponseEntity<>(creditCardResponseDto, HttpStatus.CREATED);
+        return new ResponseEntity<>(creditCardResponseDto, HttpStatus.OK);
     }
 
     @PostMapping("/register")
