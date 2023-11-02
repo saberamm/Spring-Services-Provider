@@ -1,6 +1,7 @@
 package com.example.servicesprovider.dto;
 
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
@@ -26,7 +27,7 @@ public class CreditCardRequestDto {
     @NotNull(message = "cvv2 cannot be null")
     private String cvv2;
 
-    @Size(min = 8, max = 8, message = "secondPassword must be 8 characters")
+    @Pattern(regexp = "^[0-9]{8}$", message = "secondPassword must be 8 digit")
     @NotNull(message = "secondPassword cannot be null")
     private String secondPassword;
 }

@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -148,5 +149,24 @@ public class ClientController {
         Order completedOrder = clientService.completeOrder(order);
         OrderResponseDto orderResponseDto = orderMapper.map(completedOrder);
         return new ResponseEntity<>(orderResponseDto, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/payWithClientCredit/{offerId}/{clientId}")
+    public String payWithClientCredit(@PathVariable Long offerId, @PathVariable Long clientId) {
+        Client client = clientService.findById(clientId);
+        Offer offer = offerService.findById(offerId);
+        clientService.payWithClientCredit(offer, client);
+        return "Payment was successful";
+    }
+
+    @PutMapping("/payWithCreditCard")
+    public String payWithCreditCard(@RequestParam Long offerId, @RequestParam String creditCardNumber,
+                                    @RequestParam String cvv2, @RequestParam String secondPassword, @RequestParam LocalDate expireDate) {
+
+        Offer offer = offerService.findById(offerId);
+        CreditCard creditCard = CreditCard.builder().creditCardNumber(creditCardNumber).cvv2(cvv2)
+                .secondPassword(secondPassword).expireDate(expireDate).build();
+        clientService.payWithCreditCard(creditCard, offer);
+        return "Payment was successful";
     }
 }

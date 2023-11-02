@@ -169,10 +169,16 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
     @Override
     @Transactional
     public void payWithClientCredit(Offer offer, Client client) {
+        if (client.getClientCredit() == null) {
+            client.setClientCredit(0D);
+        }
         if (client.getClientCredit() < offer.getSuggestionPrice())
             throw new NotEnoughCreditException("Your credit is not enough");
         Order order = offer.getOrder();
         Technician technician = offer.getTechnician();
+        if (technician.getTechnicianCredit() == null) {
+            technician.setTechnicianCredit(0D);
+        }
         client.setClientCredit(client.getClientCredit() - offer.getSuggestionPrice());
         technician.setTechnicianCredit(technician.getTechnicianCredit() + offer.getSuggestionPrice() / 100 * 70);
         order.setOrderStatus(OrderStatus.PAYED);
@@ -186,6 +192,9 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
     public void payWithCreditCard(CreditCard creditCard, Offer offer) {
         Technician technician = offer.getTechnician();
         Order order = offer.getOrder();
+        if (technician.getTechnicianCredit() == null) {
+            technician.setTechnicianCredit(0D);
+        }
         CreditCard savedCreditCard = creditCardService.findByCreditCardNumber(creditCard.getCreditCardNumber());
         if (checkCreditCards(savedCreditCard, creditCard)) {
             technician.setTechnicianCredit(technician.getTechnicianCredit() + offer.getSuggestionPrice() / 100 * 70);
