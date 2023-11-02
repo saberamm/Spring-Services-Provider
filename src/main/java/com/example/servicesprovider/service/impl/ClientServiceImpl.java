@@ -118,8 +118,8 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
     @Override
     public void addOverallScore(Technician technician) {
         List<ViewPoint> viewPointList = technician.getViewPointList();
+        double totalScore = 0.0;
         if (viewPointList != null && !viewPointList.isEmpty()) {
-            double totalScore = 0.0;
             for (ViewPoint viewPoint : viewPointList) {
                 if (viewPoint.getScore() != null) {
                     totalScore += viewPoint.getScore();
@@ -128,14 +128,18 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
             if (technician.getNegativeScore() == null) technician.setNegativeScore(0D);
             technician.setOverallScore(totalScore / viewPointList.size() - technician.getNegativeScore());
         } else {
-            technician.setOverallScore(0D);
+            if (technician.getNegativeScore() == null) technician.setNegativeScore(0D);
+            technician.setOverallScore(totalScore - technician.getNegativeScore());
         }
     }
 
     @Override
     @Transactional
     public void addNegativeScore(Offer offer, Technician technician) {
-        long hours = Duration.between(LocalDateTime.now(), offer.getTimeForEndWorking()).toHours();
+        long hours = Duration.between(offer.getTimeForEndWorking(), LocalDateTime.now()).toHours();
+        if (technician.getNegativeScore() == null) {
+            technician.setNegativeScore(0D);
+        }
         technician.setNegativeScore(technician.getNegativeScore() + hours);
     }
 
