@@ -18,7 +18,7 @@ public interface ClientService extends BaseService<Client, Long> {
 
     Client findByUserName(String userName);
 
-    Order chooseOffer(Order order, Offer offer);
+    Order chooseOffer(Offer offer);
 
     Order startOrder(Order order);
 

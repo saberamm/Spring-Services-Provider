@@ -75,7 +75,8 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
 
     @Override
     @Transactional
-    public Order chooseOffer(Order order, Offer offer) {
+    public Order chooseOffer(Offer offer) {
+        Order order = offer.getOrder();
         order.setSelectedOffersId(offer.getId());
         order.setOrderStatus(OrderStatus.WAITING_FOR_TECHNICIAN_TO_COME_YOUR_PLACE);
         return orderService.update(order);

@@ -25,6 +25,8 @@ public class OfferRequestDto {
     @NotNull(message = "Time for end working can not be null")
     private LocalDateTime timeForEndWorking;
 
+    private LocalDateTime timeOfferSent = LocalDateTime.now();
+
     private Long technicianId;
 
     private Long orderId;

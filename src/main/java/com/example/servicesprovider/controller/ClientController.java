@@ -1,13 +1,13 @@
 package com.example.servicesprovider.controller;
 
 import com.example.servicesprovider.dto.*;
+import com.example.servicesprovider.mapper.OfferMapper;
 import com.example.servicesprovider.mapper.OrderMapper;
 import com.example.servicesprovider.mapper.SubServiceMapper;
-import com.example.servicesprovider.model.Client;
-import com.example.servicesprovider.model.GeneralService;
-import com.example.servicesprovider.model.Order;
-import com.example.servicesprovider.model.SubService;
+import com.example.servicesprovider.model.*;
 import com.example.servicesprovider.service.ClientService;
+import com.example.servicesprovider.service.OfferService;
+import com.example.servicesprovider.service.OrderService;
 import com.example.servicesprovider.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -28,6 +28,9 @@ public class ClientController {
     ModelMapper modelMapper;
     SubServiceMapper subServiceMapper;
     OrderMapper orderMapper;
+    OfferService offerService;
+    OrderService orderService;
+    OfferMapper offerMapper;
 
     @GetMapping("/find/{username}")
     public ResponseEntity<ClientResponseDto> getClient(@PathVariable String username) {
@@ -99,4 +102,35 @@ public class ClientController {
         return new ResponseEntity<>(orderResponseDto, HttpStatus.CREATED);
     }
 
+    @GetMapping("/getOffersSortedByTechnicianScore/{orderId}")
+    public ResponseEntity<List<OfferResponseDto>> getOffersSortedByTechnicianScore(@PathVariable Long orderId) {
+        Order order = orderService.findById(orderId);
+        List<Offer> offerList = offerService.getOffersSortedByTechnicianScore(order);
+        List<OfferResponseDto> offerResponseDtoList = offerList
+                .stream()
+                .map(offer -> offerMapper.map(offer))
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(offerResponseDtoList, HttpStatus.OK);
+    }
+
+    @GetMapping("/getOffersSortedByPrice/{orderId}")
+    public ResponseEntity<List<OfferResponseDto>> getOffersSortedByPrice(@PathVariable Long orderId) {
+        Order order = orderService.findById(orderId);
+        List<Offer> offerList = offerService.getOffersSortedByPrice(order);
+        List<OfferResponseDto> offerResponseDtoList = offerList
+                .stream()
+                .map(offer -> offerMapper.map(offer))
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(offerResponseDtoList, HttpStatus.OK);
+    }
+
+    @PutMapping("/chooseOffer/{offerId}")
+    public ResponseEntity<OrderResponseDto> chooseOffer(@PathVariable Long offerId) {
+        Offer offer = offerService.findById(offerId);
+        Order order = clientService.chooseOffer(offer);
+        OrderResponseDto orderResponseDto = orderMapper.map(order);
+        return new ResponseEntity<>(orderResponseDto, HttpStatus.CREATED);
+    }
 }

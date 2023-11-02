@@ -17,6 +17,8 @@ public class OfferResponseDto {
 
     private Double suggestionPrice;
 
+    private LocalDateTime timeOfferSent;
+
     private LocalDateTime timeForEndWorking;
 
     private TechnicianResponseDto technicianResponseDto;
