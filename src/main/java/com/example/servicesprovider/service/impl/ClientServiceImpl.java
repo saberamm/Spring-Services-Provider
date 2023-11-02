@@ -86,15 +86,15 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
     @Transactional
     public Order startOrder(Order order) {
         Offer offer = offerService.findById(order.getSelectedOffersId());
-        if (order.getOrderStatus().equals(OrderStatus.WAITING_FOR_TECHNICIAN_TO_COME_YOUR_PLACE)
-                && LocalDateTime.now().isAfter(offer.getTimeForStartWorking())) {
-            order.setOrderStatus(OrderStatus.STARTED);
-            return orderService.update(order);
-        } else {
+        if (!order.getOrderStatus().equals(OrderStatus.WAITING_FOR_TECHNICIAN_TO_COME_YOUR_PLACE)) {
             throw new OrderHasNoSelectedOfferException("choose an offer first");
         }
+        if (!LocalDateTime.now().isAfter(offer.getTimeForStartWorking())) {
+            throw new IsBeforeStartTimeException("Start time is not arrived");
+        }
+        order.setOrderStatus(OrderStatus.STARTED);
+        return orderService.update(order);
     }
-
 
     @Override
     @Transactional

@@ -133,4 +133,20 @@ public class ClientController {
         OrderResponseDto orderResponseDto = orderMapper.map(order);
         return new ResponseEntity<>(orderResponseDto, HttpStatus.CREATED);
     }
+
+    @PutMapping("/startOrder/{orderId}")
+    public ResponseEntity<OrderResponseDto> startOrder(@PathVariable Long orderId) {
+        Order order = orderService.findById(orderId);
+        Order startedOrder = clientService.startOrder(order);
+        OrderResponseDto orderResponseDto = orderMapper.map(startedOrder);
+        return new ResponseEntity<>(orderResponseDto, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/completeOrder/{orderId}")
+    public ResponseEntity<OrderResponseDto> completeOrder(@PathVariable Long orderId) {
+        Order order = orderService.findById(orderId);
+        Order completedOrder = clientService.completeOrder(order);
+        OrderResponseDto orderResponseDto = orderMapper.map(completedOrder);
+        return new ResponseEntity<>(orderResponseDto, HttpStatus.CREATED);
+    }
 }
