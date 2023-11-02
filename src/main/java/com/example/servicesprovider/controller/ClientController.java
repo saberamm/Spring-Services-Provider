@@ -1,11 +1,10 @@
 package com.example.servicesprovider.controller;
 
-import com.example.servicesprovider.dto.ClientRequestDto;
-import com.example.servicesprovider.dto.ClientResponseDto;
-import com.example.servicesprovider.dto.GeneralServiceResponseDto;
-import com.example.servicesprovider.dto.PasswordUpdateRequest;
+import com.example.servicesprovider.dto.*;
+import com.example.servicesprovider.mapper.SubServiceMapper;
 import com.example.servicesprovider.model.Client;
 import com.example.servicesprovider.model.GeneralService;
+import com.example.servicesprovider.model.SubService;
 import com.example.servicesprovider.service.ClientService;
 import com.example.servicesprovider.service.UserService;
 import jakarta.validation.Valid;
@@ -25,6 +24,7 @@ public class ClientController {
     ClientService clientService;
     UserService userService;
     ModelMapper modelMapper;
+    SubServiceMapper subServiceMapper;
 
     @GetMapping("/find/{username}")
     public ResponseEntity<ClientResponseDto> getClient(@PathVariable String username) {
@@ -69,7 +69,6 @@ public class ClientController {
     @GetMapping("/findGeneralServices")
     public ResponseEntity<List<GeneralServiceResponseDto>> seeGeneralServices() {
         List<GeneralService> generalServiceList = clientService.seeGeneralServices();
-        System.out.println(generalServiceList.get(0).getServiceName());
         List<GeneralServiceResponseDto> generalServiceResponseDtoList = generalServiceList
                 .stream()
                 .map(generalService -> modelMapper.map(generalService, GeneralServiceResponseDto.class))
@@ -78,5 +77,15 @@ public class ClientController {
         return new ResponseEntity<>(generalServiceResponseDtoList, HttpStatus.OK);
     }
 
+    @GetMapping("/findSubServices")
+    public ResponseEntity<List<SubServiceResponseDto>> seeSubServices() {
+        List<SubService> subServiceList = clientService.seeSubServices();
+        List<SubServiceResponseDto> subServiceResponseDtoList = subServiceList
+                .stream()
+                .map(subService -> subServiceMapper.map(subService))
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(subServiceResponseDtoList, HttpStatus.OK);
+    }
 
 }
