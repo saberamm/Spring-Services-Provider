@@ -116,4 +116,18 @@ public class AdminController {
         TechnicianResponseDto technicianResponseDto = modelMapper.map(confirmTechnician, TechnicianResponseDto.class);
         return new ResponseEntity<>(technicianResponseDto, HttpStatus.CREATED);
     }
+
+    @PutMapping("/updateSubServicePrice/{subServiceId}/{basePrice}")
+    public ResponseEntity<SubServiceResponseDto> updateSubServicePrice(@PathVariable Long subServiceId, @PathVariable Double basePrice) {
+        SubService updatedSubService = adminService.updateSubServicePrice(subServiceId, basePrice);
+        SubServiceResponseDto subServiceResponseDto = subServiceMapper.map(updatedSubService);
+        return new ResponseEntity<>(subServiceResponseDto, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/updateSubServiceName/{subServiceId}/{subServiceName}")
+    public ResponseEntity<SubServiceResponseDto> updateSubServiceName(@PathVariable Long subServiceId, @PathVariable String subServiceName) {
+        SubService updatedSubService = adminService.updateSubServiceName(subServiceId, subServiceName);
+        SubServiceResponseDto subServiceResponseDto = subServiceMapper.map(updatedSubService);
+        return new ResponseEntity<>(subServiceResponseDto, HttpStatus.CREATED);
+    }
 }

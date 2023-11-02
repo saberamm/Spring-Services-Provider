@@ -90,6 +90,22 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
 
     @Override
     @Transactional
+    public SubService updateSubServicePrice(Long subServiceId, Double basePrice) {
+        SubService subService = subService_service.findById(subServiceId);
+        subService.setBasePrice(basePrice);
+        return subService_service.update(subService);
+    }
+
+    @Override
+    @Transactional
+    public SubService updateSubServiceName(Long subServiceId, String subServiceName) {
+        SubService subService = subService_service.findById(subServiceId);
+        subService.setSubServiceName(subServiceName);
+        return subService_service.update(subService);
+    }
+
+    @Override
+    @Transactional
     public Admin save(Admin admin) {
         admin.setPassword(hashGenerator.generateSHA512Hash(admin.getPassword()));
         repository.save(admin);
