@@ -23,4 +23,6 @@ public interface TechnicianService extends BaseService<Technician, Long> {
 
     @Transactional
     Double getOverallScore(Long technicianId);
+
+    void saveTechnicianPhoto(Long technicianId);
 }

@@ -95,4 +95,9 @@ public class TechnicianController {
         Double overallScore = technicianService.getOverallScore(technicianId);
         return new ResponseEntity<>(overallScore, HttpStatus.OK);
     }
+
+    @GetMapping("/saveTechnicianPhoto/{technicianId}")
+    public void saveTechnicianPhoto(@PathVariable Long technicianId) {
+        technicianService.saveTechnicianPhoto(technicianId);
+    }
 }

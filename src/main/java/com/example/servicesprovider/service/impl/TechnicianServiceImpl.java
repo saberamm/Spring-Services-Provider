@@ -12,6 +12,7 @@ import com.example.servicesprovider.service.SubService_Service;
 import com.example.servicesprovider.service.TechnicianService;
 import com.example.servicesprovider.utility.HashGenerator;
 
+import com.example.servicesprovider.utility.ImageConverter;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -25,13 +26,15 @@ public class TechnicianServiceImpl extends BaseServiceImpl<Technician, Long, Tec
     OrderService orderService;
     SubService_Service subService_service;
     HashGenerator hashGenerator;
+    ImageConverter imageConverter;
 
-    public TechnicianServiceImpl(TechnicianRepository repository, OfferService offerService, OrderService orderService, SubService_Service subService_service, HashGenerator hashGenerator) {
+    public TechnicianServiceImpl(TechnicianRepository repository, OfferService offerService, OrderService orderService, SubService_Service subService_service, HashGenerator hashGenerator, ImageConverter imageConverter) {
         super(repository);
         this.offerService = offerService;
         this.orderService = orderService;
         this.subService_service = subService_service;
         this.hashGenerator = hashGenerator;
+        this.imageConverter = imageConverter;
     }
 
     @Override
@@ -111,5 +114,12 @@ public class TechnicianServiceImpl extends BaseServiceImpl<Technician, Long, Tec
     public Double getOverallScore(Long technicianId) {
         Technician technician = findById(technicianId);
         return technician.getOverallScore();
+    }
+
+    @Override
+    public void saveTechnicianPhoto(Long technicianId) {
+        Technician technician = findById(technicianId);
+        imageConverter.saveBytesToFile(technician.getTechnicianPhoto(),
+                "C:\\Users\\Administrator\\Desktop\\Temp", "technician.jpg");
     }
 }
