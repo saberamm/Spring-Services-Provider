@@ -19,7 +19,7 @@ public class ViewPointRequestDto {
     @Min(value = 0, message = "Score must be between 0 to 10")
     @Max(value = 10, message = "Score must be between -10 to 10")
     @NotNull
-    private Integer score;
+    private Double score;
 
     private Long technicianId;
 }

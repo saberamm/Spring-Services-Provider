@@ -18,7 +18,7 @@ public class ViewPoint extends BaseModel<Long> {
 
     private String comment;
 
-    private Integer score;
+    private Double score;
 
     @ManyToOne(cascade = CascadeType.MERGE)
     private Technician technician;
