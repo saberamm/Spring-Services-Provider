@@ -106,4 +106,10 @@ public class TechnicianServiceImpl extends BaseServiceImpl<Technician, Long, Tec
             throw new UsernameOrPasswordNotCorrectException("Username or password not correct");
         return technician;
     }
+
+    @Override
+    public Double getOverallScore(Long technicianId) {
+        Technician technician = findById(technicianId);
+        return technician.getOverallScore();
+    }
 }

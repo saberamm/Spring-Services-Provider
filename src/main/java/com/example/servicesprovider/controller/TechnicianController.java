@@ -89,4 +89,10 @@ public class TechnicianController {
         OfferResponseDto offerResponseDto = offerMapper.map(savedOffer);
         return new ResponseEntity<>(offerResponseDto, HttpStatus.CREATED);
     }
+
+    @GetMapping("/getOverallScore/{technicianId}")
+    public ResponseEntity<Double> getOverallScore(@PathVariable Long technicianId) {
+        Double overallScore = technicianService.getOverallScore(technicianId);
+        return new ResponseEntity<>(overallScore, HttpStatus.OK);
+    }
 }

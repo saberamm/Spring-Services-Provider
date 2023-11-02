@@ -4,6 +4,7 @@ import com.example.servicesprovider.dto.*;
 import com.example.servicesprovider.mapper.OfferMapper;
 import com.example.servicesprovider.mapper.OrderMapper;
 import com.example.servicesprovider.mapper.SubServiceMapper;
+import com.example.servicesprovider.mapper.ViewPointMapper;
 import com.example.servicesprovider.model.*;
 import com.example.servicesprovider.service.ClientService;
 import com.example.servicesprovider.service.OfferService;
@@ -31,6 +32,7 @@ public class ClientController {
     OrderMapper orderMapper;
     OfferService offerService;
     OrderService orderService;
+    ViewPointMapper viewPointMapper;
     OfferMapper offerMapper;
 
     @GetMapping("/find/{username}")
@@ -168,5 +170,13 @@ public class ClientController {
                 .secondPassword(secondPassword).expireDate(expireDate).build();
         clientService.payWithCreditCard(creditCard, offer);
         return "Payment was successful";
+    }
+
+    @PostMapping("/addViewpoint")
+    public ResponseEntity<ViewPointResponseDto> addViewpoint(@RequestBody @Valid ViewPointRequestDto viewPointRequestDto) {
+        ViewPoint viewPoint = viewPointMapper.map(viewPointRequestDto);
+        ViewPoint savedViewPoint = clientService.addViewpoint(viewPoint);
+        ViewPointResponseDto viewPointResponseDto = viewPointMapper.map(savedViewPoint);
+        return new ResponseEntity<>(viewPointResponseDto, HttpStatus.CREATED);
     }
 }

@@ -26,8 +26,9 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
     TechnicianService technicianService;
     CreditCardService creditCardService;
     HashGenerator hashGenerator;
+    ViewPointService viewPointService;
 
-    public ClientServiceImpl(ClientRepository repository, OrderService orderService, SubService_Service subService_service, GeneralService_Service generalService_service, OfferService offerService, TechnicianService technicianService, CreditCardService creditCardService, HashGenerator hashGenerator) {
+    public ClientServiceImpl(ClientRepository repository, OrderService orderService, SubService_Service subService_service, GeneralService_Service generalService_service, OfferService offerService, TechnicianService technicianService, CreditCardService creditCardService, HashGenerator hashGenerator, ViewPointService viewPointService) {
         super(repository);
         this.orderService = orderService;
         this.subService_service = subService_service;
@@ -36,6 +37,7 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
         this.technicianService = technicianService;
         this.creditCardService = creditCardService;
         this.hashGenerator = hashGenerator;
+        this.viewPointService = viewPointService;
     }
 
     @Override
@@ -208,5 +210,15 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
     public boolean checkCreditCards(CreditCard savedCreditCard, CreditCard creditCard) {
         return creditCard.getCvv2().equals(savedCreditCard.getCvv2())
                 && creditCard.getSecondPassword().equals(savedCreditCard.getSecondPassword());
+    }
+
+    @Override
+    @Transactional
+    public ViewPoint addViewpoint(ViewPoint viewPoint) {
+        ViewPoint saveViewPoint = viewPointService.save(viewPoint);
+        Technician technician = saveViewPoint.getTechnician();
+        addOverallScore(technician);
+        technicianService.update(technician);
+        return viewPoint;
     }
 }

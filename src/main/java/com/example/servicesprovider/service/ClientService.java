@@ -2,6 +2,7 @@ package com.example.servicesprovider.service;
 
 import com.example.servicesprovider.base.service.BaseService;
 import com.example.servicesprovider.model.*;
+import jakarta.transaction.Transactional;
 
 import java.util.List;
 
@@ -37,4 +38,7 @@ public interface ClientService extends BaseService<Client, Long> {
     void payWithCreditCard(CreditCard creditCard, Offer offer);
 
     boolean checkCreditCards(CreditCard savedCreditCard, CreditCard creditCard);
+
+    @Transactional
+    ViewPoint addViewpoint(ViewPoint viewPoint);
 }
