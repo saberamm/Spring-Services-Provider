@@ -12,9 +12,9 @@ public interface TechnicianService extends BaseService<Technician, Long> {
 
     void deleteByUserName(String userName);
 
-    Offer addOffer(Offer offer, Technician technician);
+    Offer addOffer(Offer offer);
 
-    List<Order> OrdersThatTechnicianCanOffer(Technician technician);
+    List<Order> ordersThatTechnicianCanOffer(Technician technician);
 
     List<Technician> notConfirmedYet();
 

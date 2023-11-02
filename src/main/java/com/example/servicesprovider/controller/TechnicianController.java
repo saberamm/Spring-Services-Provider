@@ -1,7 +1,11 @@
 package com.example.servicesprovider.controller;
 
 import com.example.servicesprovider.dto.*;
+import com.example.servicesprovider.mapper.OfferMapper;
+import com.example.servicesprovider.mapper.OrderMapper;
 import com.example.servicesprovider.mapper.TechnicianMapper;
+import com.example.servicesprovider.model.Offer;
+import com.example.servicesprovider.model.Order;
 import com.example.servicesprovider.model.Technician;
 import com.example.servicesprovider.service.TechnicianService;
 import com.example.servicesprovider.service.UserService;
@@ -12,6 +16,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/technician")
 @AllArgsConstructor
@@ -20,6 +27,8 @@ public class TechnicianController {
     UserService userService;
     ModelMapper modelMapper;
     TechnicianMapper technicianMapper;
+    OrderMapper orderMapper;
+    OfferMapper offerMapper;
 
     @GetMapping("/find/{username}")
     public ResponseEntity<TechnicianResponseDto> getTechnician(@PathVariable String username) {
@@ -59,5 +68,25 @@ public class TechnicianController {
                 passwordUpdateRequest.getOldPassword(),
                 passwordUpdateRequest.getNewPassword(),
                 passwordUpdateRequest.getDuplicateNewPassword());
+    }
+
+    @GetMapping("/ordersThatTechnicianCanOffer/{technicianId}")
+    public ResponseEntity<List<OrderResponseDto>> ordersThatTechnicianCanOffer(@PathVariable Long technicianId) {
+        Technician technician = technicianService.findById(technicianId);
+        List<Order> orderList = technicianService.ordersThatTechnicianCanOffer(technician);
+        List<OrderResponseDto> orderResponseDtoList = orderList
+                .stream()
+                .map(order -> orderMapper.map(order))
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(orderResponseDtoList, HttpStatus.OK);
+    }
+
+    @PostMapping("/addOffer")
+    public ResponseEntity<OfferResponseDto> addOffer(@RequestBody @Valid OfferRequestDto offerRequestDto) {
+        Offer offer = offerMapper.map(offerRequestDto);
+        Offer savedOffer = technicianService.addOffer(offer);
+        OfferResponseDto offerResponseDto = offerMapper.map(savedOffer);
+        return new ResponseEntity<>(offerResponseDto, HttpStatus.CREATED);
     }
 }

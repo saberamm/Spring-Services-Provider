@@ -37,8 +37,8 @@ public class TechnicianServiceImpl extends BaseServiceImpl<Technician, Long, Tec
     @Override
     @Transactional
     public Technician findByUserName(String userName) {
-        Technician technician=repository.findByUserName(userName);
-        if (technician==null) throw new EntityNotFoundException("Model not exist");
+        Technician technician = repository.findByUserName(userName);
+        if (technician == null) throw new EntityNotFoundException("Model not exist");
         return technician;
     }
 
@@ -50,7 +50,8 @@ public class TechnicianServiceImpl extends BaseServiceImpl<Technician, Long, Tec
 
     @Override
     @Transactional
-    public Offer addOffer(Offer offer, Technician technician) {
+    public Offer addOffer(Offer offer) {
+        Technician technician = offer.getTechnician();
         Order order = offer.getOrder();
         if (offer.getTimeForStartWorking().isBefore(order.getWorkTime()))
             throw new OfferTimeBeforeOrderTimeException("offer time can not be before order time");
@@ -67,7 +68,7 @@ public class TechnicianServiceImpl extends BaseServiceImpl<Technician, Long, Tec
 
     @Override
     @Transactional
-    public List<Order> OrdersThatTechnicianCanOffer(Technician technician) {
+    public List<Order> ordersThatTechnicianCanOffer(Technician technician) {
         List<SubService> subServices = subService_service.findSubServicesByTechnicianId(technician.getId());
 
         List<Order> orders = subServices.stream()
