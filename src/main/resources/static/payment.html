@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Payment with Credit Card</title>
     <!-- Add Bootstrap CSS -->
@@ -39,26 +40,40 @@
             align-items: center;
             height: 100vh;
         }
+
+        /* Timer Styles */
+        #countdown {
+            text-align: center;
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
+
 <body>
 <div class="container centered-form">
     <div class="custom-form">
         <h1 class="display-4 mb-4">Payment with Credit Card</h1>
+
+        <!-- Countdown timer -->
+        <div id="countdown"></div>
+
         <form id="paymentForm" method="POST" action="http://localhost:8080/client/payWithCreditCard">
             <div class="form-group">
                 <label for="creditCardNumber">Credit Card Number (16 digits):</label>
-                <input type="text" class="form-control" id="creditCardNumber" name="creditCardNumber" pattern="[0-9]{16}" required>
+                <input type="text" class="form-control" id="creditCardNumber" name="creditCardNumber"
+                       pattern="[0-9]{16}" required>
             </div>
 
             <div class="form-group">
                 <label for="cvv2">CVV2 (4 digits):</label>
-                <input type="text" class="form-control" id="cvv2" name "cvv2" pattern="[0-9]{4}" required>
+                <input type="text" class="form-control" id="cvv2" name="cvv2" pattern="[0-9]{4}" required>
             </div>
 
             <div class="form-group">
                 <label for="expireDate">Expiration Date (YYYY-MM-DD):</label>
-                <input type="date" class="form-control" id="expireDate" name="expireDate" required>
+                <input type="date" class "form-control" id="expireDate" name="expireDate" required>
             </div>
 
             <div class="form-group">
@@ -76,9 +91,36 @@
     </div>
 </div>
 
+<!-- Countdown timer and auto-close -->
+<script>
+    var countdownElement = document.getElementById("countdown");
+
+    // Function to update and display the countdown timer
+    function updateCountdown(seconds) {
+        var minutes = Math.floor(seconds / 60);
+        var remainingSeconds = seconds % 60;
+        countdownElement.innerText = "Auto-closing in " + minutes + " minutes and " + remainingSeconds + " seconds";
+    }
+
+    // Close the page after 10 minutes (600 seconds)
+    var countdown = 600;
+    updateCountdown(countdown);
+
+    var countdownInterval = setInterval(function () {
+        countdown -= 1;
+        updateCountdown(countdown);
+
+        if (countdown === 0) {
+            clearInterval(countdownInterval);
+            window.close(); // Close the page
+        }
+    }, 1000);
+</script>
+
 <!-- Add Bootstrap JS and jQuery (for Bootstrap functionality) -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+
 </html>
