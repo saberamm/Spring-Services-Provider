@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <title>Payment with Credit Card</title>
-    <!-- Add Bootstrap CSS -->
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        /* Custom Styles */
+
         .custom-form {
             background-color: #f7f7f7;
             padding: 20px;
@@ -23,7 +23,7 @@
             background-color: #0056b3;
         }
 
-        /* Form Field Styles */
+
         .form-group label {
             color: #007BFF;
         }
@@ -33,7 +33,6 @@
             border-radius: 5px;
         }
 
-        /* Center the form on the page */
         .centered-form {
             display: flex;
             justify-content: center;
@@ -41,7 +40,6 @@
             height: 100vh;
         }
 
-        /* Timer Styles */
         #countdown {
             text-align: center;
             font-weight: bold;
@@ -56,7 +54,6 @@
     <div class="custom-form">
         <h1 class="display-4 mb-4">Payment with Credit Card</h1>
 
-        <!-- Countdown timer -->
         <div id="countdown"></div>
 
         <form id="paymentForm" method="POST" action="http://localhost:8080/client/payWithCreditCard">
@@ -73,7 +70,7 @@
 
             <div class="form-group">
                 <label for="expireDate">Expiration Date (YYYY-MM-DD):</label>
-                <input type="date" class "form-control" id="expireDate" name="expireDate" required>
+                <input type="date" class="form-control" id="expireDate" name="expireDate" required>
             </div>
 
             <div class="form-group">
@@ -86,23 +83,25 @@
                 <input type="text" class="form-control" id="offerId" name="offerId" required>
             </div>
 
+            <div class="form-group">
+                <label for="captcha">Captcha:</label>
+                <img src="http://localhost:8080/client/captcha-image" alt="CAPTCHA Image" id="captcha-image">
+                <input type="text" class="form-control" id="captcha" name="captcha" required>
+            </div>
+
             <button type="submit" class="btn custom-button btn-block">Submit</button>
         </form>
     </div>
 </div>
-
-<!-- Countdown timer and auto-close -->
 <script>
     var countdownElement = document.getElementById("countdown");
 
-    // Function to update and display the countdown timer
     function updateCountdown(seconds) {
         var minutes = Math.floor(seconds / 60);
         var remainingSeconds = seconds % 60;
         countdownElement.innerText = "Auto-closing in " + minutes + " minutes and " + remainingSeconds + " seconds";
     }
 
-    // Close the page after 10 minutes (600 seconds)
     var countdown = 600;
     updateCountdown(countdown);
 
@@ -112,12 +111,11 @@
 
         if (countdown === 0) {
             clearInterval(countdownInterval);
-            window.close(); // Close the page
+            window.close();
         }
     }, 1000);
 </script>
 
-<!-- Add Bootstrap JS and jQuery (for Bootstrap functionality) -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

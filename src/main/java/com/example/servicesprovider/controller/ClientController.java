@@ -1,5 +1,7 @@
 package com.example.servicesprovider.controller;
 
+import cn.apiclub.captcha.Captcha;
+import cn.apiclub.captcha.gimpy.DropShadowGimpyRenderer;
 import com.example.servicesprovider.dto.*;
 import com.example.servicesprovider.mapper.OfferMapper;
 import com.example.servicesprovider.mapper.OrderMapper;
@@ -10,13 +12,18 @@ import com.example.servicesprovider.service.ClientService;
 import com.example.servicesprovider.service.OfferService;
 import com.example.servicesprovider.service.OrderService;
 import com.example.servicesprovider.service.UserService;
+import com.example.servicesprovider.utility.ImageConverter;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.image.BufferedImage;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,6 +37,7 @@ public class ClientController {
     ModelMapper modelMapper;
     SubServiceMapper subServiceMapper;
     OrderMapper orderMapper;
+    ImageConverter imageConverter;
     OfferService offerService;
     OrderService orderService;
     ViewPointMapper viewPointMapper;
@@ -163,8 +171,14 @@ public class ClientController {
 
     @PostMapping("/payWithCreditCard")
     public String payWithCreditCard(@RequestParam Long offerId, @RequestParam String creditCardNumber,
-                                    @RequestParam String cvv2, @RequestParam String secondPassword, @RequestParam LocalDate expireDate) {
+                                    @RequestParam String cvv2, @RequestParam String secondPassword,
+                                    @RequestParam LocalDate expireDate, @RequestParam String captcha, HttpSession session) {
 
+        String storedCaptcha = (String) session.getAttribute("captcha");
+
+        if (!captcha.equals(storedCaptcha)) {
+            return "CAPTCHA verification failed. Please try again.";
+        }
         Offer offer = offerService.findById(offerId);
         CreditCard creditCard = CreditCard.builder().creditCardNumber(creditCardNumber).cvv2(cvv2)
                 .secondPassword(secondPassword).expireDate(expireDate).build();
@@ -179,4 +193,27 @@ public class ClientController {
         ViewPointResponseDto viewPointResponseDto = viewPointMapper.map(savedViewPoint);
         return new ResponseEntity<>(viewPointResponseDto, HttpStatus.CREATED);
     }
+
+    @GetMapping("/captcha-image")
+    public ResponseEntity<byte[]> generateCaptchaImage(HttpSession session) {
+        Captcha captcha = new Captcha.Builder(200, 50)
+                .addText()
+                .addNoise()
+                .addBackground()
+                .addBorder()
+                .gimp(new DropShadowGimpyRenderer())
+                .build();
+
+        session.setAttribute("captcha", captcha.getAnswer());
+
+        BufferedImage image = captcha.getImage();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_PNG);
+
+        byte[] imageBytes = imageConverter.convertImageToByteArray(image);
+
+        return new ResponseEntity<>(imageBytes, headers, 200);
+    }
+
 }
