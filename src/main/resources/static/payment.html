@@ -10,6 +10,7 @@
             background-color: #f7f7f7;
             padding: 20px;
             border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         }
 
         .custom-button {
@@ -19,6 +20,16 @@
 
         .custom-button:hover {
             background-color: #0056b3;
+        }
+
+        /* Form Field Styles */
+        .form-group label {
+            color: #007BFF;
+        }
+
+        .form-control {
+            border: 1px solid #007BFF;
+            border-radius: 5px;
         }
 
         /* Center the form on the page */
@@ -42,7 +53,7 @@
 
             <div class="form-group">
                 <label for="cvv2">CVV2 (4 digits):</label>
-                <input type="text" class="form-control" id="cvv2" name="cvv2" pattern="[0-9]{4}" required>
+                <input type="text" class="form-control" id="cvv2" name "cvv2" pattern="[0-9]{4}" required>
             </div>
 
             <div class="form-group">
