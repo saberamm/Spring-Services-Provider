@@ -1,6 +1,7 @@
 package com.example.servicesprovider.exception;
 
 import com.example.servicesprovider.utility.ErrorDetails;
+import jakarta.persistence.PersistenceException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -12,14 +13,26 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 @ControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> ExceptionHandler(Exception e) {
+    @ExceptionHandler(PersistenceException.class)
+    public ResponseEntity<String> PersistenceExceptionHandler(PersistenceException e) {
+        log.error(e.getMessage());
+        return ResponseEntity.status(HttpStatus.OK).body(e.getMessage());
+    }
+    @ExceptionHandler(IOException.class)
+    public ResponseEntity<String> IOExceptionHandler(IOException e) {
+        log.error(e.getMessage());
+        return ResponseEntity.status(HttpStatus.OK).body(e.getMessage());
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<String> RuntimeExceptionHandler(RuntimeException e) {
         log.error(e.getMessage());
         return ResponseEntity.status(HttpStatus.OK).body(e.getMessage());
     }
