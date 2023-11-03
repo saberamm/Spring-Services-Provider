@@ -3,10 +3,7 @@ package com.example.servicesprovider.controller;
 import com.example.servicesprovider.dto.*;
 import com.example.servicesprovider.mapper.SubServiceMapper;
 import com.example.servicesprovider.mapper.TechnicianMapper;
-import com.example.servicesprovider.model.Admin;
-import com.example.servicesprovider.model.GeneralService;
-import com.example.servicesprovider.model.SubService;
-import com.example.servicesprovider.model.Technician;
+import com.example.servicesprovider.model.*;
 import com.example.servicesprovider.service.AdminService;
 import com.example.servicesprovider.service.SubService_Service;
 import com.example.servicesprovider.service.TechnicianService;
@@ -14,9 +11,15 @@ import com.example.servicesprovider.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/admin")
@@ -129,5 +132,28 @@ public class AdminController {
         SubService updatedSubService = adminService.updateSubServiceName(subServiceId, subServiceName);
         SubServiceResponseDto subServiceResponseDto = subServiceMapper.map(updatedSubService);
         return new ResponseEntity<>(subServiceResponseDto, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<Page<UserResponseDto>> searchAndFilterUsers(
+            @RequestParam(required = false) String role,
+            @RequestParam(required = false) String firstName,
+            @RequestParam(required = false) String lastName,
+            @RequestParam(required = false) String email,
+            @RequestParam(defaultValue = "firstName") String sortBy,
+            Pageable pageable
+    ) {
+        Page<User> users = userService.searchAndFilterUsers(role, firstName, lastName, email, sortBy, pageable);
+
+        List<UserResponseDto> usersDtoList = new ArrayList<>();
+
+        for (User user : users) {
+            UserResponseDto userDto = modelMapper.map(user, UserResponseDto.class);
+            usersDtoList.add(userDto);
+        }
+
+        Page<UserResponseDto> usersDto = new PageImpl<>(usersDtoList, pageable, users.getTotalElements());
+
+        return new ResponseEntity<>(usersDto, HttpStatus.OK);
     }
 }

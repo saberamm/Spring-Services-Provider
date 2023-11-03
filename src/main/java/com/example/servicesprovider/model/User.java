@@ -34,4 +34,7 @@ public class User extends BaseModel<Long> {
 
     @Column(unique = true)
     private String email;
+
+    @Column(insertable = false, updatable = false)
+    private String dtype;
 }

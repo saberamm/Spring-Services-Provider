@@ -11,6 +11,8 @@ import com.example.servicesprovider.utility.HashGenerator;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,8 +28,8 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long, UserRepository>
     @Override
     @Transactional
     public User findByUserName(String userName) {
-        User user=repository.findByUserName(userName);
-        if (user==null) throw new EntityNotFoundException("Model not exist");
+        User user = repository.findByUserName(userName);
+        if (user == null) throw new EntityNotFoundException("Model not exist");
         return user;
     }
 
@@ -58,5 +60,11 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long, UserRepository>
         if (user == null)
             throw new UsernameOrPasswordNotCorrectException("Username or password not correct");
         return user;
+    }
+
+    @Override
+    @Transactional
+    public Page<User> searchAndFilterUsers(String role, String firstName, String lastName, String email, String sortBy, Pageable pageable) {
+        return repository.searchAndFilterUsers(role, firstName, lastName, email, sortBy, pageable);
     }
 }
