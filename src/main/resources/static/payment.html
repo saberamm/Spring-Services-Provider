@@ -2,31 +2,72 @@
 <html>
 <head>
     <title>Payment with Credit Card</title>
+    <!-- Add Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Custom Styles */
+        .custom-form {
+            background-color: #f7f7f7;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .custom-button {
+            background-color: #007BFF;
+            color: #fff;
+        }
+
+        .custom-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Center the form on the page */
+        .centered-form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+    </style>
 </head>
 <body>
-<h1>Payment with Credit Card</h1>
-<form id="paymentForm" method="POST" action="http://localhost:8080/client/payWithCreditCard">
-    <label for="creditCardNumber">Credit Card Number (16 digits):</label>
-    <input type="text" id="creditCardNumber" name="creditCardNumber" pattern="[0-9]{16}" required>
-    <br>
+<div class="container centered-form">
+    <div class="custom-form">
+        <h1 class="display-4 mb-4">Payment with Credit Card</h1>
+        <form id="paymentForm" method="POST" action="http://localhost:8080/client/payWithCreditCard">
+            <div class="form-group">
+                <label for="creditCardNumber">Credit Card Number (16 digits):</label>
+                <input type="text" class="form-control" id="creditCardNumber" name="creditCardNumber" pattern="[0-9]{16}" required>
+            </div>
 
-    <label for="cvv2">CVV2 (4 digits):</label>
-    <input type="text" id="cvv2" name="cvv2" pattern="[0-9]{4}" required>
-    <br>
+            <div class="form-group">
+                <label for="cvv2">CVV2 (4 digits):</label>
+                <input type="text" class="form-control" id="cvv2" name="cvv2" pattern="[0-9]{4}" required>
+            </div>
 
-    <label for="expireDate">Expiration Date (YYYY-MM-DD):</label>
-    <input type="date" id="expireDate" name="expireDate" required>
-    <br>
+            <div class="form-group">
+                <label for="expireDate">Expiration Date (YYYY-MM-DD):</label>
+                <input type="date" class="form-control" id="expireDate" name="expireDate" required>
+            </div>
 
-    <label for="secondPassword">Second Password:</label>
-    <input type="password" id="secondPassword" name="secondPassword" required>
-    <br>
+            <div class="form-group">
+                <label for="secondPassword">Second Password:</label>
+                <input type="password" class="form-control" id="secondPassword" name="secondPassword" required>
+            </div>
 
-    <label for="offerId">offerId:</label>
-    <input type="text" id="offerId" name="offerId" required>
-    <br>
+            <div class="form-group">
+                <label for="offerId">Offer ID:</label>
+                <input type="text" class="form-control" id="offerId" name="offerId" required>
+            </div>
 
-    <button type="submit">Submit</button>
-</form>
+            <button type="submit" class="btn custom-button btn-block">Submit</button>
+        </form>
+    </div>
+</div>
+
+<!-- Add Bootstrap JS and jQuery (for Bootstrap functionality) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
