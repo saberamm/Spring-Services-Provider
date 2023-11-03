@@ -161,7 +161,7 @@ public class ClientController {
         return "Payment was successful";
     }
 
-    @PutMapping("/payWithCreditCard")
+    @PostMapping("/payWithCreditCard")
     public String payWithCreditCard(@RequestParam Long offerId, @RequestParam String creditCardNumber,
                                     @RequestParam String cvv2, @RequestParam String secondPassword, @RequestParam LocalDate expireDate) {
 
