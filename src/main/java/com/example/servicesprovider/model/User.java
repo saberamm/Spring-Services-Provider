@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Table(name = "user_table")
+@DiscriminatorColumn(name = "role", discriminatorType = DiscriminatorType.STRING)
 public class User extends BaseModel<Long> {
 
     private String firstName;
@@ -36,5 +37,5 @@ public class User extends BaseModel<Long> {
     private String email;
 
     @Column(insertable = false, updatable = false)
-    private String dtype;
+    private String role;
 }

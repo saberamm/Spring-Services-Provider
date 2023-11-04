@@ -25,7 +25,7 @@ public interface UserRepository extends BaseRepository<User, Long> {
             List<Predicate> predicates = new ArrayList<>();
 
             if (role != null && !role.isEmpty()) {
-                predicates.add(criteriaBuilder.equal(root.get("dtype"), role));
+                predicates.add(criteriaBuilder.equal(root.get("role"), role));
             }
 
             if (firstName != null && !firstName.isEmpty()) {
