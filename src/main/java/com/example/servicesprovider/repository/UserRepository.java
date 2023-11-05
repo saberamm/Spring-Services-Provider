@@ -1,10 +1,8 @@
 package com.example.servicesprovider.repository;
 
 import com.example.servicesprovider.base.repository.BaseRepository;
-import com.example.servicesprovider.dto.UserResponseDto;
 import com.example.servicesprovider.model.User;
 import jakarta.persistence.criteria.Predicate;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,8 +20,7 @@ public interface UserRepository extends BaseRepository<User, Long> {
 
     Page<User> findAll(Specification<User> spec, Pageable pageable);
 
-    default Page<UserResponseDto> searchAndFilterUsers(String role, String firstName, String lastName, String email, String aboutMe, String sortBy, Pageable pageable) {
-        ModelMapper modelMapper = new ModelMapper();
+    default Page<User> searchAndFilterUsers(String role, String firstName, String lastName, String email, String aboutMe, String sortBy, Pageable pageable) {
         return findAll((root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
@@ -49,7 +46,6 @@ public interface UserRepository extends BaseRepository<User, Long> {
 
             query.distinct(true);
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
-        }, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), JpaSort.by(sortBy)))
-                .map(user -> modelMapper.map(user, UserResponseDto.class));
+        }, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), JpaSort.by(sortBy)));
     }
 }
