@@ -1,6 +1,7 @@
 package com.example.servicesprovider.service;
 
 import com.example.servicesprovider.base.service.BaseService;
+import com.example.servicesprovider.dto.UserResponseDto;
 import com.example.servicesprovider.model.User;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
@@ -15,5 +16,5 @@ public interface UserService extends BaseService<User, Long> {
     User userAuthentication(String userName, String password);
 
     @Transactional
-    Page<User> searchAndFilterUsers(String role, String name, String surname, String email, String sortBy, Pageable pageable);
+    Page<UserResponseDto> searchAndFilterUsers(String role, String name, String surname, String email,String aboutMe, String sortBy, Pageable pageable);
 }

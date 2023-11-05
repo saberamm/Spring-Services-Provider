@@ -12,14 +12,10 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping("/admin")
@@ -140,20 +136,12 @@ public class AdminController {
             @RequestParam(required = false) String firstName,
             @RequestParam(required = false) String lastName,
             @RequestParam(required = false) String email,
+            @RequestParam(required = false) String aboutMe,
             @RequestParam(defaultValue = "firstName") String sortBy,
             Pageable pageable
     ) {
-        Page<User> users = userService.searchAndFilterUsers(role, firstName, lastName, email, sortBy, pageable);
+        Page<UserResponseDto> users = userService.searchAndFilterUsers(role, firstName, lastName, email,aboutMe, sortBy, pageable);
 
-        List<UserResponseDto> usersDtoList = new ArrayList<>();
-
-        for (User user : users) {
-            UserResponseDto userDto = modelMapper.map(user, UserResponseDto.class);
-            usersDtoList.add(userDto);
-        }
-
-        Page<UserResponseDto> usersDto = new PageImpl<>(usersDtoList, pageable, users.getTotalElements());
-
-        return new ResponseEntity<>(usersDto, HttpStatus.OK);
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 }
