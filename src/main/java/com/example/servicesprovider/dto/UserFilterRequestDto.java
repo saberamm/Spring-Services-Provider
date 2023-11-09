@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
-public class UserRequestDto {
+public class UserFilterRequestDto {
 
     private String role;
 

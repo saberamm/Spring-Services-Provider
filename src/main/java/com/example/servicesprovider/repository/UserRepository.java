@@ -1,7 +1,7 @@
 package com.example.servicesprovider.repository;
 
 import com.example.servicesprovider.base.repository.BaseRepository;
-import com.example.servicesprovider.dto.UserRequestDto;
+import com.example.servicesprovider.dto.UserFilterRequestDto;
 import com.example.servicesprovider.model.User;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.domain.Page;
@@ -22,72 +22,72 @@ public interface UserRepository extends BaseRepository<User, Long> {
 
     Page<User> findAll(Specification<User> spec, Pageable pageable);
 
-    default Page<User> searchAndFilterUsers(UserRequestDto userRequestDto, Sort.Direction direction, int pageNumber, int pageSize, String sortBy) {
+    default Page<User> searchAndFilterUsers(UserFilterRequestDto userFilterRequestDto, Sort.Direction direction, int pageNumber, int pageSize, String sortBy) {
         return findAll((root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
-            if (userRequestDto.getRole() != null && !userRequestDto.getRole().isEmpty()) {
-                predicates.add(criteriaBuilder.equal(root.get("role"), userRequestDto.getRole()));
+            if (userFilterRequestDto.getRole() != null && !userFilterRequestDto.getRole().isEmpty()) {
+                predicates.add(criteriaBuilder.equal(root.get("role"), userFilterRequestDto.getRole()));
             }
 
-            if (userRequestDto.getFirstName() != null && !userRequestDto.getFirstName().isEmpty()) {
-                predicates.add(criteriaBuilder.like(root.get("firstName"), "%" + userRequestDto.getFirstName() + "%"));
+            if (userFilterRequestDto.getFirstName() != null && !userFilterRequestDto.getFirstName().isEmpty()) {
+                predicates.add(criteriaBuilder.like(root.get("firstName"), "%" + userFilterRequestDto.getFirstName() + "%"));
             }
 
-            if (userRequestDto.getLastName() != null && !userRequestDto.getLastName().isEmpty()) {
-                predicates.add(criteriaBuilder.like(root.get("lastName"), "%" + userRequestDto.getLastName() + "%"));
+            if (userFilterRequestDto.getLastName() != null && !userFilterRequestDto.getLastName().isEmpty()) {
+                predicates.add(criteriaBuilder.like(root.get("lastName"), "%" + userFilterRequestDto.getLastName() + "%"));
             }
 
-            if (userRequestDto.getEmail() != null && !userRequestDto.getEmail().isEmpty()) {
-                predicates.add(criteriaBuilder.like(root.get("email"), "%" + userRequestDto.getEmail() + "%"));
+            if (userFilterRequestDto.getEmail() != null && !userFilterRequestDto.getEmail().isEmpty()) {
+                predicates.add(criteriaBuilder.like(root.get("email"), "%" + userFilterRequestDto.getEmail() + "%"));
             }
 
-            if (userRequestDto.getAboutMe() != null && !userRequestDto.getAboutMe().isEmpty()) {
-                predicates.add(criteriaBuilder.like(root.get("aboutMe"), "%" + userRequestDto.getAboutMe() + "%"));
+            if (userFilterRequestDto.getAboutMe() != null && !userFilterRequestDto.getAboutMe().isEmpty()) {
+                predicates.add(criteriaBuilder.like(root.get("aboutMe"), "%" + userFilterRequestDto.getAboutMe() + "%"));
             }
 
-            if (userRequestDto.getBirthDate() != null) {
-                predicates.add(criteriaBuilder.equal(root.get("birthDate"), userRequestDto.getBirthDate()));
+            if (userFilterRequestDto.getBirthDate() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("birthDate"), userFilterRequestDto.getBirthDate()));
             }
 
-            if (userRequestDto.getId() != null) {
-                predicates.add(criteriaBuilder.equal(root.get("id"), userRequestDto.getId()));
+            if (userFilterRequestDto.getId() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("id"), userFilterRequestDto.getId()));
             }
 
-            if (userRequestDto.getUserName() != null && !userRequestDto.getUserName().isEmpty()) {
-                predicates.add(criteriaBuilder.like(root.get("userName"), "%" + userRequestDto.getUserName() + "%"));
+            if (userFilterRequestDto.getUserName() != null && !userFilterRequestDto.getUserName().isEmpty()) {
+                predicates.add(criteriaBuilder.like(root.get("userName"), "%" + userFilterRequestDto.getUserName() + "%"));
             }
 
-            if (userRequestDto.getPosition() != null) {
-                predicates.add(criteriaBuilder.equal(root.get("position"), userRequestDto.getPosition()));
+            if (userFilterRequestDto.getPosition() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("position"), userFilterRequestDto.getPosition()));
             }
 
-            if (userRequestDto.getClientCredit() != null) {
-                predicates.add(criteriaBuilder.equal(root.get("clientCredit"), userRequestDto.getClientCredit()));
+            if (userFilterRequestDto.getClientCredit() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("clientCredit"), userFilterRequestDto.getClientCredit()));
             }
 
-            if (userRequestDto.getPhoneNumber() != null && !userRequestDto.getPhoneNumber().isEmpty()) {
-                predicates.add(criteriaBuilder.like(root.get("phoneNumber"), "%" + userRequestDto.getPhoneNumber() + "%"));
+            if (userFilterRequestDto.getPhoneNumber() != null && !userFilterRequestDto.getPhoneNumber().isEmpty()) {
+                predicates.add(criteriaBuilder.like(root.get("phoneNumber"), "%" + userFilterRequestDto.getPhoneNumber() + "%"));
             }
 
-            if (userRequestDto.getNationalCode() != null && !userRequestDto.getNationalCode().isEmpty()) {
-                predicates.add(criteriaBuilder.like(root.get("nationalCode"), "%" + userRequestDto.getNationalCode() + "%"));
+            if (userFilterRequestDto.getNationalCode() != null && !userFilterRequestDto.getNationalCode().isEmpty()) {
+                predicates.add(criteriaBuilder.like(root.get("nationalCode"), "%" + userFilterRequestDto.getNationalCode() + "%"));
             }
 
-            if (userRequestDto.getTechnicianStatus() != null) {
-                predicates.add(criteriaBuilder.equal(root.get("technicianStatus"), userRequestDto.getTechnicianStatus()));
+            if (userFilterRequestDto.getTechnicianStatus() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("technicianStatus"), userFilterRequestDto.getTechnicianStatus()));
             }
 
-            if (userRequestDto.getTechnicianCredit() != null) {
-                predicates.add(criteriaBuilder.equal(root.get("technicianCredit"), userRequestDto.getTechnicianCredit()));
+            if (userFilterRequestDto.getTechnicianCredit() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("technicianCredit"), userFilterRequestDto.getTechnicianCredit()));
             }
 
-            if (userRequestDto.getNegativeScore() != null) {
-                predicates.add(criteriaBuilder.equal(root.get("negativeScore"), userRequestDto.getNegativeScore()));
+            if (userFilterRequestDto.getNegativeScore() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("negativeScore"), userFilterRequestDto.getNegativeScore()));
             }
 
-            if (userRequestDto.getOverallScore() != null) {
-                predicates.add(criteriaBuilder.equal(root.get("overallScore"), userRequestDto.getOverallScore()));
+            if (userFilterRequestDto.getOverallScore() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("overallScore"), userFilterRequestDto.getOverallScore()));
             }
 
             query.distinct(true);

@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
-public class UserResponseDto {
+public class UserFilterResponseDto {
 
     private Long id;
 

@@ -131,15 +131,15 @@ public class AdminController {
     }
 
     @GetMapping("/filter")
-    public ResponseEntity<Page<UserResponseDto>> searchAndFilterUsers(
-            @RequestBody UserRequestDto userRequestDto,
+    public ResponseEntity<Page<UserFilterResponseDto>> searchAndFilterUsers(
+            @RequestBody UserFilterRequestDto userFilterRequestDto,
             @RequestParam(required = false) Sort.Direction direction,
             @RequestParam(required = false) int pageNumber,
             @RequestParam(required = false) int pageSize,
             @RequestParam(defaultValue = "firstName") String sortBy
     ) {
-        Page<User> users = userService.searchAndFilterUsers(userRequestDto, direction, pageNumber, pageSize, sortBy);
-        Page<UserResponseDto> usersDto = users.map(user -> modelMapper.map(user, UserResponseDto.class));
+        Page<User> users = userService.searchAndFilterUsers(userFilterRequestDto, direction, pageNumber, pageSize, sortBy);
+        Page<UserFilterResponseDto> usersDto = users.map(user -> modelMapper.map(user, UserFilterResponseDto.class));
         return new ResponseEntity<>(usersDto, HttpStatus.OK);
     }
 }

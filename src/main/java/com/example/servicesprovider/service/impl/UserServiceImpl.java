@@ -1,7 +1,7 @@
 package com.example.servicesprovider.service.impl;
 
 import com.example.servicesprovider.base.service.impl.BaseServiceImpl;
-import com.example.servicesprovider.dto.UserRequestDto;
+import com.example.servicesprovider.dto.UserFilterRequestDto;
 import com.example.servicesprovider.exception.PasswordsNotEqualException;
 import com.example.servicesprovider.exception.UsernameOrPasswordNotCorrectException;
 import com.example.servicesprovider.model.User;
@@ -65,7 +65,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long, UserRepository>
 
     @Override
     @Transactional
-    public Page<User> searchAndFilterUsers(UserRequestDto userRequestDto, Sort.Direction direction, int pageNumber, int pageSize, String sortBy) {
-        return repository.searchAndFilterUsers(userRequestDto, direction, pageNumber, pageSize, sortBy);
+    public Page<User> searchAndFilterUsers(UserFilterRequestDto userFilterRequestDto, Sort.Direction direction, int pageNumber, int pageSize, String sortBy) {
+        return repository.searchAndFilterUsers(userFilterRequestDto, direction, pageNumber, pageSize, sortBy);
     }
 }
