@@ -46,6 +46,50 @@ public interface UserRepository extends BaseRepository<User, Long> {
                 predicates.add(criteriaBuilder.like(root.get("aboutMe"), "%" + userRequestDto.getAboutMe() + "%"));
             }
 
+            if (userRequestDto.getBirthDate() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("birthDate"), userRequestDto.getBirthDate()));
+            }
+
+            if (userRequestDto.getId() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("id"), userRequestDto.getId()));
+            }
+
+            if (userRequestDto.getUserName() != null && !userRequestDto.getUserName().isEmpty()) {
+                predicates.add(criteriaBuilder.like(root.get("userName"), "%" + userRequestDto.getUserName() + "%"));
+            }
+
+            if (userRequestDto.getPosition() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("position"), userRequestDto.getPosition()));
+            }
+
+            if (userRequestDto.getClientCredit() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("clientCredit"), userRequestDto.getClientCredit()));
+            }
+
+            if (userRequestDto.getPhoneNumber() != null && !userRequestDto.getPhoneNumber().isEmpty()) {
+                predicates.add(criteriaBuilder.like(root.get("phoneNumber"), "%" + userRequestDto.getPhoneNumber() + "%"));
+            }
+
+            if (userRequestDto.getNationalCode() != null && !userRequestDto.getNationalCode().isEmpty()) {
+                predicates.add(criteriaBuilder.like(root.get("nationalCode"), "%" + userRequestDto.getNationalCode() + "%"));
+            }
+
+            if (userRequestDto.getTechnicianStatus() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("technicianStatus"), userRequestDto.getTechnicianStatus()));
+            }
+
+            if (userRequestDto.getTechnicianCredit() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("technicianCredit"), userRequestDto.getTechnicianCredit()));
+            }
+
+            if (userRequestDto.getNegativeScore() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("negativeScore"), userRequestDto.getNegativeScore()));
+            }
+
+            if (userRequestDto.getOverallScore() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("overallScore"), userRequestDto.getOverallScore()));
+            }
+
             query.distinct(true);
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         }, PageRequest.of(pageNumber, pageSize, JpaSort.by(direction, sortBy)));
