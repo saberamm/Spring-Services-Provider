@@ -1,6 +1,7 @@
 package com.example.servicesprovider.service.impl;
 
 import com.example.servicesprovider.base.service.impl.BaseServiceImpl;
+import com.example.servicesprovider.dto.UserRequestDto;
 import com.example.servicesprovider.exception.PasswordsNotEqualException;
 import com.example.servicesprovider.exception.UsernameOrPasswordNotCorrectException;
 import com.example.servicesprovider.model.User;
@@ -12,7 +13,7 @@ import com.example.servicesprovider.utility.HashGenerator;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -64,7 +65,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long, UserRepository>
 
     @Override
     @Transactional
-    public Page<User> searchAndFilterUsers(String role, String firstName, String lastName, String email,String aboutMe, String sortBy, Pageable pageable) {
-        return repository.searchAndFilterUsers(role, firstName, lastName, email, aboutMe, sortBy, pageable);
+    public Page<User> searchAndFilterUsers(UserRequestDto userRequestDto, Sort.Direction direction, int pageNumber, int pageSize, String sortBy) {
+        return repository.searchAndFilterUsers(userRequestDto, direction, pageNumber, pageSize, sortBy);
     }
 }

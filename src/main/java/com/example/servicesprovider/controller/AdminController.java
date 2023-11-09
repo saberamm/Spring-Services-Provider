@@ -12,7 +12,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -132,15 +132,13 @@ public class AdminController {
 
     @GetMapping("/filter")
     public ResponseEntity<Page<UserResponseDto>> searchAndFilterUsers(
-            @RequestParam(required = false) String role,
-            @RequestParam(required = false) String firstName,
-            @RequestParam(required = false) String lastName,
-            @RequestParam(required = false) String email,
-            @RequestParam(required = false) String aboutMe,
-            @RequestParam(defaultValue = "firstName") String sortBy,
-            Pageable pageable
+            @RequestBody UserRequestDto userRequestDto,
+            @RequestParam(required = false) Sort.Direction direction,
+            @RequestParam(required = false) int pageNumber,
+            @RequestParam(required = false) int pageSize,
+            @RequestParam(defaultValue = "firstName") String sortBy
     ) {
-        Page<User> users = userService.searchAndFilterUsers(role, firstName, lastName, email, aboutMe, sortBy, pageable);
+        Page<User> users = userService.searchAndFilterUsers(userRequestDto, direction, pageNumber, pageSize, sortBy);
         Page<UserResponseDto> usersDto = users.map(user -> modelMapper.map(user, UserResponseDto.class));
         return new ResponseEntity<>(usersDto, HttpStatus.OK);
     }
