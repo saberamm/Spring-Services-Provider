@@ -2,7 +2,11 @@ package com.example.servicesprovider.repository;
 
 import com.example.servicesprovider.base.repository.BaseRepository;
 import com.example.servicesprovider.dto.UserFilterRequestDto;
+import com.example.servicesprovider.model.SubService;
+import com.example.servicesprovider.model.SubServiceTechnician;
 import com.example.servicesprovider.model.User;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -88,6 +92,12 @@ public interface UserRepository extends BaseRepository<User, Long> {
 
             if (userFilterRequestDto.getOverallScore() != null) {
                 predicates.add(criteriaBuilder.equal(root.get("overallScore"), userFilterRequestDto.getOverallScore()));
+            }
+            if (userFilterRequestDto.getSubServiceName() != null && !userFilterRequestDto.getSubServiceName().isEmpty()) {
+                Join<User, SubServiceTechnician> subServiceTechnicianJoin = root.join("subServiceTechnicianList", JoinType.LEFT);
+                Join<SubServiceTechnician, SubService> subServiceJoin = subServiceTechnicianJoin.join("subService", JoinType.LEFT);
+
+                predicates.add(criteriaBuilder.like(subServiceJoin.get("subServiceName"), "%" + userFilterRequestDto.getSubServiceName() + "%"));
             }
 
             query.distinct(true);

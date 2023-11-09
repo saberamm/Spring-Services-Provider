@@ -44,5 +44,7 @@ public class UserFilterRequestDto {
     private Double overallScore;
 
     private String aboutMe;
+
+    private String subServiceName;
 }
 
