@@ -116,6 +116,11 @@ public interface UserRepository extends BaseRepository<User, Long> {
                 query.groupBy(userId);
             }
 
+            if (userFilterRequestDto.getOrderStatus() != null) {
+                Join<User, Order> orderJoin = root.join("orderList", JoinType.LEFT);
+                predicates.add(criteriaBuilder.equal(orderJoin.get("orderStatus"), userFilterRequestDto.getOrderStatus()));
+            }
+
             query.distinct(true);
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         }, PageRequest.of(pageNumber, pageSize, JpaSort.by(direction, sortBy)));

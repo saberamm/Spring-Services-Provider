@@ -1,6 +1,7 @@
 package com.example.servicesprovider.dto;
 
 import com.example.servicesprovider.model.enumeration.AdminPosition;
+import com.example.servicesprovider.model.enumeration.OrderStatus;
 import com.example.servicesprovider.model.enumeration.TechnicianStatus;
 import lombok.*;
 
@@ -55,5 +56,7 @@ public class UserFilterRequestDto {
     private Long numberOfClientsOrder;
 
     private Long numberOfOrdersDoneByTechnician;
+
+    private OrderStatus orderStatus;
 }
 
