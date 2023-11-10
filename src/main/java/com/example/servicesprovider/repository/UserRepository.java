@@ -3,6 +3,7 @@ package com.example.servicesprovider.repository;
 import com.example.servicesprovider.base.repository.BaseRepository;
 import com.example.servicesprovider.dto.UserFilterRequestDto;
 import com.example.servicesprovider.model.*;
+import com.example.servicesprovider.model.enumeration.OrderStatus;
 import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
@@ -120,6 +121,31 @@ public interface UserRepository extends BaseRepository<User, Long> {
                 Join<User, Order> orderJoin = root.join("orderList", JoinType.LEFT);
                 predicates.add(criteriaBuilder.equal(orderJoin.get("orderStatus"), userFilterRequestDto.getOrderStatus()));
             }
+
+            if (userFilterRequestDto.getNumberOfOrdersDoneByTechnician() != null) {
+                Join<User, Offer> offerJoin = root.join("offerList", JoinType.LEFT);
+                Join<Offer, Order> orderJoin = offerJoin.join("order", JoinType.LEFT);
+                Join<Offer, Technician> technicianJoin = offerJoin.join("technician", JoinType.LEFT);
+
+                Expression<Long> userId = root.get("id").as(Long.class);
+
+                Predicate orderStatusPredicate = criteriaBuilder.or(
+                        criteriaBuilder.equal(orderJoin.get("orderStatus"), OrderStatus.DONE),
+                        criteriaBuilder.equal(orderJoin.get("orderStatus"), OrderStatus.PAYED)
+                );
+
+                Expression<Long> technicianId = technicianJoin.get("id").as(Long.class);
+                Expression<Long> orderCount = criteriaBuilder.countDistinct(orderJoin.get("id"));
+
+                predicates.add(criteriaBuilder.and(
+                        criteriaBuilder.equal(userId, technicianId),
+                        orderStatusPredicate
+                ));
+
+                query.groupBy(userId, technicianId);
+                query.having(criteriaBuilder.equal(orderCount, userFilterRequestDto.getNumberOfOrdersDoneByTechnician()));
+            }
+
 
             query.distinct(true);
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
