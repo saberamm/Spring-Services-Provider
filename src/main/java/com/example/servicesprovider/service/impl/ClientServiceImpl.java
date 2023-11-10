@@ -58,7 +58,10 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
     @Override
     @Transactional
     public void deleteByUserName(String userName) {
-        repository.deleteByUserName(userName);
+        Client client = repository.findByUserName(userName);
+        if (client != null) {
+            repository.deleteByUserName(userName);
+        }
     }
 
     @Override
@@ -71,7 +74,7 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
     @Transactional
     public Client findByUserName(String userName) {
         Client client = repository.findByUserName(userName);
-        if (client == null) throw new EntityNotFoundException("Model not exist");
+        if (client == null) throw new EntityNotFoundException("Client Model not exist");
         return client;
     }
 

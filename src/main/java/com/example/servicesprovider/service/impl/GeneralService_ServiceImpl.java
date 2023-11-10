@@ -25,7 +25,10 @@ public class GeneralService_ServiceImpl extends BaseServiceImpl<GeneralService, 
     @Override
     @Transactional
     public void deleteByServiceName(String serviceName) {
-        repository.deleteByServiceName(serviceName);
+        GeneralService generalService = repository.findByServiceName(serviceName);
+        if (generalService != null) {
+            repository.deleteByServiceName(serviceName);
+        }
     }
 
     @Override

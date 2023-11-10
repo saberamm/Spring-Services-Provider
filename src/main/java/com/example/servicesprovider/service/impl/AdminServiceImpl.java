@@ -41,7 +41,10 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
     @Override
     @Transactional
     public void deleteByUserName(String userName) {
-        repository.deleteByUserName(userName);
+        Admin admin = repository.findByUserName(userName);
+        if (admin != null) {
+            repository.deleteByUserName(userName);
+        }
     }
 
     @Override
@@ -122,7 +125,7 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
     @Transactional
     public Admin findByUserName(String userName) {
         Admin admin = repository.findByUserName(userName);
-        if (admin == null) throw new EntityNotFoundException("Model not exist");
+        if (admin == null) throw new EntityNotFoundException("Admin model not exist");
         return admin;
     }
 
