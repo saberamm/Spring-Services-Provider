@@ -186,7 +186,7 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
         }
         client.setClientCredit(client.getClientCredit() - offer.getSuggestionPrice());
         technician.setTechnicianCredit(technician.getTechnicianCredit() + offer.getSuggestionPrice() / 100 * 70);
-        order.setOrderStatus(OrderStatus.PAYED);
+        order.setOrderStatus(OrderStatus.PAID);
         orderService.update(order);
         technicianService.update(technician);
         update(client);
@@ -203,7 +203,7 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
         CreditCard savedCreditCard = creditCardService.findByCreditCardNumber(creditCard.getCreditCardNumber());
         if (checkCreditCards(savedCreditCard, creditCard)) {
             technician.setTechnicianCredit(technician.getTechnicianCredit() + offer.getSuggestionPrice() / 100 * 70);
-            order.setOrderStatus(OrderStatus.PAYED);
+            order.setOrderStatus(OrderStatus.PAID);
             orderService.update(order);
             technicianService.update(technician);
         } else throw new CreditCardNotValidException("Credit Card Not valid");

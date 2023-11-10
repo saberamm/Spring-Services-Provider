@@ -131,7 +131,7 @@ public interface UserRepository extends BaseRepository<User, Long> {
 
                 Predicate orderStatusPredicate = criteriaBuilder.or(
                         criteriaBuilder.equal(orderJoin.get("orderStatus"), OrderStatus.DONE),
-                        criteriaBuilder.equal(orderJoin.get("orderStatus"), OrderStatus.PAYED)
+                        criteriaBuilder.equal(orderJoin.get("orderStatus"), OrderStatus.PAID)
                 );
 
                 Expression<Long> technicianId = technicianJoin.get("id").as(Long.class);

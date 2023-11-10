@@ -6,5 +6,5 @@ public enum OrderStatus {
     WAITING_FOR_TECHNICIAN_TO_COME_YOUR_PLACE,
     STARTED,
     DONE,
-    PAYED
+    PAID
 }
