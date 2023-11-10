@@ -1,6 +1,7 @@
 package com.example.servicesprovider.exception;
 
 import com.example.servicesprovider.utility.ErrorDetails;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -130,6 +131,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         log.error(e.getMessage());
         ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), e.getMessage(), 400);
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<Object> EntityNotFoundExceptionHandler(EntityNotFoundException e) {
+        log.error(e.getMessage());
+        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), e.getMessage(), 404);
+        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(RuntimeException.class)
