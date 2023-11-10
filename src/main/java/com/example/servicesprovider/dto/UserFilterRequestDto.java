@@ -5,6 +5,7 @@ import com.example.servicesprovider.model.enumeration.TechnicianStatus;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Builder
 @AllArgsConstructor
@@ -46,5 +47,13 @@ public class UserFilterRequestDto {
     private String aboutMe;
 
     private String subServiceName;
+
+    private LocalDateTime signUpDateStart;
+
+    private LocalDateTime signUpDateEnd;
+
+    private Long numberOfClientsOrder;
+
+    private Long numberOfOrdersDoneByTechnician;
 }
 

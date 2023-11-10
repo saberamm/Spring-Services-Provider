@@ -2,9 +2,8 @@ package com.example.servicesprovider.repository;
 
 import com.example.servicesprovider.base.repository.BaseRepository;
 import com.example.servicesprovider.dto.UserFilterRequestDto;
-import com.example.servicesprovider.model.SubService;
-import com.example.servicesprovider.model.SubServiceTechnician;
-import com.example.servicesprovider.model.User;
+import com.example.servicesprovider.model.*;
+import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
@@ -93,11 +92,28 @@ public interface UserRepository extends BaseRepository<User, Long> {
             if (userFilterRequestDto.getOverallScore() != null) {
                 predicates.add(criteriaBuilder.equal(root.get("overallScore"), userFilterRequestDto.getOverallScore()));
             }
+
             if (userFilterRequestDto.getSubServiceName() != null && !userFilterRequestDto.getSubServiceName().isEmpty()) {
                 Join<User, SubServiceTechnician> subServiceTechnicianJoin = root.join("subServiceTechnicianList", JoinType.LEFT);
                 Join<SubServiceTechnician, SubService> subServiceJoin = subServiceTechnicianJoin.join("subService", JoinType.LEFT);
 
                 predicates.add(criteriaBuilder.like(subServiceJoin.get("subServiceName"), "%" + userFilterRequestDto.getSubServiceName() + "%"));
+            }
+
+            if (userFilterRequestDto.getSignUpDateStart() != null && userFilterRequestDto.getSignUpDateEnd() != null) {
+                predicates.add(criteriaBuilder.between(root.get("signUpDate"), userFilterRequestDto.getSignUpDateStart(), userFilterRequestDto.getSignUpDateEnd()));
+            } else if (userFilterRequestDto.getSignUpDateStart() != null) {
+                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("signUpDate"), userFilterRequestDto.getSignUpDateStart()));
+            } else if (userFilterRequestDto.getSignUpDateEnd() != null) {
+                predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("signUpDate"), userFilterRequestDto.getSignUpDateEnd()));
+            }
+
+            if (userFilterRequestDto.getNumberOfClientsOrder() != null) {
+                Join<User, Order> clientOrderJoin = root.join("orderList", JoinType.LEFT);
+                Expression<Long> userId = root.get("id").as(Long.class);
+                Expression<Long> clientOrderCount = criteriaBuilder.count(clientOrderJoin);
+                query.having(criteriaBuilder.equal(clientOrderCount, userFilterRequestDto.getNumberOfClientsOrder()));
+                query.groupBy(userId);
             }
 
             query.distinct(true);
