@@ -19,6 +19,119 @@ import java.util.Objects;
 @ControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+
+    @ExceptionHandler(PasswordsNotEqualException.class)
+    public ResponseEntity<Object> PasswordsNotEqualExceptionHandler(PasswordsNotEqualException e) {
+        log.error(e.getMessage());
+        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), e.getMessage(), 400);
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UsernameOrPasswordNotCorrectException.class)
+    public ResponseEntity<Object> UsernameOrPasswordNotCorrectExceptionHandler(UsernameOrPasswordNotCorrectException e) {
+        log.error(e.getMessage());
+        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), e.getMessage(), 400);
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(TechnicianNotConfirmedYetException.class)
+    public ResponseEntity<Object> TechnicianNotConfirmedYetExceptionHandler(TechnicianNotConfirmedYetException e) {
+        log.error(e.getMessage());
+        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), e.getMessage(), 400);
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(PriceIsLowerThanBasePriceException.class)
+    public ResponseEntity<Object> PriceIsLowerThanBasePriceExceptionHandler(PriceIsLowerThanBasePriceException e) {
+        log.error(e.getMessage());
+        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), e.getMessage(), 400);
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(OrderNotStartedYetException.class)
+    public ResponseEntity<Object> OrderNotStartedYetExceptionHandler(OrderNotStartedYetException e) {
+        log.error(e.getMessage());
+        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), e.getMessage(), 400);
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(OrderHasNoSelectedOfferException.class)
+    public ResponseEntity<Object> OrderHasNoSelectedOfferExceptionHandler(OrderHasNoSelectedOfferException e) {
+        log.error(e.getMessage());
+        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), e.getMessage(), 400);
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(OfferTimeBeforeOrderTimeException.class)
+    public ResponseEntity<Object> OfferTimeBeforeOrderTimeExceptionHandler(OfferTimeBeforeOrderTimeException e) {
+        log.error(e.getMessage());
+        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), e.getMessage(), 400);
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NotEnoughCreditException.class)
+    public ResponseEntity<Object> NotEnoughCreditExceptionHandler(NotEnoughCreditException e) {
+        log.error(e.getMessage());
+        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), e.getMessage(), 400);
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NoOrdersFoundException.class)
+    public ResponseEntity<Object> NoOrdersFoundExceptionHandler(NoOrdersFoundException e) {
+        log.error(e.getMessage());
+        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), e.getMessage(), 404);
+        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(IsBeforeStartTimeException.class)
+    public ResponseEntity<Object> IsBeforeStartTimeExceptionHandler(IsBeforeStartTimeException e) {
+        log.error(e.getMessage());
+        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), e.getMessage(), 400);
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(InvalidImageTypeException.class)
+    public ResponseEntity<Object> InvalidImageTypeExceptionHandler(InvalidImageTypeException e) {
+        log.error(e.getMessage());
+        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), e.getMessage(), 400);
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ImageSizeNotValidException.class)
+    public ResponseEntity<Object> ImageSizeNotValidExceptionHandler(ImageSizeNotValidException e) {
+        log.error(e.getMessage());
+        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), e.getMessage(), 400);
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(GeneralServiceNotExistException.class)
+    public ResponseEntity<Object> GeneralServiceNotExistExceptionHandler(GeneralServiceNotExistException e) {
+        log.error(e.getMessage());
+        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), e.getMessage(), 404);
+        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(DuplicateSubServiceNameException.class)
+    public ResponseEntity<Object> DuplicateSubServiceNameExceptionHandler(DuplicateSubServiceNameException e) {
+        log.error(e.getMessage());
+        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), e.getMessage(), 400);
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(DuplicateGeneralServiceNameException.class)
+    public ResponseEntity<Object> DuplicateGeneralServiceNameExceptionHandler(DuplicateGeneralServiceNameException e) {
+        log.error(e.getMessage());
+        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), e.getMessage(), 400);
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(CreditCardNotValidException.class)
+    public ResponseEntity<Object> CreditCardNotValidExceptionHandler(CreditCardNotValidException e) {
+        log.error(e.getMessage());
+        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), e.getMessage(), 400);
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<Object> RuntimeExceptionHandler(RuntimeException e) {
         log.error(e.getMessage());
