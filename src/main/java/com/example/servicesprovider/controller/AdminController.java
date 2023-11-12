@@ -1,13 +1,11 @@
 package com.example.servicesprovider.controller;
 
 import com.example.servicesprovider.dto.*;
+import com.example.servicesprovider.mapper.OrderMapper;
 import com.example.servicesprovider.mapper.SubServiceMapper;
 import com.example.servicesprovider.mapper.TechnicianMapper;
 import com.example.servicesprovider.model.*;
-import com.example.servicesprovider.service.AdminService;
-import com.example.servicesprovider.service.SubService_Service;
-import com.example.servicesprovider.service.TechnicianService;
-import com.example.servicesprovider.service.UserService;
+import com.example.servicesprovider.service.*;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -28,6 +26,8 @@ public class AdminController {
     TechnicianMapper technicianMapper;
     TechnicianService technicianService;
     SubService_Service subService_service;
+    OrderService orderService;
+    OrderMapper orderMapper;
 
 
     @GetMapping("/find/{username}")
@@ -130,7 +130,7 @@ public class AdminController {
         return new ResponseEntity<>(subServiceResponseDto, HttpStatus.CREATED);
     }
 
-    @GetMapping("/filter")
+    @GetMapping("/userFilter")
     public ResponseEntity<Page<UserFilterResponseDto>> searchAndFilterUsers(
             @RequestBody UserFilterRequestDto userFilterRequestDto,
             @RequestParam(required = false) Sort.Direction direction,
@@ -141,5 +141,18 @@ public class AdminController {
         Page<User> users = userService.searchAndFilterUsers(userFilterRequestDto, direction, pageNumber, pageSize, sortBy);
         Page<UserFilterResponseDto> usersDto = users.map(user -> modelMapper.map(user, UserFilterResponseDto.class));
         return new ResponseEntity<>(usersDto, HttpStatus.OK);
+    }
+
+    @GetMapping("/orderFilter")
+    public ResponseEntity<Page<OrderResponseDto>> searchAndFilterOrders(
+            @RequestBody OrderFilterRequestDto orderFilterRequestDto,
+            @RequestParam(required = false) Sort.Direction direction,
+            @RequestParam(required = false) int pageNumber,
+            @RequestParam(required = false) int pageSize,
+            @RequestParam(defaultValue = "orderStatus") String sortBy
+    ) {
+        Page<Order> orders = orderService.searchAndFilterOrders(orderFilterRequestDto, direction, pageNumber, pageSize, sortBy);
+        Page<OrderResponseDto> ordersDto = orders.map(order -> orderMapper.map(order));
+        return new ResponseEntity<>(ordersDto, HttpStatus.OK);
     }
 }

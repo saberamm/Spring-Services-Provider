@@ -30,7 +30,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Long, OrderReposito
 
     @Override
     @Transactional
-    public Page<Order> searchAndFilterUsers(OrderFilterRequestDto orderFilterRequestDto, Sort.Direction direction, int pageNumber, int pageSize, String sortBy) {
-        return repository.searchAndFilterUsers(orderFilterRequestDto, direction, pageNumber, pageSize, sortBy);
+    public Page<Order> searchAndFilterOrders(OrderFilterRequestDto orderFilterRequestDto, Sort.Direction direction, int pageNumber, int pageSize, String sortBy) {
+        return repository.searchAndFilterOrders(orderFilterRequestDto, direction, pageNumber, pageSize, sortBy);
     }
 }

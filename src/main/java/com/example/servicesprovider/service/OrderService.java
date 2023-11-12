@@ -14,5 +14,5 @@ public interface OrderService extends BaseService<Order, Long> {
     List<Order> findBySubService(SubService subService);
 
     @Transactional
-    Page<Order> searchAndFilterUsers(OrderFilterRequestDto orderFilterRequestDto, Sort.Direction direction, int pageNumber, int pageSize, String sortBy);
+    Page<Order> searchAndFilterOrders(OrderFilterRequestDto orderFilterRequestDto, Sort.Direction direction, int pageNumber, int pageSize, String sortBy);
 }

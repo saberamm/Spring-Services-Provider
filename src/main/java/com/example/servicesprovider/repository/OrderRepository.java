@@ -23,7 +23,7 @@ public interface OrderRepository extends BaseRepository<Order, Long> {
 
     Page<Order> findAll(Specification<Order> spec, Pageable pageable);
 
-    default Page<Order> searchAndFilterUsers(OrderFilterRequestDto orderFilterRequestDto, Sort.Direction direction, int pageNumber, int pageSize, String sortBy) {
+    default Page<Order> searchAndFilterOrders(OrderFilterRequestDto orderFilterRequestDto, Sort.Direction direction, int pageNumber, int pageSize, String sortBy) {
         return findAll((root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
