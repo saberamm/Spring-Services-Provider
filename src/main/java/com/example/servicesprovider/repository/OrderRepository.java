@@ -38,6 +38,41 @@ public interface OrderRepository extends BaseRepository<Order, Long> {
                 ));
             }
 
+            if (orderFilterRequestDto.getTechnicianId() != null) {
+                Join<Order, Offer> offerJoin = root.join("offerList", JoinType.INNER);
+                Join<Offer, Technician> technicianJoin = offerJoin.join("technician", JoinType.INNER);
+
+                predicates.add(criteriaBuilder.equal(technicianJoin.get("id"), orderFilterRequestDto.getTechnicianId()));
+
+                predicates.add(criteriaBuilder.or(
+                        criteriaBuilder.equal(root.get("orderStatus"), OrderStatus.DONE),
+                        criteriaBuilder.equal(root.get("orderStatus"), OrderStatus.PAID)
+                ));
+            }
+
+            if (orderFilterRequestDto.getOrderDateStart() != null && orderFilterRequestDto.getOrderDateEnd() != null) {
+                predicates.add(criteriaBuilder.between(root.get("workTime"), orderFilterRequestDto.getOrderDateStart(), orderFilterRequestDto.getOrderDateEnd()));
+            } else if (orderFilterRequestDto.getOrderDateStart() != null) {
+                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("workTime"), orderFilterRequestDto.getOrderDateStart()));
+            } else if (orderFilterRequestDto.getOrderDateEnd() != null) {
+                predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("workTime"), orderFilterRequestDto.getOrderDateEnd()));
+            }
+
+            if (orderFilterRequestDto.getOrderStatus() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("orderStatus"), orderFilterRequestDto.getOrderStatus()));
+            }
+
+            if (orderFilterRequestDto.getSubServiceName() != null && !orderFilterRequestDto.getSubServiceName().isEmpty()) {
+                Join<Order, SubService> subServiceJoin = root.join("subService", JoinType.LEFT);
+                predicates.add(criteriaBuilder.like(subServiceJoin.get("subServiceName"), "%" + orderFilterRequestDto.getSubServiceName() + "%"));
+            }
+
+            if (orderFilterRequestDto.getGeneralServiceName() != null && !orderFilterRequestDto.getGeneralServiceName().isEmpty()) {
+                Join<Order, SubService> subServiceJoin = root.join("subService", JoinType.LEFT);
+                Join<SubService, GeneralService> generalServiceJoin = subServiceJoin.join("generalService", JoinType.LEFT);
+                predicates.add(criteriaBuilder.like(generalServiceJoin.get("serviceName"), "%" + orderFilterRequestDto.getGeneralServiceName() + "%"));
+            }
+
 
             query.distinct(true);
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
