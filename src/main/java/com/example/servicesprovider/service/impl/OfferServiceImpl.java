@@ -39,4 +39,10 @@ public class OfferServiceImpl extends BaseServiceImpl<Offer, Long, OfferReposito
                 .sorted(Comparator.comparing(Offer::getSuggestionPrice))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    @Transactional
+    public List<Offer> filterOffersByCriteria(Long orderId, String storeBy) {
+        return repository.findOffersByOrderAndStoreBy(orderId, storeBy);
+    }
 }

@@ -228,4 +228,13 @@ public class ClientController {
     public Double clientCredit(@PathVariable String userName) {
         return clientService.clientCredit(userName);
     }
+
+    @GetMapping("/filterOrders")
+    public ResponseEntity<List<OfferResponseDto>> filterOffersByCriteria(
+            @RequestParam Long orderId,
+            @RequestParam String storeBy) {
+        List<Offer> offerList = offerService.filterOffersByCriteria(orderId, storeBy);
+        List<OfferResponseDto> offerResponseDtoList = offerList.stream().map(offer -> offerMapper.map(offer)).toList();
+        return new ResponseEntity<>(offerResponseDtoList, HttpStatus.OK);
+    }
 }
