@@ -41,4 +41,6 @@ public interface ClientService extends BaseService<Client, Long> {
 
     @Transactional
     ViewPoint addViewpoint(ViewPoint viewPoint);
+
+    Double clientCredit(String userName);
 }

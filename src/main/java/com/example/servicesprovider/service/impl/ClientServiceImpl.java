@@ -224,4 +224,9 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
         technicianService.update(technician);
         return viewPoint;
     }
+
+    @Override
+    public Double clientCredit(String userName) {
+        return findByUserName(userName).getClientCredit();
+    }
 }

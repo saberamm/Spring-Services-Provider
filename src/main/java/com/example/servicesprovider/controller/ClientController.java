@@ -223,4 +223,9 @@ public class ClientController {
         List<OrderResponseDto> offerResponseDtoList = orders.stream().map(order -> orderMapper.map(order)).toList();
         return new ResponseEntity<>(offerResponseDtoList, HttpStatus.OK);
     }
+
+    @GetMapping("clientCredit/{userName}")
+    public Double clientCredit(@PathVariable String userName) {
+        return clientService.clientCredit(userName);
+    }
 }
