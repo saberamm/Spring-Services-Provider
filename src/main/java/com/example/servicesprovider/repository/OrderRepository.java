@@ -13,11 +13,20 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.JpaSort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public interface OrderRepository extends BaseRepository<Order, Long> {
+    List<Order> findAllByClientIdAndOrderStatus(Long clientId, OrderStatus orderStatus);
+
+    @Query(value = "SELECT DISTINCT o FROM Order o " +
+            "JOIN o.offerList offer " +
+            "JOIN offer.technician t " +
+            "WHERE t.id = :technicianId AND o.orderStatus = :orderStatus"
+    )
+    List<Order> findAllByTechnicianIdAndOrderStatus(Long technicianId, OrderStatus orderStatus);
 
     List<Order> findAllBySubServiceId(Long subServiceId);
 

@@ -4,6 +4,7 @@ import com.example.servicesprovider.base.service.impl.BaseServiceImpl;
 import com.example.servicesprovider.dto.OrderFilterRequestDto;
 import com.example.servicesprovider.model.Order;
 import com.example.servicesprovider.model.SubService;
+import com.example.servicesprovider.model.enumeration.OrderStatus;
 import com.example.servicesprovider.repository.OrderRepository;
 import com.example.servicesprovider.service.OrderService;
 import jakarta.persistence.EntityNotFoundException;
@@ -32,5 +33,17 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Long, OrderReposito
     @Transactional
     public Page<Order> searchAndFilterOrders(OrderFilterRequestDto orderFilterRequestDto, Sort.Direction direction, int pageNumber, int pageSize, String sortBy) {
         return repository.searchAndFilterOrders(orderFilterRequestDto, direction, pageNumber, pageSize, sortBy);
+    }
+
+    @Override
+    @Transactional
+    public List<Order> findAllByClientIdAndOrderStatus(Long clientId, OrderStatus orderStatus) {
+        return repository.findAllByClientIdAndOrderStatus(clientId, orderStatus);
+    }
+
+    @Override
+    @Transactional
+    public List<Order> findAllByTechnicianIdAndOrderStatus(Long technicianId, OrderStatus orderStatus) {
+        return repository.findAllByTechnicianIdAndOrderStatus(technicianId, orderStatus);
     }
 }

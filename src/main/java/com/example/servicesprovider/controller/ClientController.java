@@ -8,6 +8,7 @@ import com.example.servicesprovider.mapper.OrderMapper;
 import com.example.servicesprovider.mapper.SubServiceMapper;
 import com.example.servicesprovider.mapper.ViewPointMapper;
 import com.example.servicesprovider.model.*;
+import com.example.servicesprovider.model.enumeration.OrderStatus;
 import com.example.servicesprovider.service.ClientService;
 import com.example.servicesprovider.service.OfferService;
 import com.example.servicesprovider.service.OrderService;
@@ -216,4 +217,10 @@ public class ClientController {
         return new ResponseEntity<>(imageBytes, headers, 200);
     }
 
+    @GetMapping("findOrdersByStatus")
+    public ResponseEntity<List<OrderResponseDto>> findOrdersByStatus(@RequestParam Long clientId, @RequestParam OrderStatus orderStatus) {
+        List<Order> orders = orderService.findAllByClientIdAndOrderStatus(clientId, orderStatus);
+        List<OrderResponseDto> offerResponseDtoList = orders.stream().map(order -> orderMapper.map(order)).toList();
+        return new ResponseEntity<>(offerResponseDtoList, HttpStatus.OK);
+    }
 }

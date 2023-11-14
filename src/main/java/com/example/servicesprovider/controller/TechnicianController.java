@@ -7,6 +7,8 @@ import com.example.servicesprovider.mapper.TechnicianMapper;
 import com.example.servicesprovider.model.Offer;
 import com.example.servicesprovider.model.Order;
 import com.example.servicesprovider.model.Technician;
+import com.example.servicesprovider.model.enumeration.OrderStatus;
+import com.example.servicesprovider.service.OrderService;
 import com.example.servicesprovider.service.TechnicianService;
 import com.example.servicesprovider.service.UserService;
 import jakarta.validation.Valid;
@@ -28,6 +30,7 @@ public class TechnicianController {
     ModelMapper modelMapper;
     TechnicianMapper technicianMapper;
     OrderMapper orderMapper;
+    OrderService orderService;
     OfferMapper offerMapper;
 
     @GetMapping("/find/{username}")
@@ -99,5 +102,12 @@ public class TechnicianController {
     @GetMapping("/saveTechnicianPhoto/{technicianId}")
     public void saveTechnicianPhoto(@PathVariable Long technicianId) {
         technicianService.saveTechnicianPhoto(technicianId);
+    }
+
+    @GetMapping("findOrdersByStatus")
+    public ResponseEntity<List<OrderResponseDto>> findOrdersByStatus(@RequestParam Long technicianId, @RequestParam OrderStatus orderStatus) {
+        List<Order> orders = orderService.findAllByTechnicianIdAndOrderStatus(technicianId, orderStatus);
+        List<OrderResponseDto> offerResponseDtoList = orders.stream().map(order -> orderMapper.map(order)).toList();
+        return new ResponseEntity<>(offerResponseDtoList, HttpStatus.OK);
     }
 }
