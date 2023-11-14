@@ -28,6 +28,20 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(InvalidLinkException.class)
+    public ResponseEntity<Object> InvalidLinkExceptionHandler(InvalidLinkException e) {
+        log.error(e.getMessage());
+        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), e.getMessage(), 400);
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ExpiredLinkException.class)
+    public ResponseEntity<Object> ExpiredLinkExceptionHandler(ExpiredLinkException e) {
+        log.error(e.getMessage());
+        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), e.getMessage(), 400);
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(UsernameOrPasswordNotCorrectException.class)
     public ResponseEntity<Object> UsernameOrPasswordNotCorrectExceptionHandler(UsernameOrPasswordNotCorrectException e) {
         log.error(e.getMessage());

@@ -12,6 +12,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminRepository> implements AdminService {
@@ -111,6 +112,7 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
     @Transactional
     public Admin save(Admin admin) {
         admin.setPassword(hashGenerator.generateSHA512Hash(admin.getPassword()));
+        admin.setConfirmationToken(UUID.randomUUID().toString());
         repository.save(admin);
         return admin;
     }

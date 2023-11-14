@@ -21,6 +21,7 @@ import java.util.List;
 public interface UserRepository extends BaseRepository<User, Long> {
 
     User findByUserName(String userName);
+    User findByConfirmationToken(String confirmationToken);
 
     User findByUserNameAndPassword(String userName, String password);
 

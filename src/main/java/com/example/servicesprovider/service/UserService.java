@@ -17,4 +17,8 @@ public interface UserService extends BaseService<User, Long> {
 
     @Transactional
     Page<User> searchAndFilterUsers(UserFilterRequestDto userFilterRequestDto, Sort.Direction direction, int pageNumber, int pageSize, String sortBy);
+
+    void sendConfirmationEmail(User user);
+
+    void confirmUser(String token);
 }

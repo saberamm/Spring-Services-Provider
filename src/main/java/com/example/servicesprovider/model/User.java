@@ -38,4 +38,9 @@ public class User extends BaseModel<Long> {
 
     @Column(insertable = false, updatable = false)
     private String role;
+
+    @Column(unique = true)
+    private String confirmationToken;
+
+    private boolean confirmed;
 }

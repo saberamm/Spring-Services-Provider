@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepository> implements ClientService {
@@ -157,6 +158,7 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
     @Transactional
     public Client save(Client client) {
         client.setPassword(hashGenerator.generateSHA512Hash(client.getPassword()));
+        client.setConfirmationToken(UUID.randomUUID().toString());
         repository.save(client);
         return client;
     }

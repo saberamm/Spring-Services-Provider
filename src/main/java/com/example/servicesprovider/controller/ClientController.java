@@ -55,6 +55,7 @@ public class ClientController {
     public ResponseEntity<ClientResponseDto> addClient(@RequestBody @Valid ClientRequestDto clientRequestDto) {
         Client client = modelMapper.map(clientRequestDto, Client.class);
         Client savedClient = clientService.save(client);
+        userService.sendConfirmationEmail(savedClient);
         ClientResponseDto clientResponseDto = modelMapper.map(savedClient, ClientResponseDto.class);
         return new ResponseEntity<>(clientResponseDto, HttpStatus.CREATED);
     }
@@ -217,14 +218,14 @@ public class ClientController {
         return new ResponseEntity<>(imageBytes, headers, 200);
     }
 
-    @GetMapping("findOrdersByStatus")
+    @GetMapping("/findOrdersByStatus")
     public ResponseEntity<List<OrderResponseDto>> findOrdersByStatus(@RequestParam Long clientId, @RequestParam OrderStatus orderStatus) {
         List<Order> orders = orderService.findAllByClientIdAndOrderStatus(clientId, orderStatus);
         List<OrderResponseDto> offerResponseDtoList = orders.stream().map(order -> orderMapper.map(order)).toList();
         return new ResponseEntity<>(offerResponseDtoList, HttpStatus.OK);
     }
 
-    @GetMapping("clientCredit/{userName}")
+    @GetMapping("/clientCredit/{userName}")
     public Double clientCredit(@PathVariable String userName) {
         return clientService.clientCredit(userName);
     }
