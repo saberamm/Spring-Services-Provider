@@ -41,6 +41,7 @@ public class AdminController {
     public ResponseEntity<AdminResponseDto> addAdmin(@RequestBody @Valid AdminRequestDto adminRequestDto) {
         Admin admin = modelMapper.map(adminRequestDto, Admin.class);
         Admin savedAdmin = adminService.save(admin);
+        userService.sendConfirmationEmail(savedAdmin);
         AdminResponseDto adminResponseDto = modelMapper.map(savedAdmin, AdminResponseDto.class);
         return new ResponseEntity<>(adminResponseDto, HttpStatus.CREATED);
     }
