@@ -99,6 +99,7 @@ public class AdminController {
     public ResponseEntity<TechnicianResponseDto> addTechnician(@ModelAttribute @Valid TechnicianRequestDto technicianRequestDto) {
         Technician technician = technicianMapper.map(technicianRequestDto);
         Technician savedTechnician = adminService.addTechnician(technician);
+        userService.sendConfirmationEmail(savedTechnician);
         TechnicianResponseDto technicianResponseDto = modelMapper.map(savedTechnician, TechnicianResponseDto.class);
         return new ResponseEntity<>(technicianResponseDto, HttpStatus.CREATED);
     }

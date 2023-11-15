@@ -43,7 +43,6 @@ public class TechnicianController {
         return new ResponseEntity<>(technicianResponseDto, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('TECHNICIAN')")
     @PostMapping("/register")
     public ResponseEntity<TechnicianResponseDto> addTechnician(@ModelAttribute @Valid TechnicianRequestDto technicianRequestDto) {
         Technician technician = technicianMapper.map(technicianRequestDto);
