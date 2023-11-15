@@ -116,14 +116,14 @@ public class TechnicianServiceImpl extends BaseServiceImpl<Technician, Long, Tec
     }
 
     @Override
-    public Double getOverallScore(Long technicianId) {
-        Technician technician = findById(technicianId);
+    public Double getOverallScore(String userName) {
+        Technician technician = findByUserName(userName);
         return technician.getOverallScore();
     }
 
     @Override
-    public void saveTechnicianPhoto(Long technicianId) {
-        Technician technician = findById(technicianId);
+    public void saveTechnicianPhoto(String userName) {
+        Technician technician = findByUserName(userName);
         imageConverter.saveBytesToFile(technician.getTechnicianPhoto(),
                 "C:\\Users\\Administrator\\Desktop\\Temp", "technician.jpg");
     }

@@ -22,7 +22,7 @@ public interface TechnicianService extends BaseService<Technician, Long> {
     Technician technicianAuthentication(String userName, String password);
 
     @Transactional
-    Double getOverallScore(Long technicianId);
+    Double getOverallScore(String userName);
 
-    void saveTechnicianPhoto(Long technicianId);
+    void saveTechnicianPhoto(String userName);
 }

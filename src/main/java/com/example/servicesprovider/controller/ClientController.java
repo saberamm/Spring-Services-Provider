@@ -64,9 +64,9 @@ public class ClientController {
     }
 
     @PreAuthorize("hasRole('CLIENT')")
-    @DeleteMapping("/delete/{username}")
-    public void deleteClient(@PathVariable String username) {
-        clientService.deleteByUserName(username);
+    @DeleteMapping("/delete")
+    public void deleteClient() {
+        clientService.deleteByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 
     @PreAuthorize("hasRole('CLIENT')")
@@ -75,7 +75,7 @@ public class ClientController {
         if (clientRequestDto.getPassword() != null) {
             throw new IllegalCallerException("password cant change here please use change password end point");
         }
-        Client client = clientService.findByUserName(clientRequestDto.getUserName());
+        Client client = clientService.findByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
         modelMapper.map(clientRequestDto, client);
         Client updatedClient = clientService.update(client);
         ClientResponseDto clientResponseDto = modelMapper.map(updatedClient, ClientResponseDto.class);
@@ -85,7 +85,7 @@ public class ClientController {
     @PreAuthorize("hasRole('CLIENT')")
     @PutMapping("/changePassword")
     public void changePassword(@RequestBody @Valid PasswordUpdateRequest passwordUpdateRequest) {
-        userService.changePassword(passwordUpdateRequest.getUserName(),
+        userService.changePassword(SecurityContextHolder.getContext().getAuthentication().getName(),
                 passwordUpdateRequest.getOldPassword(),
                 passwordUpdateRequest.getNewPassword(),
                 passwordUpdateRequest.getDuplicateNewPassword());
@@ -245,9 +245,9 @@ public class ClientController {
     }
 
     @PreAuthorize("hasRole('CLIENT')")
-    @GetMapping("/clientCredit/{userName}")
-    public Double clientCredit(@PathVariable String userName) {
-        return clientService.clientCredit(userName);
+    @GetMapping("/clientCredit")
+    public Double clientCredit() {
+        return clientService.clientCredit(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 
     @PreAuthorize("hasRole('CLIENT')")

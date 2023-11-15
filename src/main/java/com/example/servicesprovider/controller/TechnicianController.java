@@ -17,6 +17,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,9 +36,9 @@ public class TechnicianController {
     OfferMapper offerMapper;
 
     @PreAuthorize("hasRole('TECHNICIAN')")
-    @GetMapping("/find/{username}")
-    public ResponseEntity<TechnicianResponseDto> getTechnician(@PathVariable String username) {
-        Technician technician = technicianService.findByUserName(username);
+    @GetMapping("/find")
+    public ResponseEntity<TechnicianResponseDto> getTechnician() {
+        Technician technician = technicianService.findByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
         TechnicianResponseDto technicianResponseDto = modelMapper.map(technician, TechnicianResponseDto.class);
         return new ResponseEntity<>(technicianResponseDto, HttpStatus.OK);
     }
@@ -53,9 +54,9 @@ public class TechnicianController {
     }
 
     @PreAuthorize("hasRole('TECHNICIAN')")
-    @DeleteMapping("/delete/{username}")
-    public void deleteTechnician(@PathVariable String username) {
-        technicianService.deleteByUserName(username);
+    @DeleteMapping("/delete")
+    public void deleteTechnician() {
+        technicianService.deleteByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 
     @PreAuthorize("hasRole('TECHNICIAN')")
@@ -64,7 +65,7 @@ public class TechnicianController {
         if (technicianRequestDto.getPassword() != null) {
             throw new IllegalCallerException("password cant change here please use change password end point");
         }
-        Technician technician = technicianService.findByUserName(technicianRequestDto.getUserName());
+        Technician technician = technicianService.findByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
         technicianMapper.map(technicianRequestDto, technician);
         Technician updatedTechnician = technicianService.update(technician);
         TechnicianResponseDto technicianResponseDto = modelMapper.map(updatedTechnician, TechnicianResponseDto.class);
@@ -74,16 +75,16 @@ public class TechnicianController {
     @PreAuthorize("hasRole('TECHNICIAN')")
     @PutMapping("/changePassword")
     public void changePassword(@RequestBody @Valid PasswordUpdateRequest passwordUpdateRequest) {
-        userService.changePassword(passwordUpdateRequest.getUserName(),
+        userService.changePassword(SecurityContextHolder.getContext().getAuthentication().getName(),
                 passwordUpdateRequest.getOldPassword(),
                 passwordUpdateRequest.getNewPassword(),
                 passwordUpdateRequest.getDuplicateNewPassword());
     }
 
     @PreAuthorize("hasRole('TECHNICIAN')")
-    @GetMapping("/ordersThatTechnicianCanOffer/{technicianId}")
-    public ResponseEntity<List<OrderResponseDto>> ordersThatTechnicianCanOffer(@PathVariable Long technicianId) {
-        Technician technician = technicianService.findById(technicianId);
+    @GetMapping("/ordersThatTechnicianCanOffer")
+    public ResponseEntity<List<OrderResponseDto>> ordersThatTechnicianCanOffer() {
+        Technician technician = technicianService.findByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
         List<Order> orderList = technicianService.ordersThatTechnicianCanOffer(technician);
         List<OrderResponseDto> orderResponseDtoList = orderList
                 .stream()
@@ -103,16 +104,16 @@ public class TechnicianController {
     }
 
     @PreAuthorize("hasRole('TECHNICIAN')")
-    @GetMapping("/getOverallScore/{technicianId}")
-    public ResponseEntity<Double> getOverallScore(@PathVariable Long technicianId) {
-        Double overallScore = technicianService.getOverallScore(technicianId);
+    @GetMapping("/getOverallScore")
+    public ResponseEntity<Double> getOverallScore() {
+        Double overallScore = technicianService.getOverallScore(SecurityContextHolder.getContext().getAuthentication().getName());
         return new ResponseEntity<>(overallScore, HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('TECHNICIAN')")
-    @GetMapping("/saveTechnicianPhoto/{technicianId}")
-    public void saveTechnicianPhoto(@PathVariable Long technicianId) {
-        technicianService.saveTechnicianPhoto(technicianId);
+    @GetMapping("/saveTechnicianPhoto")
+    public void saveTechnicianPhoto() {
+        technicianService.saveTechnicianPhoto(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 
     @PreAuthorize("hasRole('TECHNICIAN')")
