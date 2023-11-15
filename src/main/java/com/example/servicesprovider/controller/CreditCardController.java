@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,6 +19,7 @@ public class CreditCardController {
     CreditCardService creditCardService;
     ModelMapper modelMapper;
 
+    @PreAuthorize("hasAnyRole('TECHNICIAN','CLIENT','ADMIN')")
     @GetMapping("/find/{creditCardNumber}")
     public ResponseEntity<CreditCardResponseDto> getCreditCard(@PathVariable String creditCardNumber) {
         CreditCard creditCard = creditCardService.findByCreditCardNumber(creditCardNumber);
@@ -25,6 +27,7 @@ public class CreditCardController {
         return new ResponseEntity<>(creditCardResponseDto, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('TECHNICIAN','CLIENT','ADMIN')")
     @PostMapping("/register")
     public ResponseEntity<CreditCardResponseDto> addCreditCard(@RequestBody @Valid CreditCardRequestDto creditCardRequestDto) {
         CreditCard creditCard = modelMapper.map(creditCardRequestDto, CreditCard.class);
@@ -33,11 +36,13 @@ public class CreditCardController {
         return new ResponseEntity<>(creditCardResponseDto, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAnyRole('TECHNICIAN','CLIENT','ADMIN')")
     @DeleteMapping("/delete/{creditCardNumber}")
     public void deleteCreditCard(@PathVariable String creditCardNumber) {
         creditCardService.deleteByCreditCardNumber(creditCardNumber);
     }
 
+    @PreAuthorize("hasAnyRole('TECHNICIAN','CLIENT','ADMIN')")
     @PutMapping("/update")
     public ResponseEntity<CreditCardResponseDto> updateCreditCard(@RequestBody @Valid CreditCardRequestDto creditCardRequestDto) {
         CreditCard creditCard = creditCardService.findByCreditCardNumber(creditCardRequestDto.getCreditCardNumber());

@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,6 +19,7 @@ public class OfferController {
     OfferService offerService;
     OfferMapper offerMapper;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/find/{offerId}")
     public ResponseEntity<OfferResponseDto> getOffer(@PathVariable Long offerId) {
         Offer offer = offerService.findById(offerId);
@@ -25,6 +27,7 @@ public class OfferController {
         return new ResponseEntity<>(offerResponseDto, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/register")
     public ResponseEntity<OfferResponseDto> addOffer(@RequestBody @Valid OfferRequestDto offerRequestDto) {
         Offer offer = offerMapper.map(offerRequestDto);
@@ -33,11 +36,13 @@ public class OfferController {
         return new ResponseEntity<>(offerResponseDto, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{offerId}")
     public void deleteOffer(@PathVariable Long offerId) {
         offerService.deleteById(offerId);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/update")
     public ResponseEntity<OfferResponseDto> updateOffer(@RequestBody @Valid OfferRequestDto offerRequestDto) {
         Offer offer = offerService.findById(offerRequestDto.getId());

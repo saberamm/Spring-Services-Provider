@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,6 +19,7 @@ public class SubServiceController {
     SubService_Service subService_service;
     SubServiceMapper subServiceMapper;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/find/{subServiceId}")
     public ResponseEntity<SubServiceResponseDto> getSubService(@PathVariable Long subServiceId) {
         SubService subService = subService_service.findById(subServiceId);
@@ -25,6 +27,7 @@ public class SubServiceController {
         return new ResponseEntity<>(subServiceResponseDto, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/register")
     public ResponseEntity<SubServiceResponseDto> addSubService(@RequestBody @Valid SubServiceRequestDto subServiceRequestDto) {
         SubService subService = subServiceMapper.map(subServiceRequestDto);
@@ -33,11 +36,13 @@ public class SubServiceController {
         return new ResponseEntity<>(subServiceResponseDto, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{subServiceId}")
     public void deleteSubService(@PathVariable Long subServiceId) {
         subService_service.deleteById(subServiceId);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/update")
     public ResponseEntity<SubServiceResponseDto> updateSubService(@RequestBody @Valid SubServiceRequestDto subServiceRequestDto) {
         SubService subService = subService_service.findById(subServiceRequestDto.getId());

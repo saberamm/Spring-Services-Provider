@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,6 +19,7 @@ public class OrderController {
     OrderMapper orderMapper;
     OrderService orderService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/find/{orderId}")
     public ResponseEntity<OrderResponseDto> getOrder(@PathVariable Long orderId) {
         Order order = orderService.findById(orderId);
@@ -25,6 +27,7 @@ public class OrderController {
         return new ResponseEntity<>(orderResponseDto, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/register")
     public ResponseEntity<OrderResponseDto> addOrder(@RequestBody @Valid OrderRequestDto orderRequestDto) {
         Order order = orderMapper.map(orderRequestDto);
@@ -33,11 +36,13 @@ public class OrderController {
         return new ResponseEntity<>(orderResponseDto, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{orderId}")
     public void deleteOrder(@PathVariable Long orderId) {
         orderService.deleteById(orderId);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/update")
     public ResponseEntity<OrderResponseDto> updateOrder(@RequestBody @Valid OrderRequestDto orderRequestDto) {
         Order order = orderService.findById(orderRequestDto.getId());

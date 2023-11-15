@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,6 +19,7 @@ public class ViewPointController {
     ViewPointMapper viewPointMapper;
     ViewPointService viewPointService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/find/{viewPointId}")
     public ResponseEntity<ViewPointResponseDto> getViewPoint(@PathVariable Long viewPointId) {
         ViewPoint viewPoint = viewPointService.findById(viewPointId);
@@ -25,6 +27,7 @@ public class ViewPointController {
         return new ResponseEntity<>(viewPointResponseDto, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/register")
     public ResponseEntity<ViewPointResponseDto> addViewPoint(@RequestBody @Valid ViewPointRequestDto viewPointRequestDto) {
         ViewPoint viewPoint = viewPointMapper.map(viewPointRequestDto);
@@ -33,11 +36,13 @@ public class ViewPointController {
         return new ResponseEntity<>(viewPointResponseDto, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{viewPointId}")
     public void deleteViewPoint(@PathVariable Long viewPointId) {
         viewPointService.deleteById(viewPointId);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/update")
     public ResponseEntity<ViewPointResponseDto> updateViewPoint(@RequestBody @Valid ViewPointRequestDto viewPointRequestDto) {
         ViewPoint viewPoint = viewPointService.findById(viewPointRequestDto.getId());

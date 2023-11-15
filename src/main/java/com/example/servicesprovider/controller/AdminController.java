@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -29,7 +30,7 @@ public class AdminController {
     OrderService orderService;
     OrderMapper orderMapper;
 
-
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/find/{username}")
     public ResponseEntity<AdminResponseDto> getAdmin(@PathVariable String username) {
         Admin admin = adminService.findByUserName(username);
@@ -37,6 +38,7 @@ public class AdminController {
         return new ResponseEntity<>(adminResponseDto, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/register")
     public ResponseEntity<AdminResponseDto> addAdmin(@RequestBody @Valid AdminRequestDto adminRequestDto) {
         Admin admin = modelMapper.map(adminRequestDto, Admin.class);
@@ -46,11 +48,13 @@ public class AdminController {
         return new ResponseEntity<>(adminResponseDto, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{username}")
     public void deleteAdmin(@PathVariable String username) {
         adminService.deleteByUserName(username);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/update")
     public ResponseEntity<AdminResponseDto> updateAdmin(@RequestBody @Valid AdminRequestDto adminRequestDto) {
         if (adminRequestDto.getPassword() != null) {
@@ -63,6 +67,7 @@ public class AdminController {
         return new ResponseEntity<>(adminResponseDto, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/changePassword")
     public void changePassword(@RequestBody @Valid PasswordUpdateRequest passwordUpdateRequest) {
         userService.changePassword(passwordUpdateRequest.getUserName(),
@@ -71,6 +76,7 @@ public class AdminController {
                 passwordUpdateRequest.getDuplicateNewPassword());
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/addGeneralService")
     public ResponseEntity<GeneralServiceResponseDto> addGeneralService(@RequestBody @Valid GeneralServiceRequestDto generalServiceRequestDto) {
         GeneralService generalService = modelMapper.map(generalServiceRequestDto, GeneralService.class);
@@ -79,6 +85,7 @@ public class AdminController {
         return new ResponseEntity<>(generalServiceResponseDto, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/addSubService")
     public ResponseEntity<SubServiceResponseDto> addSubService(@RequestBody @Valid SubServiceRequestDto subServiceRequestDto) {
         SubService subService = subServiceMapper.map(subServiceRequestDto);
@@ -87,6 +94,7 @@ public class AdminController {
         return new ResponseEntity<>(subServiceResponseDto, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/addTechnician")
     public ResponseEntity<TechnicianResponseDto> addTechnician(@ModelAttribute @Valid TechnicianRequestDto technicianRequestDto) {
         Technician technician = technicianMapper.map(technicianRequestDto);
@@ -95,6 +103,7 @@ public class AdminController {
         return new ResponseEntity<>(technicianResponseDto, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/addTechnicianToSubService/{technicianId}/{subServiceId}")
     public void addTechnicianToSubService(@PathVariable Long technicianId, @PathVariable Long subServiceId) {
         Technician technician = technicianService.findById(technicianId);
@@ -102,6 +111,7 @@ public class AdminController {
         adminService.addTechnicianToSubService(technician, subService);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/deleteTechnicianFromSubService/{technicianId}/{subServiceId}")
     public void deleteTechnicianFromSubService(@PathVariable Long technicianId, @PathVariable Long subServiceId) {
         Technician technician = technicianService.findById(technicianId);
@@ -109,6 +119,7 @@ public class AdminController {
         adminService.deleteTechnicianFromSubService(technician, subService);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/confirmTechnician/{technicianId}")
     public ResponseEntity<TechnicianResponseDto> confirmTechnician(@PathVariable Long technicianId) {
         Technician technician = technicianService.findById(technicianId);
@@ -117,6 +128,7 @@ public class AdminController {
         return new ResponseEntity<>(technicianResponseDto, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/updateSubServicePrice/{subServiceId}/{basePrice}")
     public ResponseEntity<SubServiceResponseDto> updateSubServicePrice(@PathVariable Long subServiceId, @PathVariable Double basePrice) {
         SubService updatedSubService = adminService.updateSubServicePrice(subServiceId, basePrice);
@@ -124,6 +136,7 @@ public class AdminController {
         return new ResponseEntity<>(subServiceResponseDto, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/updateSubServiceName/{subServiceId}/{subServiceName}")
     public ResponseEntity<SubServiceResponseDto> updateSubServiceName(@PathVariable Long subServiceId, @PathVariable String subServiceName) {
         SubService updatedSubService = adminService.updateSubServiceName(subServiceId, subServiceName);
@@ -131,6 +144,7 @@ public class AdminController {
         return new ResponseEntity<>(subServiceResponseDto, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/userFilter")
     public ResponseEntity<Page<UserFilterResponseDto>> searchAndFilterUsers(
             @RequestBody UserFilterRequestDto userFilterRequestDto,
@@ -144,6 +158,7 @@ public class AdminController {
         return new ResponseEntity<>(usersDto, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/orderFilter")
     public ResponseEntity<Page<OrderResponseDto>> searchAndFilterOrders(
             @RequestBody OrderFilterRequestDto orderFilterRequestDto,

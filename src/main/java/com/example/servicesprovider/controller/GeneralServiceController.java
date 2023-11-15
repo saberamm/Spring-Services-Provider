@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,6 +19,7 @@ public class GeneralServiceController {
     ModelMapper modelMapper;
     GeneralService_Service generalService_service;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/find/{serviceName}")
     public ResponseEntity<GeneralServiceResponseDto> getGeneralService(@PathVariable String serviceName) {
         GeneralService generalService = generalService_service.findByServiceName(serviceName);
@@ -25,6 +27,7 @@ public class GeneralServiceController {
         return new ResponseEntity<>(generalServiceResponseDto, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/register")
     public ResponseEntity<GeneralServiceResponseDto> addGeneralService(@RequestBody @Valid GeneralServiceRequestDto generalServiceRequestDto) {
         GeneralService generalService = modelMapper.map(generalServiceRequestDto, GeneralService.class);
@@ -33,11 +36,13 @@ public class GeneralServiceController {
         return new ResponseEntity<>(generalServiceResponseDto, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{serviceName}")
     public void deleteGeneralService(@PathVariable String serviceName) {
         generalService_service.deleteByServiceName(serviceName);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/update")
     public ResponseEntity<GeneralServiceResponseDto> updateGeneralService(@RequestBody @Valid GeneralServiceRequestDto generalServiceRequestDto) {
         GeneralService generalService = generalService_service.findById(generalServiceRequestDto.getId());

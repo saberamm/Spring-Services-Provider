@@ -22,6 +22,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.awt.image.BufferedImage;
@@ -44,9 +46,10 @@ public class ClientController {
     ViewPointMapper viewPointMapper;
     OfferMapper offerMapper;
 
-    @GetMapping("/find/{username}")
-    public ResponseEntity<ClientResponseDto> getClient(@PathVariable String username) {
-        Client client = clientService.findByUserName(username);
+    @PreAuthorize("hasRole('CLIENT')")
+    @GetMapping("/find")
+    public ResponseEntity<ClientResponseDto> getClient() {
+        Client client = clientService.findByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
         ClientResponseDto clientResponseDto = modelMapper.map(client, ClientResponseDto.class);
         return new ResponseEntity<>(clientResponseDto, HttpStatus.OK);
     }
@@ -60,11 +63,13 @@ public class ClientController {
         return new ResponseEntity<>(clientResponseDto, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('CLIENT')")
     @DeleteMapping("/delete/{username}")
     public void deleteClient(@PathVariable String username) {
         clientService.deleteByUserName(username);
     }
 
+    @PreAuthorize("hasRole('CLIENT')")
     @PutMapping("/update")
     public ResponseEntity<ClientResponseDto> updateClient(@RequestBody @Valid ClientRequestDto clientRequestDto) {
         if (clientRequestDto.getPassword() != null) {
@@ -77,6 +82,7 @@ public class ClientController {
         return new ResponseEntity<>(clientResponseDto, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('CLIENT')")
     @PutMapping("/changePassword")
     public void changePassword(@RequestBody @Valid PasswordUpdateRequest passwordUpdateRequest) {
         userService.changePassword(passwordUpdateRequest.getUserName(),
@@ -85,6 +91,7 @@ public class ClientController {
                 passwordUpdateRequest.getDuplicateNewPassword());
     }
 
+    @PreAuthorize("hasRole('CLIENT')")
     @GetMapping("/findGeneralServices")
     public ResponseEntity<List<GeneralServiceResponseDto>> seeGeneralServices() {
         List<GeneralService> generalServiceList = clientService.seeGeneralServices();
@@ -96,6 +103,7 @@ public class ClientController {
         return new ResponseEntity<>(generalServiceResponseDtoList, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('CLIENT')")
     @GetMapping("/findSubServices")
     public ResponseEntity<List<SubServiceResponseDto>> seeSubServices() {
         List<SubService> subServiceList = clientService.seeSubServices();
@@ -107,6 +115,7 @@ public class ClientController {
         return new ResponseEntity<>(subServiceResponseDtoList, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('CLIENT')")
     @PostMapping("/addOrder")
     public ResponseEntity<OrderResponseDto> addOrder(@RequestBody @Valid OrderRequestDto orderRequestDto) {
         Order order = orderMapper.map(orderRequestDto);
@@ -115,6 +124,7 @@ public class ClientController {
         return new ResponseEntity<>(orderResponseDto, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('CLIENT')")
     @GetMapping("/getOffersSortedByTechnicianScore/{orderId}")
     public ResponseEntity<List<OfferResponseDto>> getOffersSortedByTechnicianScore(@PathVariable Long orderId) {
         Order order = orderService.findById(orderId);
@@ -127,6 +137,7 @@ public class ClientController {
         return new ResponseEntity<>(offerResponseDtoList, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('CLIENT')")
     @GetMapping("/getOffersSortedByPrice/{orderId}")
     public ResponseEntity<List<OfferResponseDto>> getOffersSortedByPrice(@PathVariable Long orderId) {
         Order order = orderService.findById(orderId);
@@ -139,6 +150,7 @@ public class ClientController {
         return new ResponseEntity<>(offerResponseDtoList, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('CLIENT')")
     @PutMapping("/chooseOffer/{offerId}")
     public ResponseEntity<OrderResponseDto> chooseOffer(@PathVariable Long offerId) {
         Offer offer = offerService.findById(offerId);
@@ -147,6 +159,7 @@ public class ClientController {
         return new ResponseEntity<>(orderResponseDto, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('CLIENT')")
     @PutMapping("/startOrder/{orderId}")
     public ResponseEntity<OrderResponseDto> startOrder(@PathVariable Long orderId) {
         Order order = orderService.findById(orderId);
@@ -155,6 +168,7 @@ public class ClientController {
         return new ResponseEntity<>(orderResponseDto, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('CLIENT')")
     @PutMapping("/completeOrder/{orderId}")
     public ResponseEntity<OrderResponseDto> completeOrder(@PathVariable Long orderId) {
         Order order = orderService.findById(orderId);
@@ -163,6 +177,7 @@ public class ClientController {
         return new ResponseEntity<>(orderResponseDto, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('CLIENT')")
     @PutMapping("/payWithClientCredit/{offerId}/{clientId}")
     public String payWithClientCredit(@PathVariable Long offerId, @PathVariable Long clientId) {
         Client client = clientService.findById(clientId);
@@ -171,6 +186,7 @@ public class ClientController {
         return "Payment was successful";
     }
 
+    @PreAuthorize("hasRole('CLIENT')")
     @PostMapping("/payWithCreditCard")
     public String payWithCreditCard(@RequestParam Long offerId, @RequestParam String creditCardNumber,
                                     @RequestParam String cvv2, @RequestParam String secondPassword,
@@ -188,6 +204,7 @@ public class ClientController {
         return "Payment was successful";
     }
 
+    @PreAuthorize("hasRole('CLIENT')")
     @PostMapping("/addViewpoint")
     public ResponseEntity<ViewPointResponseDto> addViewpoint(@RequestBody @Valid ViewPointRequestDto viewPointRequestDto) {
         ViewPoint viewPoint = viewPointMapper.map(viewPointRequestDto);
@@ -196,6 +213,7 @@ public class ClientController {
         return new ResponseEntity<>(viewPointResponseDto, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('CLIENT')")
     @GetMapping("/captcha-image")
     public ResponseEntity<byte[]> generateCaptchaImage(HttpSession session) {
         Captcha captcha = new Captcha.Builder(200, 50)
@@ -218,6 +236,7 @@ public class ClientController {
         return new ResponseEntity<>(imageBytes, headers, 200);
     }
 
+    @PreAuthorize("hasRole('CLIENT')")
     @GetMapping("/findOrdersByStatus")
     public ResponseEntity<List<OrderResponseDto>> findOrdersByStatus(@RequestParam Long clientId, @RequestParam OrderStatus orderStatus) {
         List<Order> orders = orderService.findAllByClientIdAndOrderStatus(clientId, orderStatus);
@@ -225,11 +244,13 @@ public class ClientController {
         return new ResponseEntity<>(offerResponseDtoList, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('CLIENT')")
     @GetMapping("/clientCredit/{userName}")
     public Double clientCredit(@PathVariable String userName) {
         return clientService.clientCredit(userName);
     }
 
+    @PreAuthorize("hasRole('CLIENT')")
     @GetMapping("/filterOrders")
     public ResponseEntity<List<OfferResponseDto>> filterOffersByCriteria(
             @RequestParam Long orderId,

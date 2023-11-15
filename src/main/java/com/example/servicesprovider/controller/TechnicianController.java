@@ -16,6 +16,7 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,6 +34,7 @@ public class TechnicianController {
     OrderService orderService;
     OfferMapper offerMapper;
 
+    @PreAuthorize("hasRole('TECHNICIAN')")
     @GetMapping("/find/{username}")
     public ResponseEntity<TechnicianResponseDto> getTechnician(@PathVariable String username) {
         Technician technician = technicianService.findByUserName(username);
@@ -40,6 +42,7 @@ public class TechnicianController {
         return new ResponseEntity<>(technicianResponseDto, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('TECHNICIAN')")
     @PostMapping("/register")
     public ResponseEntity<TechnicianResponseDto> addTechnician(@ModelAttribute @Valid TechnicianRequestDto technicianRequestDto) {
         Technician technician = technicianMapper.map(technicianRequestDto);
@@ -49,11 +52,13 @@ public class TechnicianController {
         return new ResponseEntity<>(technicianResponseDto, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('TECHNICIAN')")
     @DeleteMapping("/delete/{username}")
     public void deleteTechnician(@PathVariable String username) {
         technicianService.deleteByUserName(username);
     }
 
+    @PreAuthorize("hasRole('TECHNICIAN')")
     @PutMapping("/update")
     public ResponseEntity<TechnicianResponseDto> updateTechnician(@ModelAttribute @Valid TechnicianRequestDto technicianRequestDto) {
         if (technicianRequestDto.getPassword() != null) {
@@ -66,6 +71,7 @@ public class TechnicianController {
         return new ResponseEntity<>(technicianResponseDto, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('TECHNICIAN')")
     @PutMapping("/changePassword")
     public void changePassword(@RequestBody @Valid PasswordUpdateRequest passwordUpdateRequest) {
         userService.changePassword(passwordUpdateRequest.getUserName(),
@@ -74,6 +80,7 @@ public class TechnicianController {
                 passwordUpdateRequest.getDuplicateNewPassword());
     }
 
+    @PreAuthorize("hasRole('TECHNICIAN')")
     @GetMapping("/ordersThatTechnicianCanOffer/{technicianId}")
     public ResponseEntity<List<OrderResponseDto>> ordersThatTechnicianCanOffer(@PathVariable Long technicianId) {
         Technician technician = technicianService.findById(technicianId);
@@ -86,6 +93,7 @@ public class TechnicianController {
         return new ResponseEntity<>(orderResponseDtoList, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('TECHNICIAN')")
     @PostMapping("/addOffer")
     public ResponseEntity<OfferResponseDto> addOffer(@RequestBody @Valid OfferRequestDto offerRequestDto) {
         Offer offer = offerMapper.map(offerRequestDto);
@@ -94,17 +102,20 @@ public class TechnicianController {
         return new ResponseEntity<>(offerResponseDto, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('TECHNICIAN')")
     @GetMapping("/getOverallScore/{technicianId}")
     public ResponseEntity<Double> getOverallScore(@PathVariable Long technicianId) {
         Double overallScore = technicianService.getOverallScore(technicianId);
         return new ResponseEntity<>(overallScore, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('TECHNICIAN')")
     @GetMapping("/saveTechnicianPhoto/{technicianId}")
     public void saveTechnicianPhoto(@PathVariable Long technicianId) {
         technicianService.saveTechnicianPhoto(technicianId);
     }
 
+    @PreAuthorize("hasRole('TECHNICIAN')")
     @GetMapping("findOrdersByStatus")
     public ResponseEntity<List<OrderResponseDto>> findOrdersByStatus(@RequestParam Long technicianId, @RequestParam OrderStatus orderStatus) {
         List<Order> orders = orderService.findAllByTechnicianIdAndOrderStatus(technicianId, orderStatus);
