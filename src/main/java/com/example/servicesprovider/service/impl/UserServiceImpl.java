@@ -12,7 +12,6 @@ import com.example.servicesprovider.model.enumeration.TechnicianStatus;
 import com.example.servicesprovider.repository.UserRepository;
 import com.example.servicesprovider.service.TechnicianService;
 import com.example.servicesprovider.service.UserService;
-import com.example.servicesprovider.utility.HashGenerator;
 
 
 import jakarta.persistence.EntityNotFoundException;
@@ -21,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -28,13 +28,13 @@ import java.util.UUID;
 @Service
 public class UserServiceImpl extends BaseServiceImpl<User, Long, UserRepository> implements UserService {
 
-    HashGenerator hashGenerator;
+    PasswordEncoder passwordEncoder;
     JavaMailSender javaMailSender;
     TechnicianService technicianService;
 
-    public UserServiceImpl(UserRepository repository, HashGenerator hashGenerator, JavaMailSender javaMailSender, TechnicianService technicianService) {
+    public UserServiceImpl(UserRepository repository, PasswordEncoder passwordEncoder, JavaMailSender javaMailSender, TechnicianService technicianService) {
         super(repository);
-        this.hashGenerator = hashGenerator;
+        this.passwordEncoder = passwordEncoder;
         this.javaMailSender = javaMailSender;
         this.technicianService = technicianService;
     }
@@ -60,7 +60,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long, UserRepository>
     @Override
     @Transactional
     public User save(User user) {
-        user.setPassword(hashGenerator.generateSHA512Hash(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setConfirmationToken(UUID.randomUUID().toString());
         repository.save(user);
         return user;
@@ -70,7 +70,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long, UserRepository>
     @Transactional
     public User userAuthentication(String userName, String password) {
         User user;
-        String hashedPassword = hashGenerator.generateSHA512Hash(password);
+        String hashedPassword = passwordEncoder.encode(password);
         user = repository.findByUserNameAndPassword(userName, hashedPassword);
         if (user == null)
             throw new UsernameOrPasswordNotCorrectException("Username or password not correct");

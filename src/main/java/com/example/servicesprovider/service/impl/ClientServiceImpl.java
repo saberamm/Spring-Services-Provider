@@ -7,10 +7,10 @@ import com.example.servicesprovider.model.enumeration.OrderStatus;
 import com.example.servicesprovider.model.enumeration.TechnicianStatus;
 import com.example.servicesprovider.repository.ClientRepository;
 import com.example.servicesprovider.service.*;
-import com.example.servicesprovider.utility.HashGenerator;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -26,10 +26,10 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
     OfferService offerService;
     TechnicianService technicianService;
     CreditCardService creditCardService;
-    HashGenerator hashGenerator;
+    PasswordEncoder passwordEncoder;
     ViewPointService viewPointService;
 
-    public ClientServiceImpl(ClientRepository repository, OrderService orderService, SubService_Service subService_service, GeneralService_Service generalService_service, OfferService offerService, TechnicianService technicianService, CreditCardService creditCardService, HashGenerator hashGenerator, ViewPointService viewPointService) {
+    public ClientServiceImpl(ClientRepository repository, OrderService orderService, SubService_Service subService_service, GeneralService_Service generalService_service, OfferService offerService, TechnicianService technicianService, CreditCardService creditCardService, PasswordEncoder passwordEncoder, ViewPointService viewPointService) {
         super(repository);
         this.orderService = orderService;
         this.subService_service = subService_service;
@@ -37,7 +37,7 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
         this.offerService = offerService;
         this.technicianService = technicianService;
         this.creditCardService = creditCardService;
-        this.hashGenerator = hashGenerator;
+        this.passwordEncoder = passwordEncoder;
         this.viewPointService = viewPointService;
     }
 
@@ -157,7 +157,7 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
     @Override
     @Transactional
     public Client save(Client client) {
-        client.setPassword(hashGenerator.generateSHA512Hash(client.getPassword()));
+        client.setPassword(passwordEncoder.encode(client.getPassword()));
         client.setConfirmationToken(UUID.randomUUID().toString());
         repository.save(client);
         return client;
@@ -166,7 +166,7 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
     @Override
     public Client clientAuthentication(String userName, String password) {
         Client client;
-        String hashedPassword = hashGenerator.generateSHA512Hash(password);
+        String hashedPassword = passwordEncoder.encode(password);
         client = repository.findByUserNameAndPassword(userName, hashedPassword);
         if (client == null)
             throw new UsernameOrPasswordNotCorrectException("Username or password not correct");

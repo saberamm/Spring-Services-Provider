@@ -10,11 +10,11 @@ import com.example.servicesprovider.service.OfferService;
 import com.example.servicesprovider.service.OrderService;
 import com.example.servicesprovider.service.SubService_Service;
 import com.example.servicesprovider.service.TechnicianService;
-import com.example.servicesprovider.utility.HashGenerator;
 
 import com.example.servicesprovider.utility.ImageConverter;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,15 +26,15 @@ public class TechnicianServiceImpl extends BaseServiceImpl<Technician, Long, Tec
     OfferService offerService;
     OrderService orderService;
     SubService_Service subService_service;
-    HashGenerator hashGenerator;
+    PasswordEncoder passwordEncoder;
     ImageConverter imageConverter;
 
-    public TechnicianServiceImpl(TechnicianRepository repository, OfferService offerService, OrderService orderService, SubService_Service subService_service, HashGenerator hashGenerator, ImageConverter imageConverter) {
+    public TechnicianServiceImpl(TechnicianRepository repository, OfferService offerService, OrderService orderService, SubService_Service subService_service, PasswordEncoder passwordEncoder, ImageConverter imageConverter) {
         super(repository);
         this.offerService = offerService;
         this.orderService = orderService;
         this.subService_service = subService_service;
-        this.hashGenerator = hashGenerator;
+        this.passwordEncoder = passwordEncoder;
         this.imageConverter = imageConverter;
     }
 
@@ -98,7 +98,7 @@ public class TechnicianServiceImpl extends BaseServiceImpl<Technician, Long, Tec
     @Override
     @Transactional
     public Technician save(Technician technician) {
-        technician.setPassword(hashGenerator.generateSHA512Hash(technician.getPassword()));
+        technician.setPassword(passwordEncoder.encode(technician.getPassword()));
         technician.setConfirmationToken(UUID.randomUUID().toString());
         repository.save(technician);
         return technician;
@@ -108,7 +108,7 @@ public class TechnicianServiceImpl extends BaseServiceImpl<Technician, Long, Tec
     @Transactional
     public Technician technicianAuthentication(String userName, String password) {
         Technician technician;
-        String hashedPassword = hashGenerator.generateSHA512Hash(password);
+        String hashedPassword = passwordEncoder.encode(password);
         technician = repository.findByUserNameAndPassword(userName, hashedPassword);
         if (technician == null)
             throw new UsernameOrPasswordNotCorrectException("Username or password not correct");

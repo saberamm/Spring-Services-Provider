@@ -6,9 +6,9 @@ import com.example.servicesprovider.model.*;
 import com.example.servicesprovider.model.enumeration.TechnicianStatus;
 import com.example.servicesprovider.repository.AdminRepository;
 import com.example.servicesprovider.service.*;
-import com.example.servicesprovider.utility.HashGenerator;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,15 +20,15 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
     SubService_Service subService_service;
     TechnicianService technicianService;
     SubServiceTechnicianService subServiceTechnicianService;
-    HashGenerator hashGenerator;
+    PasswordEncoder passwordEncoder;
 
-    public AdminServiceImpl(AdminRepository repository, GeneralService_Service generalService_service, SubService_Service subService_service, TechnicianService technicianService, SubServiceTechnicianService subServiceTechnicianService, HashGenerator hashGenerator) {
+    public AdminServiceImpl(AdminRepository repository, GeneralService_Service generalService_service, SubService_Service subService_service, TechnicianService technicianService, SubServiceTechnicianService subServiceTechnicianService, PasswordEncoder passwordEncoder) {
         super(repository);
         this.generalService_service = generalService_service;
         this.subService_service = subService_service;
         this.technicianService = technicianService;
         this.subServiceTechnicianService = subServiceTechnicianService;
-        this.hashGenerator = hashGenerator;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -111,7 +111,7 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
     @Override
     @Transactional
     public Admin save(Admin admin) {
-        admin.setPassword(hashGenerator.generateSHA512Hash(admin.getPassword()));
+        admin.setPassword(passwordEncoder.encode(admin.getPassword()));
         admin.setConfirmationToken(UUID.randomUUID().toString());
         repository.save(admin);
         return admin;
@@ -142,7 +142,7 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
     @Transactional
     public Admin adminAuthentication(String userName, String password) {
         Admin admin;
-        String hashedPassword = hashGenerator.generateSHA512Hash(password);
+        String hashedPassword = passwordEncoder.encode(password);
         admin = repository.findByUserNameAndPassword(userName, hashedPassword);
         if (admin == null)
             throw new UsernameOrPasswordNotCorrectException("Username or password not correct");
