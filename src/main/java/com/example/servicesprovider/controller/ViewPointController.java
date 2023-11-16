@@ -38,8 +38,9 @@ public class ViewPointController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{viewPointId}")
-    public void deleteViewPoint(@PathVariable Long viewPointId) {
+    public String deleteViewPoint(@PathVariable Long viewPointId) {
         viewPointService.deleteById(viewPointId);
+        return "view point deleted successfully";
     }
 
     @PreAuthorize("hasRole('ADMIN')")

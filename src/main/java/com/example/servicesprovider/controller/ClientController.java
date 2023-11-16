@@ -65,8 +65,9 @@ public class ClientController {
 
     @PreAuthorize("hasRole('CLIENT')")
     @DeleteMapping("/delete")
-    public void deleteClient() {
+    public String deleteClient() {
         clientService.deleteByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
+        return "client deleted successfully";
     }
 
     @PreAuthorize("hasRole('CLIENT')")
@@ -84,11 +85,12 @@ public class ClientController {
 
     @PreAuthorize("hasRole('CLIENT')")
     @PutMapping("/changePassword")
-    public void changePassword(@RequestBody @Valid PasswordUpdateRequest passwordUpdateRequest) {
+    public String changePassword(@RequestBody @Valid PasswordUpdateRequest passwordUpdateRequest) {
         userService.changePassword(SecurityContextHolder.getContext().getAuthentication().getName(),
                 passwordUpdateRequest.getOldPassword(),
                 passwordUpdateRequest.getNewPassword(),
                 passwordUpdateRequest.getDuplicateNewPassword());
+        return "password changed successfully";
     }
 
     @PreAuthorize("hasRole('CLIENT')")
@@ -118,6 +120,8 @@ public class ClientController {
     @PreAuthorize("hasRole('CLIENT')")
     @PostMapping("/addOrder")
     public ResponseEntity<OrderResponseDto> addOrder(@RequestBody @Valid OrderRequestDto orderRequestDto) {
+        Client client = clientService.findByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
+        orderRequestDto.setClientId(client.getId());
         Order order = orderMapper.map(orderRequestDto);
         Order savedOrder = clientService.addOrder(order);
         OrderResponseDto orderResponseDto = orderMapper.map(savedOrder);
@@ -178,9 +182,9 @@ public class ClientController {
     }
 
     @PreAuthorize("hasRole('CLIENT')")
-    @PutMapping("/payWithClientCredit/{offerId}/{clientId}")
-    public String payWithClientCredit(@PathVariable Long offerId, @PathVariable Long clientId) {
-        Client client = clientService.findById(clientId);
+    @PutMapping("/payWithClientCredit/{offerId}")
+    public String payWithClientCredit(@PathVariable Long offerId) {
+        Client client = clientService.findByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
         Offer offer = offerService.findById(offerId);
         clientService.payWithClientCredit(offer, client);
         return "Payment was successful";
@@ -238,8 +242,9 @@ public class ClientController {
 
     @PreAuthorize("hasRole('CLIENT')")
     @GetMapping("/findOrdersByStatus")
-    public ResponseEntity<List<OrderResponseDto>> findOrdersByStatus(@RequestParam Long clientId, @RequestParam OrderStatus orderStatus) {
-        List<Order> orders = orderService.findAllByClientIdAndOrderStatus(clientId, orderStatus);
+    public ResponseEntity<List<OrderResponseDto>> findOrdersByStatus(@RequestParam OrderStatus orderStatus) {
+        Client client = clientService.findByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
+        List<Order> orders = orderService.findAllByClientIdAndOrderStatus(client.getId(), orderStatus);
         List<OrderResponseDto> offerResponseDtoList = orders.stream().map(order -> orderMapper.map(order)).toList();
         return new ResponseEntity<>(offerResponseDtoList, HttpStatus.OK);
     }

@@ -38,8 +38,9 @@ public class OrderController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{orderId}")
-    public void deleteOrder(@PathVariable Long orderId) {
+    public String deleteOrder(@PathVariable Long orderId) {
         orderService.deleteById(orderId);
+        return "order deleted successfully";
     }
 
     @PreAuthorize("hasRole('ADMIN')")

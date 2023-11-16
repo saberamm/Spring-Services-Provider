@@ -49,7 +49,7 @@ public class TechnicianServiceImpl extends BaseServiceImpl<Technician, Long, Tec
     @Override
     @Transactional
     public void deleteByUserName(String userName) {
-        Technician technician = repository.findByUserName(userName);
+        Technician technician = findByUserName(userName);
         if (technician != null) {
             repository.deleteByUserName(userName);
         }

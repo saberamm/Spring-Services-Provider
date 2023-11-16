@@ -38,8 +38,9 @@ public class CreditCardController {
 
     @PreAuthorize("hasAnyRole('TECHNICIAN','CLIENT','ADMIN')")
     @DeleteMapping("/delete/{creditCardNumber}")
-    public void deleteCreditCard(@PathVariable String creditCardNumber) {
+    public String deleteCreditCard(@PathVariable String creditCardNumber) {
         creditCardService.deleteByCreditCardNumber(creditCardNumber);
+        return "credit card deleted successfully";
     }
 
     @PreAuthorize("hasAnyRole('TECHNICIAN','CLIENT','ADMIN')")

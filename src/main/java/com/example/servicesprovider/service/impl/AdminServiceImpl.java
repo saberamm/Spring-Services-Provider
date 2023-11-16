@@ -42,7 +42,7 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
     @Override
     @Transactional
     public void deleteByUserName(String userName) {
-        Admin admin = repository.findByUserName(userName);
+        Admin admin = findByUserName(userName);
         if (admin != null) {
             repository.deleteByUserName(userName);
         }

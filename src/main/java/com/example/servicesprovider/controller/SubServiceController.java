@@ -38,8 +38,9 @@ public class SubServiceController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{subServiceId}")
-    public void deleteSubService(@PathVariable Long subServiceId) {
+    public String deleteSubService(@PathVariable Long subServiceId) {
         subService_service.deleteById(subServiceId);
+        return "sub service deleted successfully";
     }
 
     @PreAuthorize("hasRole('ADMIN')")

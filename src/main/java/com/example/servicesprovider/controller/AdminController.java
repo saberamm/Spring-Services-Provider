@@ -50,8 +50,9 @@ public class AdminController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{username}")
-    public void deleteAdmin(@PathVariable String username) {
+    public String deleteAdmin(@PathVariable String username) {
         adminService.deleteByUserName(username);
+        return "Admin deleted successfully";
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -69,11 +70,12 @@ public class AdminController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/changePassword")
-    public void changePassword(@RequestBody @Valid PasswordUpdateRequest passwordUpdateRequest) {
+    public String changePassword(@RequestBody @Valid PasswordUpdateRequest passwordUpdateRequest) {
         userService.changePassword(passwordUpdateRequest.getUserName(),
                 passwordUpdateRequest.getOldPassword(),
                 passwordUpdateRequest.getNewPassword(),
                 passwordUpdateRequest.getDuplicateNewPassword());
+        return "password changed successfully";
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -106,18 +108,20 @@ public class AdminController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/addTechnicianToSubService/{technicianId}/{subServiceId}")
-    public void addTechnicianToSubService(@PathVariable Long technicianId, @PathVariable Long subServiceId) {
+    public String addTechnicianToSubService(@PathVariable Long technicianId, @PathVariable Long subServiceId) {
         Technician technician = technicianService.findById(technicianId);
         SubService subService = subService_service.findById(subServiceId);
         adminService.addTechnicianToSubService(technician, subService);
+        return "Technician added to sub service successfully";
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/deleteTechnicianFromSubService/{technicianId}/{subServiceId}")
-    public void deleteTechnicianFromSubService(@PathVariable Long technicianId, @PathVariable Long subServiceId) {
+    public String deleteTechnicianFromSubService(@PathVariable Long technicianId, @PathVariable Long subServiceId) {
         Technician technician = technicianService.findById(technicianId);
         SubService subService = subService_service.findById(subServiceId);
         adminService.deleteTechnicianFromSubService(technician, subService);
+        return "Technician deleted to sub service successfully";
     }
 
     @PreAuthorize("hasRole('ADMIN')")

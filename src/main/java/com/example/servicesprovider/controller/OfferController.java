@@ -38,8 +38,9 @@ public class OfferController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{offerId}")
-    public void deleteOffer(@PathVariable Long offerId) {
+    public String deleteOffer(@PathVariable Long offerId) {
         offerService.deleteById(offerId);
+        return "offer deleted successfully";
     }
 
     @PreAuthorize("hasRole('ADMIN')")

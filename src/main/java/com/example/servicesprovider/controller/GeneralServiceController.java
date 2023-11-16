@@ -38,8 +38,9 @@ public class GeneralServiceController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{serviceName}")
-    public void deleteGeneralService(@PathVariable String serviceName) {
+    public String deleteGeneralService(@PathVariable String serviceName) {
         generalService_service.deleteByServiceName(serviceName);
+        return "service deleted successfully";
     }
 
     @PreAuthorize("hasRole('ADMIN')")

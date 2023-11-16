@@ -54,8 +54,9 @@ public class TechnicianController {
 
     @PreAuthorize("hasRole('TECHNICIAN')")
     @DeleteMapping("/delete")
-    public void deleteTechnician() {
+    public String deleteTechnician() {
         technicianService.deleteByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
+        return "technician deleted successfully";
     }
 
     @PreAuthorize("hasRole('TECHNICIAN')")
@@ -73,11 +74,12 @@ public class TechnicianController {
 
     @PreAuthorize("hasRole('TECHNICIAN')")
     @PutMapping("/changePassword")
-    public void changePassword(@RequestBody @Valid PasswordUpdateRequest passwordUpdateRequest) {
+    public String changePassword(@RequestBody @Valid PasswordUpdateRequest passwordUpdateRequest) {
         userService.changePassword(SecurityContextHolder.getContext().getAuthentication().getName(),
                 passwordUpdateRequest.getOldPassword(),
                 passwordUpdateRequest.getNewPassword(),
                 passwordUpdateRequest.getDuplicateNewPassword());
+        return "password changed successfully";
     }
 
     @PreAuthorize("hasRole('TECHNICIAN')")
@@ -96,6 +98,8 @@ public class TechnicianController {
     @PreAuthorize("hasRole('TECHNICIAN')")
     @PostMapping("/addOffer")
     public ResponseEntity<OfferResponseDto> addOffer(@RequestBody @Valid OfferRequestDto offerRequestDto) {
+        Technician technician=technicianService.findByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
+        offerRequestDto.setTechnicianId(technician.getId());
         Offer offer = offerMapper.map(offerRequestDto);
         Offer savedOffer = technicianService.addOffer(offer);
         OfferResponseDto offerResponseDto = offerMapper.map(savedOffer);
@@ -117,8 +121,9 @@ public class TechnicianController {
 
     @PreAuthorize("hasRole('TECHNICIAN')")
     @GetMapping("findOrdersByStatus")
-    public ResponseEntity<List<OrderResponseDto>> findOrdersByStatus(@RequestParam Long technicianId, @RequestParam OrderStatus orderStatus) {
-        List<Order> orders = orderService.findAllByTechnicianIdAndOrderStatus(technicianId, orderStatus);
+    public ResponseEntity<List<OrderResponseDto>> findOrdersByStatus( @RequestParam OrderStatus orderStatus) {
+        Technician technician=technicianService.findByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
+        List<Order> orders = orderService.findAllByTechnicianIdAndOrderStatus(technician.getId(), orderStatus);
         List<OrderResponseDto> offerResponseDtoList = orders.stream().map(order -> orderMapper.map(order)).toList();
         return new ResponseEntity<>(offerResponseDtoList, HttpStatus.OK);
     }

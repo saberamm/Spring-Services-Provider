@@ -59,7 +59,7 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, Long, ClientRepos
     @Override
     @Transactional
     public void deleteByUserName(String userName) {
-        Client client = repository.findByUserName(userName);
+        Client client = findByUserName(userName);
         if (client != null) {
             repository.deleteByUserName(userName);
         }
