@@ -13,6 +13,9 @@ public interface UserService extends BaseService<User, Long> {
 
     void changePassword(String userName, String password, String newPassword, String duplicateNewPassword);
 
+    @Transactional
+    User updatePassword(User user);
+
     User userAuthentication(String userName, String password);
 
     @Transactional

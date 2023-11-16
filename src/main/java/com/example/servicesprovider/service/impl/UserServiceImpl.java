@@ -50,11 +50,11 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long, UserRepository>
     @Override
     @Transactional
     public void changePassword(String userName, String password, String newPassword, String duplicateNewPassword) {
-        User user = userAuthentication(userName, password);
+        User user = findByUserName(userName);
         if (!newPassword.equals(duplicateNewPassword))
             throw new PasswordsNotEqualException("new password and duplicate password are not equal");
         user.setPassword(newPassword);
-        save(user);
+        updatePassword(user);
     }
 
     @Override
@@ -68,10 +68,17 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long, UserRepository>
 
     @Override
     @Transactional
+    public User updatePassword(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        repository.save(user);
+        return user;
+    }
+
+    @Override
+    @Transactional
     public User userAuthentication(String userName, String password) {
         User user;
-        String hashedPassword = passwordEncoder.encode(password);
-        user = repository.findByUserNameAndPassword(userName, hashedPassword);
+        user = repository.findByUserNameAndPassword(userName, passwordEncoder.encode(password));
         if (user == null)
             throw new UsernameOrPasswordNotCorrectException("Username or password not correct");
         return user;
