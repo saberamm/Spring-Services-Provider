@@ -13,8 +13,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PasswordUpdateRequest {
 
-    String userName;
-
     @NotNull(message = "oldPassword can not be null")
     String oldPassword;
 

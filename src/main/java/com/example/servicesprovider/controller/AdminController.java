@@ -14,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -71,7 +72,7 @@ public class AdminController {
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/changePassword")
     public String changePassword(@RequestBody @Valid PasswordUpdateRequest passwordUpdateRequest) {
-        userService.changePassword(passwordUpdateRequest.getUserName(),
+        userService.changePassword(SecurityContextHolder.getContext().getAuthentication().getName(),
                 passwordUpdateRequest.getOldPassword(),
                 passwordUpdateRequest.getNewPassword(),
                 passwordUpdateRequest.getDuplicateNewPassword());
