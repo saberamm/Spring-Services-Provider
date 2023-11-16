@@ -190,7 +190,6 @@ public class ClientController {
         return "Payment was successful";
     }
 
-    @PreAuthorize("hasRole('CLIENT')")
     @PostMapping("/payWithCreditCard")
     public String payWithCreditCard(@RequestParam Long offerId, @RequestParam String creditCardNumber,
                                     @RequestParam String cvv2, @RequestParam String secondPassword,
@@ -217,7 +216,6 @@ public class ClientController {
         return new ResponseEntity<>(viewPointResponseDto, HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasRole('CLIENT')")
     @GetMapping("/captcha-image")
     public ResponseEntity<byte[]> generateCaptchaImage(HttpSession session) {
         Captcha captcha = new Captcha.Builder(200, 50)

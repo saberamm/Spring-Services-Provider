@@ -5,6 +5,7 @@ import com.example.servicesprovider.model.SubServiceTechnician;
 import com.example.servicesprovider.model.Technician;
 import com.example.servicesprovider.repository.SubServiceTechnicianRepository;
 import com.example.servicesprovider.service.SubServiceTechnicianService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +39,9 @@ public class SubServiceTechnicianServiceImpl implements SubServiceTechnicianServ
     @Override
     @Transactional
     public void deleteByTechnicianAndSubService(Technician technician, SubService subService) {
-        repository.deleteByTechnicianAndSubService(technician, subService);
+        if (repository.existsByTechnicianAndSubService(technician, subService)) {
+            repository.deleteByTechnicianAndSubService(technician, subService);
+        }
+        throw new EntityNotFoundException("Technician SubService model not exist");
     }
 }

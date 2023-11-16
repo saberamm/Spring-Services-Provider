@@ -38,7 +38,7 @@ public class AdminController {
         return new ResponseEntity<>(adminResponseDto, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/register")
     public ResponseEntity<AdminResponseDto> addAdmin(@RequestBody @Valid AdminRequestDto adminRequestDto) {
         Admin admin = modelMapper.map(adminRequestDto, Admin.class);
@@ -121,7 +121,7 @@ public class AdminController {
         Technician technician = technicianService.findById(technicianId);
         SubService subService = subService_service.findById(subServiceId);
         adminService.deleteTechnicianFromSubService(technician, subService);
-        return "Technician deleted to sub service successfully";
+        return "Technician deleted from sub service successfully";
     }
 
     @PreAuthorize("hasRole('ADMIN')")

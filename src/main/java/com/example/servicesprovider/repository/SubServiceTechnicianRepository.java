@@ -8,4 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface SubServiceTechnicianRepository extends JpaRepository<SubServiceTechnician, Long> {
 
     void deleteByTechnicianAndSubService(Technician technician, SubService subService);
+    boolean existsByTechnicianAndSubService(Technician technician, SubService subService);
 }

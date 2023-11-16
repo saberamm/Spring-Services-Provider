@@ -115,8 +115,9 @@ public class TechnicianController {
 
     @PreAuthorize("hasRole('TECHNICIAN')")
     @GetMapping("/saveTechnicianPhoto")
-    public void saveTechnicianPhoto() {
+    public String saveTechnicianPhoto() {
         technicianService.saveTechnicianPhoto(SecurityContextHolder.getContext().getAuthentication().getName());
+        return "photo got saved successfully";
     }
 
     @PreAuthorize("hasRole('TECHNICIAN')")
