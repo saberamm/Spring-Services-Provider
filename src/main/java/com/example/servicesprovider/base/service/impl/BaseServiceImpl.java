@@ -55,8 +55,7 @@ public abstract class BaseServiceImpl<E extends BaseModel<ID>, ID extends Serial
 
     @Override
     public void deleteById(ID id) {
-        Optional<E> e = repository.findById(id);
-        if (e.isPresent()) {
+        if (existsById(id)) {
             repository.deleteById(id);
         }
         throw new EntityNotFoundException("Model does not exist");
