@@ -25,10 +25,9 @@ public class GeneralService_ServiceImpl extends BaseServiceImpl<GeneralService, 
     @Override
     @Transactional
     public void deleteByServiceName(String serviceName) {
-        GeneralService generalService = repository.findByServiceName(serviceName);
-        if (generalService != null) {
+        if (existByServiceName(serviceName)) {
             repository.deleteByServiceName(serviceName);
-        }
+        } else throw new EntityNotFoundException("Model not exist");
     }
 
     @Override
