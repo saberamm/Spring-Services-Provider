@@ -2,6 +2,7 @@ package com.example.servicesprovider.controller;
 
 import com.example.servicesprovider.dto.CreditCardRequestDto;
 import com.example.servicesprovider.dto.CreditCardResponseDto;
+import com.example.servicesprovider.dto.ResponseMessage;
 import com.example.servicesprovider.model.CreditCard;
 import com.example.servicesprovider.service.CreditCardService;
 import jakarta.validation.Valid;
@@ -11,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/creditCard")
@@ -38,9 +41,10 @@ public class CreditCardController {
 
     @PreAuthorize("hasAnyRole('TECHNICIAN','CLIENT','ADMIN')")
     @DeleteMapping("/delete/{creditCardNumber}")
-    public String deleteCreditCard(@PathVariable String creditCardNumber) {
+    public ResponseEntity<ResponseMessage> deleteCreditCard(@PathVariable String creditCardNumber) {
         creditCardService.deleteByCreditCardNumber(creditCardNumber);
-        return "credit card deleted successfully";
+        ResponseMessage responseMessage = new ResponseMessage(LocalDateTime.now(), "credit card deleted successfully");
+        return new ResponseEntity<>(responseMessage, HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('TECHNICIAN','CLIENT','ADMIN')")

@@ -2,6 +2,7 @@ package com.example.servicesprovider.controller;
 
 import com.example.servicesprovider.dto.OfferRequestDto;
 import com.example.servicesprovider.dto.OfferResponseDto;
+import com.example.servicesprovider.dto.ResponseMessage;
 import com.example.servicesprovider.mapper.OfferMapper;
 import com.example.servicesprovider.model.Offer;
 import com.example.servicesprovider.service.OfferService;
@@ -11,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/offer")
@@ -38,9 +41,10 @@ public class OfferController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{offerId}")
-    public String deleteOffer(@PathVariable Long offerId) {
+    public ResponseEntity<ResponseMessage> deleteOffer(@PathVariable Long offerId) {
         offerService.deleteById(offerId);
-        return "offer deleted successfully";
+        ResponseMessage responseMessage = new ResponseMessage(LocalDateTime.now(), "offer deleted successfully");
+        return new ResponseEntity<>(responseMessage, HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('ADMIN')")

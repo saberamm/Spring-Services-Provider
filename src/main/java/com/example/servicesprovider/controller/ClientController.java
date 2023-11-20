@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.awt.image.BufferedImage;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -65,9 +66,10 @@ public class ClientController {
 
     @PreAuthorize("hasRole('CLIENT')")
     @DeleteMapping("/delete")
-    public String deleteClient() {
+    public ResponseEntity<ResponseMessage> deleteClient() {
         clientService.deleteByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
-        return "client deleted successfully";
+        ResponseMessage responseMessage = new ResponseMessage(LocalDateTime.now(), "client deleted successfully");
+        return new ResponseEntity<>(responseMessage, HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('CLIENT')")
@@ -85,12 +87,13 @@ public class ClientController {
 
     @PreAuthorize("hasRole('CLIENT')")
     @PutMapping("/changePassword")
-    public String changePassword(@RequestBody @Valid PasswordUpdateRequest passwordUpdateRequest) {
+    public ResponseEntity<ResponseMessage> changePassword(@RequestBody @Valid PasswordUpdateRequest passwordUpdateRequest) {
         userService.changePassword(SecurityContextHolder.getContext().getAuthentication().getName(),
                 passwordUpdateRequest.getOldPassword(),
                 passwordUpdateRequest.getNewPassword(),
                 passwordUpdateRequest.getDuplicateNewPassword());
-        return "password changed successfully";
+        ResponseMessage responseMessage = new ResponseMessage(LocalDateTime.now(), "password changed successfully");
+        return new ResponseEntity<>(responseMessage, HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('CLIENT')")
@@ -183,28 +186,31 @@ public class ClientController {
 
     @PreAuthorize("hasRole('CLIENT')")
     @PutMapping("/payWithClientCredit/{offerId}")
-    public String payWithClientCredit(@PathVariable Long offerId) {
+    public ResponseEntity<ResponseMessage> payWithClientCredit(@PathVariable Long offerId) {
         Client client = clientService.findByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
         Offer offer = offerService.findById(offerId);
         clientService.payWithClientCredit(offer, client);
-        return "Payment was successful";
+        ResponseMessage responseMessage = new ResponseMessage(LocalDateTime.now(), "Payment was successful");
+        return new ResponseEntity<>(responseMessage, HttpStatus.OK);
     }
 
     @PostMapping("/payWithCreditCard")
-    public String payWithCreditCard(@RequestParam Long offerId, @RequestParam String creditCardNumber,
-                                    @RequestParam String cvv2, @RequestParam String secondPassword,
-                                    @RequestParam LocalDate expireDate, @RequestParam String captcha, HttpSession session) {
+    public ResponseEntity<ResponseMessage> payWithCreditCard(@RequestParam Long offerId, @RequestParam String creditCardNumber,
+                                                             @RequestParam String cvv2, @RequestParam String secondPassword,
+                                                             @RequestParam LocalDate expireDate, @RequestParam String captcha, HttpSession session) {
 
         String storedCaptcha = (String) session.getAttribute("captcha");
 
         if (!captcha.equals(storedCaptcha)) {
-            return "CAPTCHA verification failed. Please try again.";
+            ResponseMessage responseMessage = new ResponseMessage(LocalDateTime.now(), "CAPTCHA verification failed. Please try again.");
+            return new ResponseEntity<>(responseMessage, HttpStatus.OK);
         }
         Offer offer = offerService.findById(offerId);
         CreditCard creditCard = CreditCard.builder().creditCardNumber(creditCardNumber).cvv2(cvv2)
                 .secondPassword(secondPassword).expireDate(expireDate).build();
         clientService.payWithCreditCard(creditCard, offer);
-        return "Payment was successful";
+        ResponseMessage responseMessage = new ResponseMessage(LocalDateTime.now(), "Payment was successful");
+        return new ResponseEntity<>(responseMessage, HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('CLIENT')")
@@ -249,8 +255,10 @@ public class ClientController {
 
     @PreAuthorize("hasRole('CLIENT')")
     @GetMapping("/clientCredit")
-    public Double clientCredit() {
-        return clientService.clientCredit(SecurityContextHolder.getContext().getAuthentication().getName());
+    public ResponseEntity<ResponseMessage> clientCredit() {
+        Double credit = clientService.clientCredit(SecurityContextHolder.getContext().getAuthentication().getName());
+        ResponseMessage responseMessage = new ResponseMessage(LocalDateTime.now(), "your credit is :" + credit);
+        return new ResponseEntity<>(responseMessage, HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('CLIENT')")

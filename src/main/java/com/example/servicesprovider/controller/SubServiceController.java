@@ -1,5 +1,6 @@
 package com.example.servicesprovider.controller;
 
+import com.example.servicesprovider.dto.ResponseMessage;
 import com.example.servicesprovider.dto.SubServiceRequestDto;
 import com.example.servicesprovider.dto.SubServiceResponseDto;
 import com.example.servicesprovider.mapper.SubServiceMapper;
@@ -11,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/subService")
@@ -38,9 +41,10 @@ public class SubServiceController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{subServiceId}")
-    public String deleteSubService(@PathVariable Long subServiceId) {
+    public ResponseEntity<ResponseMessage> deleteSubService(@PathVariable Long subServiceId) {
         subService_service.deleteById(subServiceId);
-        return "sub service deleted successfully";
+        ResponseMessage responseMessage = new ResponseMessage(LocalDateTime.now(), "sub service deleted successfully");
+        return new ResponseEntity<>(responseMessage, HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('ADMIN')")

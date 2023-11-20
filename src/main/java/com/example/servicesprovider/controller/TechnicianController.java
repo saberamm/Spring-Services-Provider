@@ -20,6 +20,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,9 +55,10 @@ public class TechnicianController {
 
     @PreAuthorize("hasRole('TECHNICIAN')")
     @DeleteMapping("/delete")
-    public String deleteTechnician() {
+    public ResponseEntity<ResponseMessage> deleteTechnician() {
         technicianService.deleteByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
-        return "technician deleted successfully";
+        ResponseMessage responseMessage = new ResponseMessage(LocalDateTime.now(), "technician deleted successfully");
+        return new ResponseEntity<>(responseMessage, HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('TECHNICIAN')")
@@ -74,12 +76,13 @@ public class TechnicianController {
 
     @PreAuthorize("hasRole('TECHNICIAN')")
     @PutMapping("/changePassword")
-    public String changePassword(@RequestBody @Valid PasswordUpdateRequest passwordUpdateRequest) {
+    public ResponseEntity<ResponseMessage> changePassword(@RequestBody @Valid PasswordUpdateRequest passwordUpdateRequest) {
         userService.changePassword(SecurityContextHolder.getContext().getAuthentication().getName(),
                 passwordUpdateRequest.getOldPassword(),
                 passwordUpdateRequest.getNewPassword(),
                 passwordUpdateRequest.getDuplicateNewPassword());
-        return "password changed successfully";
+        ResponseMessage responseMessage = new ResponseMessage(LocalDateTime.now(), "password changed successfully");
+        return new ResponseEntity<>(responseMessage, HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('TECHNICIAN')")
@@ -98,7 +101,7 @@ public class TechnicianController {
     @PreAuthorize("hasRole('TECHNICIAN')")
     @PostMapping("/addOffer")
     public ResponseEntity<OfferResponseDto> addOffer(@RequestBody @Valid OfferRequestDto offerRequestDto) {
-        Technician technician=technicianService.findByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
+        Technician technician = technicianService.findByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
         offerRequestDto.setTechnicianId(technician.getId());
         Offer offer = offerMapper.map(offerRequestDto);
         Offer savedOffer = technicianService.addOffer(offer);
@@ -115,15 +118,16 @@ public class TechnicianController {
 
     @PreAuthorize("hasRole('TECHNICIAN')")
     @GetMapping("/saveTechnicianPhoto")
-    public String saveTechnicianPhoto() {
+    public ResponseEntity<ResponseMessage> saveTechnicianPhoto() {
         technicianService.saveTechnicianPhoto(SecurityContextHolder.getContext().getAuthentication().getName());
-        return "photo got saved successfully";
+        ResponseMessage responseMessage = new ResponseMessage(LocalDateTime.now(), "photo got saved successfully");
+        return new ResponseEntity<>(responseMessage, HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('TECHNICIAN')")
     @GetMapping("findOrdersByStatus")
-    public ResponseEntity<List<OrderResponseDto>> findOrdersByStatus( @RequestParam OrderStatus orderStatus) {
-        Technician technician=technicianService.findByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
+    public ResponseEntity<List<OrderResponseDto>> findOrdersByStatus(@RequestParam OrderStatus orderStatus) {
+        Technician technician = technicianService.findByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
         List<Order> orders = orderService.findAllByTechnicianIdAndOrderStatus(technician.getId(), orderStatus);
         List<OrderResponseDto> offerResponseDtoList = orders.stream().map(order -> orderMapper.map(order)).toList();
         return new ResponseEntity<>(offerResponseDtoList, HttpStatus.OK);

@@ -17,6 +17,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+
 @RestController
 @RequestMapping("/admin")
 @AllArgsConstructor
@@ -39,7 +41,7 @@ public class AdminController {
         return new ResponseEntity<>(adminResponseDto, HttpStatus.OK);
     }
 
-//    @PreAuthorize("hasRole('ADMIN')")
+    //    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/register")
     public ResponseEntity<AdminResponseDto> addAdmin(@RequestBody @Valid AdminRequestDto adminRequestDto) {
         Admin admin = modelMapper.map(adminRequestDto, Admin.class);
@@ -51,9 +53,10 @@ public class AdminController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{username}")
-    public String deleteAdmin(@PathVariable String username) {
+    public ResponseEntity<ResponseMessage> deleteAdmin(@PathVariable String username) {
         adminService.deleteByUserName(username);
-        return "Admin deleted successfully";
+        ResponseMessage responseMessage = new ResponseMessage(LocalDateTime.now(), "Admin deleted successfully");
+        return new ResponseEntity<>(responseMessage, HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -71,12 +74,13 @@ public class AdminController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/changePassword")
-    public String changePassword(@RequestBody @Valid PasswordUpdateRequest passwordUpdateRequest) {
+    public ResponseEntity<ResponseMessage> changePassword(@RequestBody @Valid PasswordUpdateRequest passwordUpdateRequest) {
         userService.changePassword(SecurityContextHolder.getContext().getAuthentication().getName(),
                 passwordUpdateRequest.getOldPassword(),
                 passwordUpdateRequest.getNewPassword(),
                 passwordUpdateRequest.getDuplicateNewPassword());
-        return "password changed successfully";
+        ResponseMessage responseMessage = new ResponseMessage(LocalDateTime.now(), "password changed successfully");
+        return new ResponseEntity<>(responseMessage, HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -109,20 +113,22 @@ public class AdminController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/addTechnicianToSubService/{technicianId}/{subServiceId}")
-    public String addTechnicianToSubService(@PathVariable Long technicianId, @PathVariable Long subServiceId) {
+    public ResponseEntity<ResponseMessage> addTechnicianToSubService(@PathVariable Long technicianId, @PathVariable Long subServiceId) {
         Technician technician = technicianService.findById(technicianId);
         SubService subService = subService_service.findById(subServiceId);
         adminService.addTechnicianToSubService(technician, subService);
-        return "Technician added to sub service successfully";
+        ResponseMessage responseMessage = new ResponseMessage(LocalDateTime.now(), "Technician added to sub service successfully");
+        return new ResponseEntity<>(responseMessage, HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/deleteTechnicianFromSubService/{technicianId}/{subServiceId}")
-    public String deleteTechnicianFromSubService(@PathVariable Long technicianId, @PathVariable Long subServiceId) {
+    public ResponseEntity<ResponseMessage> deleteTechnicianFromSubService(@PathVariable Long technicianId, @PathVariable Long subServiceId) {
         Technician technician = technicianService.findById(technicianId);
         SubService subService = subService_service.findById(subServiceId);
         adminService.deleteTechnicianFromSubService(technician, subService);
-        return "Technician deleted from sub service successfully";
+        ResponseMessage responseMessage = new ResponseMessage(LocalDateTime.now(), "Technician deleted from sub service successfully");
+        return new ResponseEntity<>(responseMessage, HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('ADMIN')")

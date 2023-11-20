@@ -1,5 +1,6 @@
 package com.example.servicesprovider.controller;
 
+import com.example.servicesprovider.dto.ResponseMessage;
 import com.example.servicesprovider.dto.ViewPointRequestDto;
 import com.example.servicesprovider.dto.ViewPointResponseDto;
 import com.example.servicesprovider.mapper.ViewPointMapper;
@@ -11,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/viewPoint")
@@ -38,9 +41,10 @@ public class ViewPointController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{viewPointId}")
-    public String deleteViewPoint(@PathVariable Long viewPointId) {
+    public ResponseEntity<ResponseMessage> deleteViewPoint(@PathVariable Long viewPointId) {
         viewPointService.deleteById(viewPointId);
-        return "view point deleted successfully";
+        ResponseMessage responseMessage = new ResponseMessage(LocalDateTime.now(), "view point deleted successfully");
+        return new ResponseEntity<>(responseMessage, HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
