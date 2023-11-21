@@ -111,9 +111,10 @@ public class TechnicianController {
 
     @PreAuthorize("hasRole('TECHNICIAN')")
     @GetMapping("/getOverallScore")
-    public ResponseEntity<Double> getOverallScore() {
+    public ResponseEntity<ResponseMessage> getOverallScore() {
         Double overallScore = technicianService.getOverallScore(SecurityContextHolder.getContext().getAuthentication().getName());
-        return new ResponseEntity<>(overallScore, HttpStatus.OK);
+        ResponseMessage responseMessage = new ResponseMessage(LocalDateTime.now(), "your overall score is : " + overallScore);
+        return new ResponseEntity<>(responseMessage, HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('TECHNICIAN')")
