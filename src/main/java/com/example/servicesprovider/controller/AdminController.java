@@ -112,8 +112,8 @@ public class AdminController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/addTechnicianToSubService/{technicianId}/{subServiceId}")
-    public ResponseEntity<ResponseMessage> addTechnicianToSubService(@PathVariable Long technicianId, @PathVariable Long subServiceId) {
+    @PutMapping("/addTechnicianToSubService")
+    public ResponseEntity<ResponseMessage> addTechnicianToSubService(@RequestParam Long technicianId, @RequestParam Long subServiceId) {
         Technician technician = technicianService.findById(technicianId);
         SubService subService = subService_service.findById(subServiceId);
         adminService.addTechnicianToSubService(technician, subService);
@@ -122,8 +122,8 @@ public class AdminController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/deleteTechnicianFromSubService/{technicianId}/{subServiceId}")
-    public ResponseEntity<ResponseMessage> deleteTechnicianFromSubService(@PathVariable Long technicianId, @PathVariable Long subServiceId) {
+    @DeleteMapping("/deleteTechnicianFromSubService")
+    public ResponseEntity<ResponseMessage> deleteTechnicianFromSubService(@RequestParam Long technicianId, @RequestParam Long subServiceId) {
         Technician technician = technicianService.findById(technicianId);
         SubService subService = subService_service.findById(subServiceId);
         adminService.deleteTechnicianFromSubService(technician, subService);
@@ -141,16 +141,16 @@ public class AdminController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/updateSubServicePrice/{subServiceId}/{basePrice}")
-    public ResponseEntity<SubServiceResponseDto> updateSubServicePrice(@PathVariable Long subServiceId, @PathVariable Double basePrice) {
+    @PutMapping("/updateSubServicePrice")
+    public ResponseEntity<SubServiceResponseDto> updateSubServicePrice(@RequestParam Long subServiceId, @RequestParam Double basePrice) {
         SubService updatedSubService = adminService.updateSubServicePrice(subServiceId, basePrice);
         SubServiceResponseDto subServiceResponseDto = subServiceMapper.map(updatedSubService);
         return new ResponseEntity<>(subServiceResponseDto, HttpStatus.CREATED);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/updateSubServiceName/{subServiceId}/{subServiceName}")
-    public ResponseEntity<SubServiceResponseDto> updateSubServiceName(@PathVariable Long subServiceId, @PathVariable String subServiceName) {
+    @PutMapping("/updateSubServiceName")
+    public ResponseEntity<SubServiceResponseDto> updateSubServiceName(@RequestParam Long subServiceId, @RequestParam String subServiceName) {
         SubService updatedSubService = adminService.updateSubServiceName(subServiceId, subServiceName);
         SubServiceResponseDto subServiceResponseDto = subServiceMapper.map(updatedSubService);
         return new ResponseEntity<>(subServiceResponseDto, HttpStatus.CREATED);
