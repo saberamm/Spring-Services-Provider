@@ -9,4 +9,5 @@ public interface SubServiceTechnicianRepository extends JpaRepository<SubService
 
     void deleteByTechnicianAndSubService(Technician technician, SubService subService);
     boolean existsByTechnicianAndSubService(Technician technician, SubService subService);
+    SubServiceTechnician findByTechnician_IdAndSubService_Id(Long technician_id, Long subService_id);
 }

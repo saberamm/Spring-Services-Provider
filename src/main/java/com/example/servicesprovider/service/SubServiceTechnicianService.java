@@ -1,8 +1,6 @@
 package com.example.servicesprovider.service;
 
-import com.example.servicesprovider.model.SubService;
 import com.example.servicesprovider.model.SubServiceTechnician;
-import com.example.servicesprovider.model.Technician;
 
 public interface SubServiceTechnicianService {
 
@@ -12,5 +10,5 @@ public interface SubServiceTechnicianService {
 
     void delete(SubServiceTechnician subServiceTechnician);
 
-    void deleteByTechnicianAndSubService(Technician technician, SubService subService);
+    void deleteByTechnicianAndSubService(Long technicianId, Long subServiceId);
 }

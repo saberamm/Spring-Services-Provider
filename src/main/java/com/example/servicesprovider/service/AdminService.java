@@ -29,7 +29,7 @@ public interface AdminService extends BaseService<Admin, Long> {
     @Transactional
     SubService updateSubServiceName(Long subServiceId, String subServiceName);
 
-    void deleteTechnicianFromSubService(Technician technician, SubService subService);
+    void deleteTechnicianFromSubService(Long technicianId, Long subServiceId);
 
     Admin findByUserName(String userName);
 

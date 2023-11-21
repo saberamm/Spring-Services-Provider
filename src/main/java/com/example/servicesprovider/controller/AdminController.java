@@ -124,9 +124,7 @@ public class AdminController {
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/deleteTechnicianFromSubService")
     public ResponseEntity<ResponseMessage> deleteTechnicianFromSubService(@RequestParam Long technicianId, @RequestParam Long subServiceId) {
-        Technician technician = technicianService.findById(technicianId);
-        SubService subService = subService_service.findById(subServiceId);
-        adminService.deleteTechnicianFromSubService(technician, subService);
+        adminService.deleteTechnicianFromSubService(technicianId, subServiceId);
         ResponseMessage responseMessage = new ResponseMessage(LocalDateTime.now(), "Technician deleted from sub service successfully");
         return new ResponseEntity<>(responseMessage, HttpStatus.OK);
     }

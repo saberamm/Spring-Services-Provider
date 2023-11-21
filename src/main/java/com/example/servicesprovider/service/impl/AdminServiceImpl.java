@@ -119,8 +119,8 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long, AdminReposito
 
     @Override
     @Transactional
-    public void deleteTechnicianFromSubService(Technician technician, SubService subService) {
-        subServiceTechnicianService.deleteByTechnicianAndSubService(technician, subService);
+    public void deleteTechnicianFromSubService(Long technicianId, Long subServiceId) {
+        subServiceTechnicianService.deleteByTechnicianAndSubService(technicianId, subServiceId);
     }
 
     @Override

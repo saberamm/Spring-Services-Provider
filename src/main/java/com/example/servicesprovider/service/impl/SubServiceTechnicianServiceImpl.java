@@ -1,8 +1,6 @@
 package com.example.servicesprovider.service.impl;
 
-import com.example.servicesprovider.model.SubService;
 import com.example.servicesprovider.model.SubServiceTechnician;
-import com.example.servicesprovider.model.Technician;
 import com.example.servicesprovider.repository.SubServiceTechnicianRepository;
 import com.example.servicesprovider.service.SubServiceTechnicianService;
 import jakarta.persistence.EntityNotFoundException;
@@ -38,10 +36,11 @@ public class SubServiceTechnicianServiceImpl implements SubServiceTechnicianServ
 
     @Override
     @Transactional
-    public void deleteByTechnicianAndSubService(Technician technician, SubService subService) {
-        if (repository.existsByTechnicianAndSubService(technician, subService)) {
-            repository.deleteByTechnicianAndSubService(technician, subService);
+    public void deleteByTechnicianAndSubService(Long technicianId, Long subServiceId) {
+        SubServiceTechnician subServiceTechnician = repository.findByTechnician_IdAndSubService_Id(technicianId, subServiceId);
+        if (subServiceTechnician == null) {
+            throw new EntityNotFoundException("Technician SubService model not exist");
         }
-        throw new EntityNotFoundException("Technician SubService model not exist");
+        repository.delete(subServiceTechnician);
     }
 }
