@@ -21,11 +21,11 @@ public class AppConfig {
     public JavaMailSender getJavaMailSender()
     {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost("smtp.gmail.com");
+        mailSender.setHost("adfasdf");
         mailSender.setPort(587);
 
-        mailSender.setUsername("saberm.com@gmail.com");
-        mailSender.setPassword("mlzq fman uftu ddub");
+        mailSender.setUsername("asdfasfsd");
+        mailSender.setPassword("asdfasfsdf");
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");
